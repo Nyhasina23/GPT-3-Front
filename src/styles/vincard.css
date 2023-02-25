@@ -1,0 +1,36 @@
+.main-vin-card{
+    display: flex;
+    flex-direction: column;
+    width:30rem;
+    box-shadow: -2px 4px 5px 0px rgba(0, 0, 0, 0.20);
+    -webkit-box-shadow: -2px 4px 5px 0px rgba(0, 0, 0, 0.20);
+    -moz-box-shadow: -2px 4px 5px 0px rgba(0, 0, 0, 0.20);
+    height: 40rem;
+    border-radius: .3rem;
+    margin: 1rem;
+}
+.main-vin-card img {
+    width: 100%;
+    border-radius: .3rem;
+}
+
+.main-vin-card .vin-info {
+    padding: 1rem;
+}
+
+.main-vin-card .vin-info h1{
+    margin: .5rem 0;
+}
+
+.main-vin-card .vin-info p {
+    font-size: 1.3rem;
+    font-weight: 350;
+}
+
+
+@media screen and (max-width : 520px) {
+    .main-vin-card{
+        width: 90%;
+        height: fit-content;
+    }
+}

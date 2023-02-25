@@ -1,0 +1,131 @@
+.main-header {
+    width: 100%;
+    height: 80vh;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/images/back.jpeg');
+    background-size: cover;
+    background-position-y: 170vh;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.main-header h1 {
+    font-size: 3rem;
+    width: 70%;
+    text-align: center;
+    color: white;
+}
+
+.main-header p {
+    text-align: center;
+    width: 40%;
+    color: whitesmoke;
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.header-form {
+    position: relative;
+    width: 50%;
+}
+
+.header-form input {
+    padding: 1.5rem;
+    border-radius: 3rem;
+    border: none;
+    font-size: 1.1rem;
+    width: 100%;
+}
+
+.header-form input::placeholder {
+    opacity: .6;
+}
+
+.header-form button {
+    background: #DE0941;
+    color: white;
+    padding: 1.3rem;
+    border: none;
+    border-radius: 3rem;
+    position: absolute;
+    top: 10%;
+    right: -2.5rem;
+    width: 7rem;
+    cursor: pointer;
+    font-weight: bolder;
+    transition: .3s;
+}
+
+.header-form button:hover {
+    background: #c0093a;
+}
+
+
+@media screen and (max-width : 1366px) {
+    .main-header {
+        background-position-y: 150vh;
+    }
+}
+
+@media screen and (max-width : 1024px) {
+    .main-header {
+        background-position-y: 110vh;
+    }
+}
+
+@media screen and (max-width : 800px) {
+    .header-form {
+        width: calc(80% - 7rem);
+    }
+
+    .main-header h1 {
+        font-size: 2rem;
+        margin: 0 auto;
+    }
+
+    .main-header p {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width : 570px) {
+    .main-header {
+        background-position-y: 0;
+    }
+}
+
+@media screen and (max-width : 520px) {
+    .main-header h1 {
+        width: 100%;
+    }
+
+    .main-header p {
+        width: 100%;
+    }
+
+    .header-form {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+    }
+
+    .header-form input {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .header-form button {
+        margin-top: 1rem;
+        position: initial;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+}

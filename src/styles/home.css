@@ -1,0 +1,51 @@
+.card {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.main-vin-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.main-vin-icons .vin-icons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.vin-icons img {
+    width: 15rem;
+    margin: 3rem;
+}
+
+.vin-card .vins {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.vin-card .all-vins {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.vin-card .all-vins .all-vins-btn {
+    padding: 1rem 10rem;
+    border-radius: 3rem;
+    font-weight: bolder !important;
+    border: 2px solid #DE0941 !important;
+    color: #DE0941;
+}
+
+@media screen and (max-width : 1024px) {
+    .main-vin-icons .vin-icons {
+        display: none;
+    }
+}

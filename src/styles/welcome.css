@@ -1,0 +1,25 @@
+
+.main-welcome{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background: #F3F3F3;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    padding-bottom: 3rem;
+}
+
+.main-welcome h1{
+    font-size: 2.3rem;
+}
+
+.main-welcome p {
+    width: 80%;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 350;
+}
+.welcome-button{
+    width: 20rem;
+}

@@ -1,8 +1,26 @@
-import NavBar from "./components/navbar/NavBar";
+import NavBar from "./components/NavBar";
+import Home from "./views/Home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./views/Login";
+import Register from "./views/Register";
+import Vins from "./views/Vins";
+import Plats from "./views/Plats";
+import NoPage from "./views/NoPage";
+
 function App() {
   return (
     <div className="App">
-      <NavBar />
+      <BrowserRouter>
+        <NavBar />
+        <Routes>
+            <Route exact path="/" element={<Home />}></Route>
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/register" element={<Register />} />
+            <Route exact path="/wine" element={<Vins />} />
+            <Route exact path="/pal" element={<Plats />} />
+            <Route exact path="*" element={<NoPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

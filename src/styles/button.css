@@ -1,0 +1,32 @@
+.main-button {
+    font-size: bold;
+    padding: 1rem 2rem;
+    border-radius: 3rem;
+    border: none;
+    font: white;
+}
+
+.primary {
+    padding: 1rem 2rem !important;
+    background: #DE0941 !important;
+    border-radius: 3rem !important;
+}
+
+.primary:hover {
+    background: #b70937 !important;
+}
+
+.secondary {
+    background: #232323 !important;
+    padding: 1rem 2rem !important;
+    border-radius: 3rem !important;
+}
+
+.secondary:hover {
+    background: #171717 !important;
+}
+
+.white {
+    color: white !important;
+    font-weight: bolder !important;
+}
