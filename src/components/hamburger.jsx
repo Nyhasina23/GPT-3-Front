@@ -2,6 +2,8 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { Outlet } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Hamburger() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -31,7 +33,7 @@ export default function Hamburger() {
         >
           <g>
             <path
-            fill="#DE0941"
+              fill="#DE0941"
               d="M256,0C114.618,0,0,114.618,0,256c0,141.383,114.618,256,256,256c141.383,0,256-114.617,256-256
 		C512,114.618,397.383,0,256,0z M373.641,366.297H138.352v-36.766h235.289V366.297z M373.641,274.383H138.352v-36.758h235.289
 		V274.383z M373.641,182.469H138.352v-36.758h235.289V182.469z"
@@ -48,10 +50,21 @@ export default function Hamburger() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Accueil</MenuItem>
-        <MenuItem onClick={handleClose}>Connexion</MenuItem>
-        <MenuItem onClick={handleClose}>Vins</MenuItem>
-        <MenuItem onClick={handleClose}>Plats</MenuItem>
+        <NavLink to="/" className='nav-link-hamburger'>
+          <MenuItem onClick={handleClose}>Accueil</MenuItem>
+        </NavLink>
+        <NavLink to="/login" className='nav-link-hamburger'>
+          <MenuItem onClick={handleClose}>Connexion</MenuItem>
+        </NavLink>
+        <NavLink to="/wine" className='nav-link-hamburger'>
+          <MenuItem onClick={handleClose}>Vins</MenuItem>
+        </NavLink>
+        <NavLink to="/pal" className='nav-link-hamburger'>
+          <MenuItem onClick={handleClose}>Plats</MenuItem>
+        </NavLink>
+
+        <Outlet />
+
       </Menu>
     </div>
   );

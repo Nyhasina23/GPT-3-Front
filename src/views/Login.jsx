@@ -1,6 +1,7 @@
 import React from "react";
 import "styles/login.css";
 import { Button } from "@mui/material";
+import { NavLink } from "react-router-dom";
 
 export default function Login() {
   return (
@@ -95,7 +96,7 @@ export default function Login() {
             </svg>
           </div>
 
-          <div className="login-btn">
+          <div className="login-btn">  
             <Button variant="outlined" className="register-btn">
               S'inscrire
             </Button>

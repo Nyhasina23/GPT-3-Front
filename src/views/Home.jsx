@@ -52,7 +52,7 @@ export default function Home() {
           </div>
           <div className="all-vins">
             <Button variant="outlined" className="all-vins-btn">
-              DETAILS
+              VOIR TOUS
             </Button>
           </div>
         </div>

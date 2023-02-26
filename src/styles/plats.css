@@ -1,0 +1,278 @@
+.main-plat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-plat .left-plat {
+    flex: 7;
+    height: calc(100vh - 4rem);
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/images/pal_image.jpeg');
+    background-size: cover;
+    display: flex;
+    background-position-y: 100vh;
+
+}
+
+.main-plat .left-plat .left-plat-content {
+    width: 60rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-plat .left-plat .left-plat-content .form-input-pal {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.main-plat .left-plat .left-plat-content .form-input-pal .left-form {
+    width: 50%;
+}
+
+.main-plat .left-plat .left-plat-content .form-input-pal .right-form {
+    width: 50%;
+}
+
+.main-plat .left-plat .left-plat-content .input-icon {
+    position: relative;
+    width: 100%;
+    display: flex;
+}
+
+
+.main-plat .left-plat .left-plat-content .input-icon .input-file {
+    width: 100%;
+    padding: 1.15rem;
+    margin: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #b1b1b173;
+    background: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.main-plat .left-plat .left-plat-content .input-icon .input-hidden {
+    display: none;
+}
+
+.main-plat .left-plat .left-plat-content .svg-icon-1 {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+}
+
+.main-plat .left-plat .left-plat-content .svg-icon-1.image-input {
+    position: absolute;
+    top: 2.2rem;
+    right: 2.2rem;
+    width: 10rem;
+    border-radius: .5rem;
+    background: #DE0941;
+}
+
+.main-plat .left-plat .left-plat-content .svg-icon-2 {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    cursor: pointer;
+}
+
+.main-plat .left-plat .left-plat-content .svg-icon-3 {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    cursor: pointer;
+}
+
+.main-plat .left-plat .left-plat-content h1 {
+    font-size: 3rem;
+    color: whitesmoke;
+    text-align: center;
+}
+
+.main-plat .left-plat .left-plat-content h1 span {
+    color: #DE0941;
+}
+
+.main-plat .left-plat .left-plat-content .input-icon input {
+    width: 100%;
+    padding: 1.5rem;
+    margin: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #b1b1b173;
+}
+
+.main-plat .left-plat .left-plat-content .input-icon input::placeholder {
+    font-size: 1.2rem;
+    width: 90%;
+}
+
+.main-plat .right {
+    display: flex;
+    flex-direction: column;
+    flex: 4;
+    max-height: calc(100vh - 4rem);
+}
+
+.main-plat .right .right-content {
+    padding: 2rem;
+}
+
+
+.main-plat .right .right-btn {
+    color: #DE0941;
+    border: 2px solid #DE0941;
+    font-weight: 550;
+    border-radius: 3rem;
+}
+
+.main-plat .right .save-btn {
+    color: white;
+    background: #DE0941;
+    font-weight: 550;
+    border-radius: 3rem;
+    margin-top: 1rem;
+}
+
+.main-plat .left-plat .left-plat-content .login-btn {
+    display: flex;
+}
+
+.login-btn .register-btn {
+    padding: 1rem 5rem;
+    border-radius: 3rem;
+    font-weight: bolder !important;
+    border: 2px solid #DE0941 !important;
+    color: #DE0941;
+    margin: 1rem;
+}
+
+.login-btn .connexion-btn {
+    padding: 1rem 5rem;
+    border-radius: 3rem;
+    font-weight: bolder !important;
+    border: 2px solid #DE0941 !important;
+    background: #DE0941;
+    margin: 1rem;
+}
+
+.login-btn .connexion-btn:hover {
+    background: #b90837;
+}
+
+.main-plat .right .right-content .vins-response {
+    padding: 1rem;
+    margin-top: 2rem;
+    border: 2px solid #b1b1b173;
+    border-radius: 1rem;
+}
+
+.main-plat .right .right-content .vins-response h3 {
+    display: flex;
+    align-items: center;
+    color: #DE0941;
+}
+
+.main-plat .right .right-content .vins-response h3 svg {
+    margin-left: -.5rem;
+    margin-right: .5rem;
+}
+
+.main-plat .right .right-content .vins-response hr {
+    border: 1px solid #b1b1b13a;
+}
+
+.main-plat .right .right-content .vins-response .ia-response {
+    height: 60vh;
+    overflow-y: scroll;
+}
+
+
+@media screen and (max-width:1110px) {
+
+
+    .main-plat .left-plat-content {
+        align-items: center;
+        justify-content: center;
+        height: calc(100vh - 4rem);
+    }
+}
+
+@media screen and (max-width:1027px) {
+    .main-plat {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .main-plat .left-plat {
+        width: 100%;
+    }
+
+    .main-plat .left-plat .left-plat-content {
+        width: 90%;
+    }
+
+    .main-plat .left-plat .left-plat-content .login-btn {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: auto;
+    }
+}
+
+@media screen and (max-width:650px) {
+    .main-plat {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .main-plat .left-plat {
+        width: 100%;
+    }
+
+    .main-plat .left-plat .left-plat-content {
+        width: 90%;
+    }
+
+    .main-plat .left-plat .left-plat-content .login-btn {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: auto;
+    }
+}
+
+@media screen and (max-width:510px) {
+
+    .main-plat .left-plat .left-plat-content .login-btn {
+        flex-direction: column-reverse;
+    }
+
+    .main-plat .left-plat .left-plat-content .login-btn button {
+        width: 100%;
+    }
+
+    .main-plat .left-plat .left-plat-content {
+        height: 100%;
+    }
+
+    .main-plat .left-plat {
+        background-position-y: 0;
+    }
+    .main-plat .left-plat .left-plat-content .svg-icon-1.image-input{
+        width: 5rem;
+    }
+    .main-plat .left-plat .left-plat-content .form-input-pal{
+        display: block;
+    }
+    .main-plat .left-plat .left-plat-content .form-input-pal .left-form,
+    .main-plat .left-plat .left-plat-content .form-input-pal .right-form{
+        width: 100%;
+    }
+}

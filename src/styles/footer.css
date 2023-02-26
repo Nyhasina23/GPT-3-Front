@@ -36,15 +36,17 @@
     margin-bottom: 2rem;
 }
 
-.main-footer .link h3 {
+.main-footer .link > h3 {
     text-align: center;
     width: 50%;
     margin: 0 1rem;
+    color: #212121;
 }
 
-.main-footer .link h4 {
+.main-footer .link > h4 {
     margin: 0 1rem;
     font-weight: bold;
+    color: #212121;
 }
 
 .main-footer .contact {

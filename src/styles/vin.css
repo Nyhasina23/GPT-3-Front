@@ -1,0 +1,220 @@
+.main-vin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-vin .left-vin {
+    flex: 7;
+    height: calc(100vh - 4rem);
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/images/wine.jpeg');
+    background-size: cover;
+    display: flex;
+    background-position-y: 150vh;
+
+}
+
+.main-vin .left-vin .left-vin-content {
+    width: 37rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-vin .left-vin .left-vin-content .input-icon {
+    position: relative;
+    width: 100%;
+    display: flex;
+}
+
+.main-vin .left-vin .left-vin-content .svg-icon-1 {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+}
+
+.main-vin .left-vin .left-vin-content .svg-icon-2 {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    cursor: pointer;
+}
+
+.main-vin .left-vin .left-vin-content .svg-icon-3 {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    cursor: pointer;
+}
+
+.main-vin .left-vin .left-vin-content h1 {
+    font-size: 3rem;
+    color: whitesmoke;
+    text-align: center;
+}
+
+.main-vin .left-vin .left-vin-content h1 span {
+    color: #DE0941;
+}
+
+.main-vin .left-vin .left-vin-content .input-icon input {
+    width: 100%;
+    padding: 1.5rem;
+    margin: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #b1b1b173;
+}
+
+.main-vin .left-vin .left-vin-content .input-icon input::placeholder {
+    font-size: 1.2rem;
+}
+
+.main-vin .right {
+    display: flex;
+    flex-direction: column;
+    flex: 4;
+    max-height: calc(100vh - 4rem);
+}
+
+.main-vin .right .right-content {
+    padding: 2rem;
+}
+
+
+.main-vin .right .right-btn {
+    color: #DE0941;
+    border: 2px solid #DE0941;
+    font-weight: 550;
+    border-radius: 3rem;
+}
+
+.main-vin .right .save-btn{
+    color: white;
+    background: #DE0941;
+    font-weight: 550;
+    border-radius: 3rem;
+    margin-top: 1rem;
+}
+
+.main-vin .left-vin .left-vin-content .login-btn {
+    display: flex;
+}
+
+.login-btn .register-btn {
+    padding: 1rem 5rem;
+    border-radius: 3rem;
+    font-weight: bolder !important;
+    border: 2px solid #DE0941 !important;
+    color: #DE0941;
+    margin: 1rem;
+}
+
+.login-btn .connexion-btn {
+    padding: 1rem 5rem;
+    border-radius: 3rem;
+    font-weight: bolder !important;
+    border: 2px solid #DE0941 !important;
+    background: #DE0941;
+    margin: 1rem;
+}
+
+.login-btn .connexion-btn:hover {
+    background: #b90837;
+}
+
+.main-vin .right .right-content .vins-response{
+    padding: 1rem;
+    margin-top: 2rem;
+    border: 2px solid #b1b1b173;
+    border-radius: 1rem;
+}
+
+.main-vin .right .right-content .vins-response h3 {
+    display: flex;
+    align-items: center;
+    color: #DE0941;
+}
+
+.main-vin .right .right-content .vins-response h3 svg{
+    margin-left: -.5rem;
+    margin-right: .5rem;
+}
+
+.main-vin .right .right-content .vins-response hr{
+    border: 1px solid #b1b1b13a;
+}
+
+.main-vin .right .right-content .vins-response .ia-response{
+    height: 60vh;
+    overflow-y: scroll;
+}
+
+
+@media screen and (max-width:1110px) {
+  
+
+    .main-vin .left-vin-content {
+        align-items: center;
+        justify-content: center;
+        height: calc(100vh - 4rem);
+    }
+}
+
+@media screen and (max-width:1027px) {
+    .main-vin {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .main-vin .left-vin {
+        width: 100%;
+    }
+
+    .main-vin .left-vin .left-vin-content {
+        width: 90%;
+    }
+
+    .main-vin .left-vin .left-vin-content .login-btn {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: auto;
+    }
+}
+
+@media screen and (max-width:650px) {
+    .main-vin {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .main-vin .left-vin {
+        width: 100%;
+    }
+
+    .main-vin .left-vin .left-vin-content {
+        width: 90%;
+    }
+
+    .main-vin .left-vin .left-vin-content .login-btn {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: auto;
+    }
+}
+
+@media screen and (max-width:510px) {
+
+    .main-vin .left-vin .left-vin-content .login-btn {
+        flex-direction: column-reverse;
+    }
+
+    .main-vin .left-vin .left-vin-content .login-btn button {
+        width: 100%;
+    }
+}

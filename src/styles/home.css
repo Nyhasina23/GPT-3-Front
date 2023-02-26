@@ -36,6 +36,10 @@
     margin: 1rem 0;
 }
 
+.nav-link-hamburger{
+    color: #212121;
+}
+
 .vin-card .all-vins .all-vins-btn {
     padding: 1rem 10rem;
     border-radius: 3rem;

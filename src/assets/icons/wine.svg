@@ -1,0 +1,8 @@
+<svg className="svg-icon-1" xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
+  <g id="Groupe_51" data-name="Groupe 51" transform="translate(0.446 -0.787)" opacity="0.92">
+    <rect id="Rectangle_40" data-name="Rectangle 40" width="34" height="34" transform="translate(-0.446 0.787)" fill="#232323" opacity="0"/>
+    <g id="Groupe_50" data-name="Groupe 50" transform="translate(9.954 2.814)">
+      <path id="Tracé_25" data-name="Tracé 25" d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z" transform="translate(-7 -2)" fill="#232323"/>
+    </g>
+  </g>
+</svg>

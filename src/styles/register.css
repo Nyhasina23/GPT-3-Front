@@ -45,6 +45,7 @@
 
 .main-login .left .left-content h1 {
     font-size: 2.3rem;
+    text-align: center;
 }
 
 .main-login .left .left-content h1 span {
@@ -63,11 +64,11 @@
     font-size: 1.2rem;
 }
 
-.main-login .right {
+.main-login .right-section {
     display: flex;
     flex: 5;
     height: calc(100vh - 4rem);
-    background-image: url('assets/images/back.jpeg');
+    background-image: url('assets/images/pal.jpeg');
     background-size: cover;
     background-position-y: 100vh;
 }
@@ -100,7 +101,7 @@
 }
 
 @media screen and (max-width:1110px) {
-    .main-login .right {
+    .main-login .right-section {
         display: none;
     }
 
@@ -132,10 +133,11 @@
 }
 
 @media screen and (max-width:510px) {
-    
+
     .main-login .left .left-content .login-btn {
         flex-direction: column-reverse;
     }
+
     .main-login .left .left-content .login-btn button {
         width: 100%;
     }
