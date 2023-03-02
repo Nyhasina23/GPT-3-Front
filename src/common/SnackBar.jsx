@@ -3,14 +3,14 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
-import { showNavbar } from "../features/user.slice";
+import { showNavbar } from "../features/snackbar.slice";
 import { useSelector } from "react-redux";
 import "styles/login.css";
 
 export default function SnackBar({message , bg}) {
 
 
-  const isOpen = useSelector((state) => state.user.showNavbarSuccess);
+  const isOpen = useSelector((state) => state.snackbar.showNavbarSuccess);
   const dispatch = useDispatch();
 
   const handleClose = (event, reason) => {

@@ -1,8 +1,88 @@
 import React from "react";
 import "styles/register.css";
 import { Button } from "@mui/material";
+import SnackBar from "common/SnackBar";
+import { showNavbar } from "features/snackbar.slice";
+import { useState } from "react";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { setAuthentication } from "../features/user.slice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import "styles/login.css";
+import axios from "axios";
+import { apiURL } from "services/apiUrl";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+  const [snackBg, setSnackBg] = useState("#4caf50");
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [passconf, setPassconf] = useState();
+
+  async function register() {
+    if (
+      email === undefined ||
+      username === undefined ||
+      passconf === undefined ||
+      password === undefined
+    ) {
+      dispatch(showNavbar(true));
+      setErrorMessage("Remplir tous les champs");
+      setLoading(false);
+      setSnackBg("#f44336");
+      return;
+    } else if (password != passconf) {
+      dispatch(showNavbar(true));
+      setErrorMessage("Mot de passe et confirmation différents");
+      setLoading(false);
+      setSnackBg("#f44336");
+    } else {
+      
+      setLoading(true);
+
+      await axios
+        .post(`${apiURL}/authentication/signup`, {
+          email,
+          username,
+          password,
+        })
+        .then((response) => {
+          dispatch(showNavbar(true));
+          setErrorMessage(response.data.MESSAGE);
+          dispatch(setAuthentication(true));
+          setSnackBg("#4caf50");
+          setTimeout(() => {
+            navigate("/wine");
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          setErrorMessage(err.response.data.MESSAGE);
+          setLoading(false);
+          setSnackBg("#f44336");
+        });
+    }
+  }
+
+  function handleEmailChange(event) {
+    setEmail(event.target.value);
+  }
+  function handleUsernameChange(event) {
+    setUsername(event.target.value);
+  }
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+  }
+  function handlePasswordConfirmationChange(event) {
+    setPassconf(event.target.value);
+  }
+
   return (
     <div className="main-login">
       <div className="left">
@@ -12,7 +92,11 @@ export default function Register() {
             <span>Créer </span>votre compte
           </h1>
           <div className="input-icon">
-            <input type="text" placeholder="Votre email..." />
+            <input
+              type="email"
+              placeholder="Votre email..."
+              onChange={handleEmailChange}
+            />
 
             <svg
               className="svg-icon-1"
@@ -54,7 +138,56 @@ export default function Register() {
           </div>
 
           <div className="input-icon">
-            <input type="password" placeholder="Mot de passe..." />
+            <input
+              type="text"
+              placeholder="username..."
+              onChange={handleUsernameChange}
+            />
+
+            <svg
+              className="svg-icon-2"
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="#232323"
+              viewBox="0 0 32 32"
+            >
+              <g
+                id="Groupe_3"
+                data-name="Groupe 3"
+                transform="translate(0 0.133)"
+              >
+                <rect
+                  id="Rectangle_1"
+                  data-name="Rectangle 1"
+                  width="32"
+                  height="32"
+                  transform="translate(0 -0.133)"
+                  opacity="0"
+                  fill="#232323"
+                />
+                <g
+                  id="Groupe_1"
+                  data-name="Groupe 1"
+                  transform="translate(2.796 5.142)"
+                >
+                  <path
+                    id="Tracé_1"
+                    data-name="Tracé 1"
+                    d="M26.961,13.071C26.652,12.644,19.3,2.58,11.685,2.58a10.825,10.825,0,0,0,0,21.651c7.61,0,14.966-10.064,15.276-10.491A.571.571,0,0,0,26.961,13.071ZM16.243,17.963H7.127c0-2.279,2.883-1.96,3.325-3.15a10.559,10.559,0,0,0,.023-1.063,2.074,2.074,0,0,1-.584-1.235c-.145-.012-.373-.153-.44-.712a.522.522,0,0,1,.195-.521c-.49-1.886-.22-3.534,2.016-3.575a1.284,1.284,0,0,1,1.157.444c1.632.227,1.142,2.421.906,3.131a.521.521,0,0,1,.195.521c-.067.558-.3.7-.44.712a2.08,2.08,0,0,1-.57,1.235,10.556,10.556,0,0,0,.023,1.063c.391,1.049,3.093.887,3.313,2.882Z"
+                    transform="translate(-0.86 -2.58)"
+                    fill="#232323"
+                  />
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div className="input-icon">
+            <input
+              type="password"
+              placeholder="Mot de passe..."
+              onChange={handlePasswordChange}
+            />
 
             <svg
               className="svg-icon-2"
@@ -96,10 +229,15 @@ export default function Register() {
           </div>
 
           <div className="input-icon">
-            <input className="conf-pass" type="password" placeholder="Confirmation..." />
+            <input
+              className="conf-pass"
+              type="password"
+              placeholder="Confirmation..."
+              onChange={handlePasswordConfirmationChange}
+            />
 
             <svg
-            className="svg-icon-3"
+              className="svg-icon-3"
               xmlns="http://www.w3.org/2000/svg"
               width="30"
               height="30"
@@ -141,9 +279,19 @@ export default function Register() {
             <Button variant="outlined" className="register-btn">
               Connexion
             </Button>
-            <Button variant="contained" className="connexion-btn">
-              S'inscrire
+            <Button
+              variant="contained"
+              className="connexion-btn"
+              onClick={register}
+            >
+              {!loading ? (
+                <span> S'inscrire </span>
+              ) : (
+                <LoadingButton className="loadButton" loading></LoadingButton>
+              )}
             </Button>
+
+            {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
           </div>
         </div>
       </div>
