@@ -1,9 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "styles/login.css";
 import { Button } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import SnackBar from "common/SnackBar";
+import { useDispatch } from "react-redux";
+import { setAuthentication, showNavbar , setUserIdentity } from "../features/user.slice";
+import { useNavigate } from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
+import axios from "axios";
+import { apiURL } from "services/apiUrl";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [identity, setIdentity] = useState();
+  const [password, setPassword] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+  const [snackBg, setSnackBg] = useState("#4caf50");
+
+  async function login() {
+    if (identity === undefined || password === undefined) {
+      dispatch(showNavbar(true));
+      setErrorMessage("Remplir tous les champs");
+      setLoading(false);
+      setSnackBg("#f44336");
+    } else {
+      dispatch(showNavbar(true));
+      setOpen(true);
+      setLoading(true);
+
+      await axios
+        .post(`${apiURL}/authentication/signin`, {
+          identity,
+          password,
+        })
+        .then((response) => {
+          setErrorMessage("Connecté avec succès");
+          dispatch(setAuthentication(true));
+          setSnackBg("#4caf50");
+          dispatch(setUserIdentity(response.data.DATA.user.username))
+          setTimeout(() => {
+            navigate("/wine");
+          }, 2000);
+        })
+        .catch(() => {
+          setErrorMessage("email ou mot de passe incorrecte");
+          setLoading(false);
+          setSnackBg("#f44336");
+        });
+    }
+  }
+
+  function switchToRegister() {
+    navigate("/register");
+  }
+
+  useEffect(() => {}, []);
+
+  function handleEmailChange(event) {
+    setIdentity(event.target.value);
+  }
+
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+  }
+
   return (
     <div className="main-login">
       <div className="left">
@@ -13,7 +76,11 @@ export default function Login() {
             <span>Connectez-</span>vous
           </h1>
           <div className="input-icon">
-            <input type="text" placeholder="Votre email..." />
+            <input
+              type="text"
+              placeholder="Votre email..."
+              onChange={handleEmailChange}
+            />
 
             <svg
               className="svg-icon-1"
@@ -55,7 +122,11 @@ export default function Login() {
           </div>
 
           <div className="input-icon">
-            <input type="password" placeholder="Mot de passe..." />
+            <input
+              type="password"
+              placeholder="Mot de passe..."
+              onChange={handlePasswordChange}
+            />
 
             <svg
               className="svg-icon-2"
@@ -96,13 +167,27 @@ export default function Login() {
             </svg>
           </div>
 
-          <div className="login-btn">  
-            <Button variant="outlined" className="register-btn">
+          <div className="login-btn">
+            <Button
+              variant="outlined"
+              className="register-btn"
+              onClick={switchToRegister}
+            >
               S'inscrire
             </Button>
-            <Button variant="contained" className="connexion-btn">
-              Connexion
+            <Button
+              variant="contained"
+              className="connexion-btn"
+              onClick={login}
+            >
+              {!loading ? (
+                <span> Connexion </span>
+              ) : (
+                <LoadingButton className="loadButton" loading></LoadingButton>
+              )}
             </Button>
+
+            {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
           </div>
         </div>
       </div>

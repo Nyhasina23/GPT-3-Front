@@ -99,6 +99,14 @@
     background: #b90837;
 }
 
+.loadButton{
+    padding: 0 3rem !important;
+}
+.MuiLoadingButton-loadingIndicator{
+    color: white !important;
+}
+
+
 @media screen and (max-width:1110px) {
     .main-login .right {
         display: none;
