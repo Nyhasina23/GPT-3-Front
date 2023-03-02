@@ -8,9 +8,15 @@ import SnackBar from "common/SnackBar";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { TryOutlined } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom/dist";
 
 export default function Plats() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function switchToWine() {
+    navigate("/wine");
+  }
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -66,58 +72,77 @@ export default function Plats() {
     // /gpt3/api/
     setLoading(true);
 
-    await axios
-      .post(
-        `${apiURL}/gpt3/api/`,
-        {
-          prompt: `Donner moi 3 accord-mets avec ce vin 
-          
-          ${domaine} ,
-          ${cuve} ,
-          ${millesime} ,
-          ${region} ,
-          ${appelation} ,
-          ${cru} ,
-          ${assemblage} ,
-          ${aromeParfum} ,
-          ${recom} ,
+    if (
+      domaine == undefined ||
+      millesime == undefined ||
+      region == undefined ||
+      aromeParfum == undefined
+    ) {
+      setErrorMessage("Verifier tous les champs");
+      setSnackBg("#f44336");
+      dispatch(showNavbar(true));
+      setOpen(true);
+      setLoading(false);
+    } else {
+      await axios
+        .post(
+          `${apiURL}/gpt3/api/`,
+          {
+            prompt: `Donner moi 3 accord-mets avec ce vin 
+        
+        ${domaine} ,
+        ${cuve} ,
+        ${millesime} ,
+        ${region} ,
+        ${appelation} ,
+        ${cru} ,
+        ${assemblage} ,
+        ${aromeParfum} ,
+        ${recom} ,
 
-          et une phrase à chaque réponse`,
-        },
-        {
-          headers: {
-            Authorization: token,
+        et une phrase à chaque réponse`,
           },
-        }
-      )
-      .then((response) => {
-        setErrorMessage(response.data.STATUS);
-        setSnackBg("#4caf50");
-        setPlats(response.data.DATA);
-        dispatch(showNavbar(true));
-        setOpen(true);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setErrorMessage(err.response.data.MESSAGE);
-        setSnackBg("#f44336");
-        dispatch(showNavbar(true));
-        setOpen(true);
-        setLoading(false);
-      });
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
+        .then((response) => {
+          setErrorMessage(response.data.STATUS);
+          setSnackBg("#4caf50");
+          setPlats(response.data.DATA);
+          dispatch(showNavbar(true));
+          setOpen(true);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setErrorMessage(err.response.data.MESSAGE);
+          setSnackBg("#f44336");
+          dispatch(showNavbar(true));
+          setOpen(true);
+          setLoading(false);
+        });
+    }
   }
 
   async function savePlat() {
-    
-    setSaveLoading(true);
-
     let IAResponse = plats.replace(/(\r\n|\n|\r)/gm, "");
+
+    setSaveLoading(true);
     await axios
       .post(
         `${apiURL}/recipe/create`,
         {
           domaine,
           cuve,
+          millesime,
+          region,
+          appelation,
+          cru,
+          assemblage,
+          aromeParfum,
+          recom,
           IAResponse,
         },
         {
@@ -128,6 +153,7 @@ export default function Plats() {
       )
       .then((response) => {
         setErrorMessage(response.data.STATUS);
+        setSnackBg("#4caf50");
         dispatch(showNavbar(true));
         setOpen(true);
         setSaveLoading(false);
@@ -617,7 +643,11 @@ export default function Plats() {
           </div>
 
           <div className="login-btn">
-            <Button variant="outlined" className="register-btn">
+            <Button
+              variant="outlined"
+              className="register-btn"
+              onClick={switchToWine}
+            >
               Vins
             </Button>
             <Button

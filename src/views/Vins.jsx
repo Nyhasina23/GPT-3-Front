@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import "styles/vin.css";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -7,9 +7,15 @@ import { showNavbar } from "features/snackbar.slice";
 import SnackBar from "common/SnackBar";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
+import { useNavigate } from "react-router-dom/dist";
 
 export default function Vins() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function switchToPal() {
+    navigate("/pal");
+  }
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,6 +25,7 @@ export default function Vins() {
   const [vins, setVins] = useState();
   let [nomPlat, setNomPlat] = useState();
   let [robeVin, setRobeVin] = useState();
+  let [allVin, setallVin] = useState([]);
 
   function handleNomPlatChange(event) {
     setNomPlat(event.target.value);
@@ -34,37 +41,44 @@ export default function Vins() {
     // /gpt3/api/
     setLoading(true);
 
-    await axios
-      .post(
-        `${apiURL}/gpt3/api/`,
-        {
-          prompt: `Donner moi 3 accord-mets vins avec du ${nomPlat} et le robe du vin est ${robeVin} avec une phrase à chaque réponse`,
-        },
-        {
-          headers: {
-            Authorization: token,
+    if (nomPlat == undefined || robeVin == undefined) {
+      setErrorMessage("Verifier tous les champs");
+      setSnackBg("#f44336");
+      dispatch(showNavbar(true));
+      setOpen(true);
+      setLoading(false);
+    } else {
+      await axios
+        .post(
+          `${apiURL}/gpt3/api/`,
+          {
+            prompt: `Donner moi 3 accord-mets vins avec du ${nomPlat} et le robe du vin est ${robeVin} avec une phrase à chaque réponse`,
           },
-        }
-      )
-      .then((response) => {
-        setErrorMessage(response.data.STATUS);
-        setSnackBg("#4caf50");
-        setVins(response.data.DATA);
-        dispatch(showNavbar(true));
-        setOpen(true);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setErrorMessage(err.response.data.MESSAGE);
-        setSnackBg("#f44336");
-        dispatch(showNavbar(true));
-        setOpen(true);
-        setLoading(false);
-      });
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        )
+        .then((response) => {
+          setErrorMessage(response.data.STATUS);
+          setSnackBg("#4caf50");
+          setVins(response.data.DATA);
+          dispatch(showNavbar(true));
+          setOpen(true);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setErrorMessage(err.response.data.MESSAGE);
+          setSnackBg("#f44336");
+          dispatch(showNavbar(true));
+          setOpen(true);
+          setLoading(false);
+        });
+    }
   }
 
   async function saveVin() {
-
     nomPlat = nomPlat.replace(/(\r\n|\n|\r)/gm, "");
     robeVin = robeVin.replace(/(\r\n|\n|\r)/gm, "");
     let IAResponse = vins.replace(/(\r\n|\n|\r)/gm, "");
@@ -99,6 +113,21 @@ export default function Vins() {
         setSaveLoading(false);
       });
   }
+
+  async function getAllVins() {
+    const response = await axios.get(`${apiURL}/vin/all`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    console.log("response ", response);
+    setallVin(response.data.DATA);
+  }
+
+  useEffect(() => {
+    getAllVins();
+  }, []);
 
   return (
     <div className="main-vin">
@@ -243,7 +272,11 @@ export default function Vins() {
           </div>
 
           <div className="login-btn">
-            <Button variant="outlined" className="register-btn">
+            <Button
+              variant="outlined"
+              className="register-btn"
+              onClick={switchToPal}
+            >
               Plats
             </Button>
             <Button
@@ -310,14 +343,22 @@ export default function Vins() {
                 {nomPlat ? <p className="title"> {nomPlat} </p> : ""}
                 {robeVin ? <p> Vin {robeVin} </p> : ""}
               </div>
-              {vins ? (
-                <p className="bodyResponse">{vins}</p>
-              ) : (
-                <p className="text-default">
-                  {" "}
-                  Oup, vous n'avez pas encore un accord-mets vin...{" "}
-                </p>
-              )}
+              {vins ? <p className="bodyResponse">{vins}</p> : ""}
+              {allVin.length > 0
+                ? allVin.map((item) => {
+                    return (
+                      <div>
+                        <div className="head">
+                          {<p className="title"> {item.plat_name} </p>}
+                          {<p> Vin {item.robeVin} </p>}
+                        </div>
+                        <p className="bodyResponse" key={item.id}>
+                          {item.IAResponse}{" "}
+                        </p>
+                      </div>
+                    );
+                  })
+                : "null"}
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={saveVin}>

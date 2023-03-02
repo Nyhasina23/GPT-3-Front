@@ -212,10 +212,12 @@
 
 .ia-response-plat .head {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .ia-response-plat .head .title {
     margin-right: .5rem;
+    word-break: break-all;
 }
 
 .ia-response-plat .head p {
@@ -310,14 +312,17 @@
     .main-plat .left-plat {
         background-position-y: 0;
     }
-    .main-plat .left-plat .left-plat-content .svg-icon-1.image-input{
+
+    .main-plat .left-plat .left-plat-content .svg-icon-1.image-input {
         width: 5rem;
     }
-    .main-plat .left-plat .left-plat-content .form-input-pal{
+
+    .main-plat .left-plat .left-plat-content .form-input-pal {
         display: block;
     }
+
     .main-plat .left-plat .left-plat-content .form-input-pal .left-form,
-    .main-plat .left-plat .left-plat-content .form-input-pal .right-form{
+    .main-plat .left-plat .left-plat-content .form-input-pal .right-form {
         width: 100%;
     }
 }
