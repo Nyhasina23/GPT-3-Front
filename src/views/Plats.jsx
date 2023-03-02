@@ -7,6 +7,7 @@ import { showNavbar } from "features/snackbar.slice";
 import SnackBar from "common/SnackBar";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
+import { TryOutlined } from "@mui/icons-material";
 
 export default function Plats() {
   const dispatch = useDispatch();
@@ -61,14 +62,63 @@ export default function Plats() {
 
   const token = useSelector((state) => state.user.token);
 
+  async function generatePlats() {
+    // /gpt3/api/
+    setLoading(true);
+
+    await axios
+      .post(
+        `${apiURL}/gpt3/api/`,
+        {
+          prompt: `Donner moi 3 accord-mets avec ce vin 
+          
+          ${domaine} ,
+          ${cuve} ,
+          ${millesime} ,
+          ${region} ,
+          ${appelation} ,
+          ${cru} ,
+          ${assemblage} ,
+          ${aromeParfum} ,
+          ${recom} ,
+
+          et une phrase à chaque réponse`,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        setErrorMessage(response.data.STATUS);
+        setSnackBg("#4caf50");
+        setPlats(response.data.DATA);
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.MESSAGE);
+        setSnackBg("#f44336");
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setLoading(false);
+      });
+  }
+
   async function savePlat() {
+    
+    setSaveLoading(true);
+
+    let IAResponse = plats.replace(/(\r\n|\n|\r)/gm, "");
     await axios
       .post(
         `${apiURL}/recipe/create`,
         {
           domaine,
           cuve,
-          IAResponse: plats,
+          IAResponse,
         },
         {
           headers: {
@@ -570,8 +620,19 @@ export default function Plats() {
             <Button variant="outlined" className="register-btn">
               Vins
             </Button>
-            <Button variant="contained" className="connexion-btn">
-              Genérez
+            <Button
+              variant="contained"
+              className="connexion-btn"
+              onClick={generatePlats}
+            >
+              {!loading ? (
+                <span> Générez </span>
+              ) : (
+                <LoadingButton
+                  className="loadGenerateButton"
+                  loading
+                ></LoadingButton>
+              )}
             </Button>
             {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
           </div>

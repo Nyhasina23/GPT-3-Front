@@ -17,8 +17,8 @@ export default function Vins() {
   const [snackBg, setSnackBg] = useState("#4caf50");
   const [errorMessage, setErrorMessage] = useState();
   const [vins, setVins] = useState();
-  const [nomPlat, setNomPlat] = useState();
-  const [robeVin, setRobeVin] = useState();
+  let [nomPlat, setNomPlat] = useState();
+  let [robeVin, setRobeVin] = useState();
 
   function handleNomPlatChange(event) {
     setNomPlat(event.target.value);
@@ -48,6 +48,7 @@ export default function Vins() {
       )
       .then((response) => {
         setErrorMessage(response.data.STATUS);
+        setSnackBg("#4caf50");
         setVins(response.data.DATA);
         dispatch(showNavbar(true));
         setOpen(true);
@@ -63,14 +64,19 @@ export default function Vins() {
   }
 
   async function saveVin() {
+
+    nomPlat = nomPlat.replace(/(\r\n|\n|\r)/gm, "");
+    robeVin = robeVin.replace(/(\r\n|\n|\r)/gm, "");
+    let IAResponse = vins.replace(/(\r\n|\n|\r)/gm, "");
+
     setSaveLoading(true);
     await axios
       .post(
         `${apiURL}/vin/create`,
         {
-          nom_plat: nomPlat,
+          plat_name: nomPlat,
           robeVin,
-          IAResponse: vins,
+          IAResponse,
         },
         {
           headers: {
@@ -80,6 +86,7 @@ export default function Vins() {
       )
       .then((response) => {
         setErrorMessage(response.data.STATUS);
+        setSnackBg("#4caf50");
         dispatch(showNavbar(true));
         setOpen(true);
         setSaveLoading(false);
