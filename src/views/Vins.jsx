@@ -1,8 +1,98 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@mui/material";
 import "styles/vin.css";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useDispatch, useSelector } from "react-redux";
+import { showNavbar } from "features/snackbar.slice";
+import SnackBar from "common/SnackBar";
+import axios from "axios";
+import { apiURL } from "services/apiUrl";
 
 export default function Vins() {
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [snackBg, setSnackBg] = useState("#4caf50");
+  const [errorMessage, setErrorMessage] = useState();
+  const [vins, setVins] = useState();
+  const [nomPlat, setNomPlat] = useState();
+  const [robeVin, setRobeVin] = useState();
+
+  function handleNomPlatChange(event) {
+    setNomPlat(event.target.value);
+  }
+
+  function handleRobeVinChange(event) {
+    setRobeVin(event.target.value);
+  }
+
+  const token = useSelector((state) => state.user.token);
+
+  async function generateWine() {
+    // /gpt3/api/
+    setLoading(true);
+
+    await axios
+      .post(
+        `${apiURL}/gpt3/api/`,
+        {
+          prompt: `Donner moi 3 accord-mets vins avec du ${nomPlat} et le robe du vin est ${robeVin} avec une phrase à chaque réponse`,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        setErrorMessage(response.data.STATUS);
+        setVins(response.data.DATA);
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.MESSAGE);
+        setSnackBg("#f44336");
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setLoading(false);
+      });
+  }
+
+  async function saveVin() {
+    setSaveLoading(true);
+    await axios
+      .post(
+        `${apiURL}/vin/create`,
+        {
+          nom_plat: nomPlat,
+          robeVin,
+          IAResponse: vins,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        setErrorMessage(response.data.STATUS);
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setSaveLoading(false);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.MESSAGE);
+        setSnackBg("#f44336");
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setSaveLoading(false);
+      });
+  }
+
   return (
     <div className="main-vin">
       <div className="left-vin">
@@ -12,7 +102,11 @@ export default function Vins() {
             Générez vos <span>vins</span>
           </h1>
           <div className="input-icon">
-            <input type="text" placeholder="Nom du plat..." />
+            <input
+              type="text"
+              placeholder="Nom du plat..."
+              onChange={handleNomPlatChange}
+            />
 
             <svg
               className="svg-icon-1"
@@ -75,7 +169,11 @@ export default function Vins() {
           </div>
 
           <div className="input-icon">
-            <input type="text" placeholder="Robe du vin..." />
+            <input
+              type="text"
+              placeholder="Robe du vin..."
+              onChange={handleRobeVinChange}
+            />
 
             <svg
               className="svg-icon-1"
@@ -141,9 +239,21 @@ export default function Vins() {
             <Button variant="outlined" className="register-btn">
               Plats
             </Button>
-            <Button variant="contained" className="connexion-btn">
-              Genérez
+            <Button
+              variant="contained"
+              className="connexion-btn"
+              onClick={generateWine}
+            >
+              {!loading ? (
+                <span> Générez </span>
+              ) : (
+                <LoadingButton
+                  className="loadGenerateButton"
+                  loading
+                ></LoadingButton>
+              )}
             </Button>
+            {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
           </div>
         </div>
       </div>
@@ -189,52 +299,29 @@ export default function Vins() {
             </h3>
             <hr />
             <div className="ia-response">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
+              <div className="head">
+                {nomPlat ? <p className="title"> {nomPlat} </p> : ""}
+                {robeVin ? <p> Vin {robeVin} </p> : ""}
+              </div>
+              {vins ? (
+                <p className="bodyResponse">{vins}</p>
+              ) : (
+                <p className="text-default">
+                  {" "}
+                  Oup, vous n'avez pas encore un accord-mets vin...{" "}
+                </p>
+              )}
             </div>
           </div>
-          <Button variant="contained" className="save-btn">
-            Enregister
+          <Button variant="contained" className="save-btn" onClick={saveVin}>
+            {!saveLoading ? (
+              <span> Enregistrer </span>
+            ) : (
+              <LoadingButton
+                className="loadGenerateButton"
+                loading
+              ></LoadingButton>
+            )}
           </Button>
         </div>
       </div>

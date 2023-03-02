@@ -3,7 +3,7 @@ import "styles/login.css";
 import { Button } from "@mui/material";
 import SnackBar from "common/SnackBar";
 import { useDispatch } from "react-redux";
-import { setAuthentication,setUserIdentity } from "../features/user.slice";
+import { setAuthentication,setToken,setUserIdentity } from "../features/user.slice";
 import { showNavbar } from "features/snackbar.slice";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -41,6 +41,7 @@ export default function Login() {
           setErrorMessage("Connecté avec succès");
           dispatch(setAuthentication(true));
           setSnackBg("#4caf50");
+          dispatch(setToken(response.data.DATA.token))
           dispatch(setUserIdentity(response.data.DATA.user.username))
           setTimeout(() => {
             navigate("/wine");

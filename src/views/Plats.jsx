@@ -1,8 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@mui/material";
 import "styles/plats.css";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useDispatch, useSelector } from "react-redux";
+import { showNavbar } from "features/snackbar.slice";
+import SnackBar from "common/SnackBar";
+import axios from "axios";
+import { apiURL } from "services/apiUrl";
 
 export default function Plats() {
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [snackBg, setSnackBg] = useState("#4caf50");
+  const [errorMessage, setErrorMessage] = useState();
+  const [domaine, setDomaine] = useState();
+  const [cuve, setCuve] = useState();
+  const [millesime, setMillesime] = useState();
+  const [region, setRegion] = useState();
+  const [appelation, setAppelation] = useState();
+  const [cru, setCru] = useState();
+  const [assemblage, setAssemblage] = useState();
+  const [aromeParfum, setAromeParfum] = useState();
+  const [recom, setRecom] = useState();
+  const [photo, setPhoto] = useState();
+  const [plats, setPlats] = useState();
+
+  function domaineChange(event) {
+    setDomaine(event.target.value);
+  }
+  function cuveChange(event) {
+    setCuve(event.target.value);
+  }
+  function millesimeChange(event) {
+    setMillesime(event.target.value);
+  }
+  function regionChange(event) {
+    setRegion(event.target.value);
+  }
+  function appelationChange(event) {
+    setAppelation(event.target.value);
+  }
+  function cruChange(event) {
+    setCru(event.target.value);
+  }
+  function assemblageChange(event) {
+    setAssemblage(event.target.value);
+  }
+  function aromeParfumChange(event) {
+    setAromeParfum(event.target.value);
+  }
+  function recomChange(event) {
+    setRecom(event.target.value);
+  }
+  function photoChange(event) {
+    setPhoto(event.target.files);
+  }
+
+  const token = useSelector((state) => state.user.token);
+
+  async function savePlat() {
+    await axios
+      .post(
+        `${apiURL}/recipe/create`,
+        {
+          domaine,
+          cuve,
+          IAResponse: plats,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        setErrorMessage(response.data.STATUS);
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setSaveLoading(false);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.MESSAGE);
+        setSnackBg("#f44336");
+        dispatch(showNavbar(true));
+        setOpen(true);
+        setSaveLoading(false);
+      });
+  }
+
   return (
     <div className="main-plat">
       <div className="left-plat">
@@ -15,7 +103,11 @@ export default function Plats() {
           <div className="form-input-pal">
             <div className="left-form">
               <div className="input-icon">
-                <input type="text" placeholder="Nom du domaine*" />
+                <input
+                  type="text"
+                  placeholder="Nom du domaine*"
+                  onChange={domaineChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -57,7 +149,11 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input type="text" placeholder="Nom de la cuvée..." />
+                <input
+                  type="text"
+                  placeholder="Nom de la cuvée..."
+                  onChange={cuveChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -99,7 +195,11 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input type="text" placeholder="Millésime*" />
+                <input
+                  type="text"
+                  placeholder="Millésime*"
+                  onChange={millesimeChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -141,7 +241,11 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input type="text" placeholder="Région du vin*" />
+                <input
+                  type="text"
+                  placeholder="Région du vin*"
+                  onChange={regionChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -183,7 +287,11 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input type="text" placeholder="Appelation..." />
+                <input
+                  type="text"
+                  placeholder="Appelation..."
+                  onChange={appelationChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -226,7 +334,7 @@ export default function Plats() {
             </div>
             <div className="right-form">
               <div className="input-icon">
-                <input type="text" placeholder="Cru..." />
+                <input type="text" placeholder="Cru..." onChange={cruChange} />
 
                 <svg
                   className="svg-icon-1"
@@ -268,7 +376,11 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input type="text" placeholder="Assemblage" />
+                <input
+                  type="text"
+                  placeholder="Assemblage"
+                  onChange={assemblageChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -310,7 +422,11 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input type="text" placeholder="Arômes et parfums*" />
+                <input
+                  type="text"
+                  placeholder="Arômes et parfums*"
+                  onChange={aromeParfumChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -355,6 +471,7 @@ export default function Plats() {
                 <input
                   type="text"
                   placeholder="Recommandations d’accompagnement.."
+                  onChange={recomChange}
                 />
 
                 <svg
@@ -406,6 +523,7 @@ export default function Plats() {
                   accept="image/*"
                   id="input-file"
                   className="input-hidden"
+                  onChange={photoChange}
                 />
 
                 <svg
@@ -455,6 +573,7 @@ export default function Plats() {
             <Button variant="contained" className="connexion-btn">
               Genérez
             </Button>
+            {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
           </div>
         </div>
       </div>
@@ -530,53 +649,30 @@ export default function Plats() {
               Vos réponses sont suggérées ici
             </h3>
             <hr />
-            <div className="ia-response">
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi
-                facere, nostrum ex consequatur ducimus tempore iure illo rem,
-                consequuntur suscipit adipisci omnis corrupti reiciendis id
-                maxime exercitationem vitae non in laborum, maiores aliquid
-                tenetur! Eaque ipsa ad officiis ratione illo.
-              </p>
+            <div className="ia-response-plat">
+              <div className="head">
+                {domaine ? <p className="title"> {domaine} </p> : ""}
+                {cuve ? <p> {cuve} </p> : ""}
+              </div>
+              {plats ? (
+                <p className="bodyResponse">{plats}</p>
+              ) : (
+                <p className="text-default">
+                  {" "}
+                  Oup, vous n'avez pas encore un accord-mets vin...{" "}
+                </p>
+              )}
             </div>
           </div>
-          <Button variant="contained" className="save-btn">
-            Enregister
+          <Button variant="contained" className="save-btn" onClick={savePlat}>
+            {!saveLoading ? (
+              <span> Enregistrer </span>
+            ) : (
+              <LoadingButton
+                className="loadGenerateButton"
+                loading
+              ></LoadingButton>
+            )}
           </Button>
         </div>
       </div>

@@ -90,7 +90,7 @@
     border-radius: 3rem;
 }
 
-.main-vin .right .save-btn{
+.main-vin .right .save-btn {
     color: white;
     background: #DE0941;
     font-weight: 550;
@@ -124,7 +124,7 @@
     background: #b90837;
 }
 
-.main-vin .right .right-content .vins-response{
+.main-vin .right .right-content .vins-response {
     padding: 1rem;
     margin-top: 2rem;
     border: 2px solid #b1b1b173;
@@ -137,23 +137,69 @@
     color: #DE0941;
 }
 
-.main-vin .right .right-content .vins-response h3 svg{
+.main-vin .right .right-content .vins-response h3 svg {
     margin-left: -.5rem;
     margin-right: .5rem;
 }
 
-.main-vin .right .right-content .vins-response hr{
+.main-vin .right .right-content .vins-response hr {
     border: 1px solid #b1b1b13a;
 }
 
-.main-vin .right .right-content .vins-response .ia-response{
+.main-vin .right .right-content .vins-response .ia-response {
     height: 60vh;
     overflow-y: scroll;
 }
 
+.loadGenerateButton {
+    padding: 0rem !important;
+}
+
+.ia-response .bodyResponse {
+    background: #DE0941;
+    padding: 1rem;
+    width: 90%;
+    color: whitesmoke;
+    border-radius: .5rem;
+    transition: .5s ease all;
+    font-weight: regular;
+    margin-top: 0;
+
+}
+
+.ia-response .text-default {
+    padding: 1rem;
+    color: rgba(128, 128, 128, 0.541);
+
+}
+
+.ia-response .head {
+    display: flex;
+}
+
+.ia-response .head .title {
+    margin-right: .5rem;
+}
+
+.ia-response .head p {
+    padding: .5rem;
+    border: 2px solid #DE0941;
+    border-radius: 3rem;
+    color: #DE0941;
+    font-weight: bold;
+}
+
+.loadGenerateButton.css-1vqlznj-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+    font-size: 0.875rem !important;
+    line-height: 1.75 !important;
+    letter-spacing: 0.02857em !important;
+    text-transform: uppercase !important;
+    min-width: 64px !important;
+    padding: 13px 53px !important;
+}
 
 @media screen and (max-width:1110px) {
-  
+
 
     .main-vin .left-vin-content {
         align-items: center;

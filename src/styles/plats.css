@@ -186,10 +186,55 @@
     border: 1px solid #b1b1b13a;
 }
 
-.main-plat .right .right-content .vins-response .ia-response {
+.main-plat .right .right-content .vins-response .ia-response-plat {
     height: 60vh;
     overflow-y: scroll;
 }
+
+
+.ia-response-plat .bodyResponse {
+    background: #DE0941;
+    padding: 1rem;
+    width: 90%;
+    color: whitesmoke;
+    border-radius: .5rem;
+    transition: .5s ease all;
+    font-weight: regular;
+    margin-top: 0;
+
+}
+
+.ia-response-plat .text-default {
+    padding: 1rem;
+    color: rgba(128, 128, 128, 0.541);
+
+}
+
+.ia-response-plat .head {
+    display: flex;
+}
+
+.ia-response-plat .head .title {
+    margin-right: .5rem;
+}
+
+.ia-response-plat .head p {
+    padding: .5rem;
+    border: 2px solid #DE0941;
+    border-radius: 3rem;
+    color: #DE0941;
+    font-weight: bold;
+}
+
+.loadGenerateButton.css-1vqlznj-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+    font-size: 0.875rem !important;
+    line-height: 1.75 !important;
+    letter-spacing: 0.02857em !important;
+    text-transform: uppercase !important;
+    min-width: 64px !important;
+    padding: 13px 53px !important;
+}
+
 
 
 @media screen and (max-width:1110px) {
