@@ -121,7 +121,6 @@ export default function Vins() {
       },
     });
 
-    console.log("response ", response);
     setallVin(response.data.DATA);
   }
 

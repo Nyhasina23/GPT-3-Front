@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import "styles/plats.css";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -34,6 +34,7 @@ export default function Plats() {
   const [recom, setRecom] = useState();
   const [photo, setPhoto] = useState();
   const [plats, setPlats] = useState();
+  let [allPlats, setallPlats] = useState([]);
 
   function domaineChange(event) {
     setDomaine(event.target.value);
@@ -65,6 +66,7 @@ export default function Plats() {
   function photoChange(event) {
     setPhoto(event.target.files);
   }
+
 
   const token = useSelector((state) => state.user.token);
 
@@ -166,6 +168,20 @@ export default function Plats() {
         setSaveLoading(false);
       });
   }
+
+  async function getAllPlats() {
+    const response = await axios.get(`${apiURL}/recipe/all`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    setallPlats(response.data.DATA);
+  }
+
+  useEffect(() => {
+    getAllPlats();
+  }, []);
 
   return (
     <div className="main-plat">
@@ -745,14 +761,22 @@ export default function Plats() {
                 {domaine ? <p className="title"> {domaine} </p> : ""}
                 {cuve ? <p> {cuve} </p> : ""}
               </div>
-              {plats ? (
-                <p className="bodyResponse">{plats}</p>
-              ) : (
-                <p className="text-default">
-                  {" "}
-                  Oup, vous n'avez pas encore un accord-mets vin...{" "}
-                </p>
-              )}
+              {plats ? <p className="bodyResponse">{plats}</p> : ""}
+              {allPlats.length > 0
+                ? allPlats.map((item) => {
+                    return (
+                      <div>
+                        <div className="head">
+                          {<p className="title"> {item.domaine} </p>}
+                          {<p> {item.cuve} </p>}
+                        </div>
+                        <p className="bodyResponse" key={item.id}>
+                          {item.IAResponse}{" "}
+                        </p>
+                      </div>
+                    );
+                  })
+                : "null"}
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={savePlat}>
