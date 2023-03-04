@@ -32,18 +32,19 @@ export default function Register() {
       passconf === undefined ||
       password === undefined
     ) {
+      setOpen(true);
       dispatch(showNavbar(true));
       setErrorMessage("Remplir tous les champs");
       setLoading(false);
       setSnackBg("#f44336");
       return;
     } else if (password != passconf) {
+      setOpen(true);
       dispatch(showNavbar(true));
       setErrorMessage("Mot de passe et confirmation différents");
       setLoading(false);
       setSnackBg("#f44336");
     } else {
-      
       setLoading(true);
 
       await axios
@@ -53,6 +54,7 @@ export default function Register() {
           password,
         })
         .then((response) => {
+          setOpen(true);
           dispatch(showNavbar(true));
           setErrorMessage(response.data.MESSAGE);
           dispatch(setAuthentication(true));
@@ -62,7 +64,8 @@ export default function Register() {
           }, 2000);
         })
         .catch((err) => {
-          console.log(err);
+          setOpen(true);
+
           setErrorMessage(err.response.data.MESSAGE);
           setLoading(false);
           setSnackBg("#f44336");
@@ -276,7 +279,11 @@ export default function Register() {
           </div>
 
           <div className="login-btn">
-            <Button variant="outlined" className="register-btn">
+            <Button
+              variant="outlined"
+              className="register-btn"
+              onClick={() => navigate("/login")}
+            >
               Connexion
             </Button>
             <Button
@@ -291,7 +298,11 @@ export default function Register() {
               )}
             </Button>
 
-            {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
+            {open ? (
+              <SnackBar open={open} message={errorMessage} bg={snackBg} />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

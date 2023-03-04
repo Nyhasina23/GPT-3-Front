@@ -1,0 +1,17 @@
+@media screen and(max-width:375px) {
+    .MuiBox-root{
+        width:200px !important;
+        flex-basis: 100%;
+    
+    }
+}
+
+@media (max-width: 600px) {
+    .templatecontent {
+      flex-basis: 100%;
+    }
+  }
+
+  .detailsBtn{
+    color: #DE0941 !important;
+  }

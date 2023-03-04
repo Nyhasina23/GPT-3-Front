@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import Header from "components/Header";
 import Card from "components/Card";
@@ -11,7 +11,22 @@ import vin3 from "assets/icons/vin3.svg";
 import "styles/home.css";
 import VinCard from "components/VinCard";
 import Footer from "components/Footer";
+import axios from "axios";
+import { apiURL } from "services/apiUrl";
+
 export default function Home() {
+  const [allVin, setallVin] = useState([]);
+  const count = 4;
+  async function getAllVins() {
+    const response = await axios.get(`${apiURL}/recipes/?count=${count}`);
+
+    setallVin(response.data.DATA);
+  }
+
+  useEffect(() => {
+    getAllVins();
+  }, []);
+
   return (
     <div>
       <Header />
@@ -45,10 +60,23 @@ export default function Home() {
       <div className="main-vin-icons">
         <div className="vin-card">
           <div className="vins">
-            <VinCard />
-            <VinCard />
-            <VinCard />
-            <VinCard />
+            {allVin
+              ? allVin.map((item) => (
+                  <VinCard
+                    title={item.domaine}
+                    key={item._id}
+                    image={item.image}
+                    cuve={item.cuve}
+                    millesime={item.millesime}
+                    region={item.region}
+                    appelation={item.appelation}
+                    cru={item.cru}
+                    aromeParfum={item.aromeParfum}
+                    assemblage={item.assemblage}
+                    recom={item.recom}
+                  />
+                ))
+              : ""}
           </div>
           <div className="all-vins">
             <Button variant="outlined" className="all-vins-btn">

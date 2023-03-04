@@ -1,23 +1,47 @@
 import React from "react";
 import "styles/vincard.css";
-import vinImg from "assets/images/image1.jpg";
-import { Button } from "@mui/material";
-
-export default function VinCard() {
+import { fileServerAPI } from "services/apiUrl";
+import KeepMountedModal from "common/Modal";
+export default function VinCard({
+  title,
+  image,
+  millesime,
+  region,
+  cuve,
+  appelation,
+  cru,
+  aromeParfum,
+  assemblage,
+  recom
+}) {
   return (
     <div className="main-vin-card">
-      <img src={vinImg} alt="vinImg" />
+      <img src={`${fileServerAPI}/public/${image}`} alt="vinImg" />
       <div className="vin-info">
-        <h1>Title</h1>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit
-          explicabo tenetur vel fuga praesentium deserunt autem ea iure vitae
-          sequi dolorem quibusdam ut adipisci, nisi officiis eos recusandae
-          porro! Placeat.
-        </p>
-        <Button variant="contained" className="primary white">
-          DETAILS
-        </Button>
+        <h1>{title}</h1>
+        {/* <div className="body-container">
+          <p className="bodyCard"> {cuve} - </p>
+          <p className="bodyCard"> {millesime} - </p>
+          <p className="bodyCard"> {region} - </p>
+          <p className="bodyCard"> {appelation} - </p>
+          <p className="bodyCard"> {cru} - </p>
+          <p className="bodyCard"> {aromeParfum} - </p>
+          <p className="bodyCard"> {assemblage} </p>
+        </div> */}
+        <KeepMountedModal
+          variant="contained"
+          className="primary white"
+          title={title}
+          image={image}
+          millesime={millesime}
+          region={region}
+          cuve={cuve}
+          appelation={appelation}
+          cru={cru}
+          aromeParfum={aromeParfum}
+          assemblage={assemblage}
+          recom={recom}
+        />
       </div>
     </div>
   );

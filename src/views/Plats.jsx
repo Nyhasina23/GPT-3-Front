@@ -137,15 +137,13 @@ export default function Plats() {
         formData.append("images", photo[i]);
       }
     }
-
-    console.log("Photo => ", photo[0]);
     await axios({
       method: "post",
       url: `${fileServerAPI}/upload`,
       data: formData,
     })
       .then((res) => {
-        setFilename(res.data);
+        setFilename(res.data[0]);
       })
       .catch(() => {
         alert("Une erreur est survenu lors du téléchargement des images");
@@ -153,11 +151,11 @@ export default function Plats() {
   }
 
   async function savePlat() {
+    await savePhotos();
+
     let IAResponse = plats.replace(/(\r\n|\n|\r)/gm, "");
 
     setSaveLoading(true);
-
-    await savePhotos();
 
     await axios
       .post(
@@ -173,7 +171,7 @@ export default function Plats() {
           aromeParfum,
           recom,
           IAResponse,
-          image: filename[0],
+          image: filename,
         },
         {
           headers: {
@@ -708,7 +706,11 @@ export default function Plats() {
                 ></LoadingButton>
               )}
             </Button>
-            {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
+            {open ? (
+              <SnackBar open={open} message={errorMessage} bg={snackBg} />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
@@ -790,21 +792,26 @@ export default function Plats() {
                 {cuve ? <p> {cuve} </p> : ""}
               </div>
               {plats ? <p className="bodyResponse">{plats}</p> : ""}
-              {allPlats.length > 0
-                ? allPlats.map((item) => {
-                    return (
-                      <div>
-                        <div className="head">
-                          {<p className="title"> {item.domaine} </p>}
-                          {<p> {item.cuve} </p>}
-                        </div>
-                        <p className="bodyResponse" key={item.id}>
-                          {item.IAResponse}{" "}
-                        </p>
+              {allPlats.length > 0 ? (
+                allPlats.map((item) => {
+                  return (
+                    <div>
+                      <div className="head">
+                        {<p className="title"> {item.domaine} </p>}
+                        {<p> {item.cuve} </p>}
                       </div>
-                    );
-                  })
-                : "null"}
+                      <p className="bodyResponse" key={item.id}>
+                        {item.IAResponse}{" "}
+                      </p>
+                    </div>
+                  );
+                })
+              ) : (
+                <p style={{ color: "#b1b1b1" }}>
+                  !!!Oups, il semble que vous n'avez pas encore des reponses
+                  suggérées
+                </p>
+              )}
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={savePlat}>

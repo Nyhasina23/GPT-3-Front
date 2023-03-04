@@ -4,16 +4,30 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAuthentication,
+  setUserIdentity,
+  setToken,
+} from "features/user.slice";
 
 export default function Hamburger() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const userAuthenticated = useSelector((state) => state.user.isAuthenticate);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  function logout() {
+    dispatch(setAuthentication(false));
+    dispatch(setUserIdentity(""));
+    dispatch(setToken(""));
+  }
 
   return (
     <div>
@@ -50,21 +64,26 @@ export default function Hamburger() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <NavLink to="/" className='nav-link-hamburger'>
+        <NavLink to="/" className="nav-link-hamburger">
           <MenuItem onClick={handleClose}>Accueil</MenuItem>
         </NavLink>
-        <NavLink to="/login" className='nav-link-hamburger'>
-          <MenuItem onClick={handleClose}>Connexion</MenuItem>
-        </NavLink>
-        <NavLink to="/wine" className='nav-link-hamburger'>
+        {!userAuthenticated ? (
+          <NavLink to="/login" className="nav-link-hamburger">
+            <MenuItem onClick={handleClose}>Connexion</MenuItem>
+          </NavLink>
+        ) : (
+          <NavLink to="/" className="nav-link-hamburger" onClick={logout}>
+            <MenuItem onClick={handleClose}>Deconnexion</MenuItem>
+          </NavLink>
+        )}
+        <NavLink to="/wine" className="nav-link-hamburger">
           <MenuItem onClick={handleClose}>Vins</MenuItem>
         </NavLink>
-        <NavLink to="/pal" className='nav-link-hamburger'>
+        <NavLink to="/pal" className="nav-link-hamburger">
           <MenuItem onClick={handleClose}>Plats</MenuItem>
         </NavLink>
 
         <Outlet />
-
       </Menu>
     </div>
   );

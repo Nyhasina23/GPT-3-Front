@@ -2,8 +2,11 @@ import React from "react";
 import { Button } from "@mui/material";
 import "styles/button.css";
 import "styles/welcome.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Welcome() {
+  const navigate = useNavigate();
+
   return (
     <div className="main-welcome">
       <h1>Bienvenue sur WinePal</h1>
@@ -17,7 +20,11 @@ export default function Welcome() {
         impedit minima, ad accusantium reiciendis similique fugit labore saepe
         id! Inventore nulla maxime quo molestiae? Officiis, hic assumenda.{" "}
       </p>
-      <Button variant="contained" className="primary white welcome-button">
+      <Button
+        variant="contained"
+        className="primary white welcome-button"
+        onClick={() => navigate("/register")}
+      >
         CREER VOTRE COMPTE
       </Button>
     </div>

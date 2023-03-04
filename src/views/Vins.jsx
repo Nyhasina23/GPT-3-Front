@@ -292,7 +292,7 @@ export default function Vins() {
                 ></LoadingButton>
               )}
             </Button>
-            {<SnackBar open={open} message={errorMessage} bg={snackBg} />}
+            {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ''}
           </div>
         </div>
       </div>
@@ -357,7 +357,7 @@ export default function Vins() {
                       </div>
                     );
                   })
-                : "null"}
+                : <p style={{color:'#b1b1b1'}}>!!!Oups, il semble que vous n'avez pas encore des reponses suggérées</p> }
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={saveVin}>
