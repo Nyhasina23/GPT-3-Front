@@ -228,6 +228,19 @@
     font-weight: bold;
 }
 
+.input-file.labelPhoto {
+    padding: 0 !important;
+    padding-left: 1rem !important;
+}
+
+.input-file.labelPhoto p {
+    word-break: break-all !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 1.5rem;
+    width: 50%;
+}
+
 .loadGenerateButton.css-1vqlznj-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
     font-size: 0.875rem !important;
     line-height: 1.75 !important;

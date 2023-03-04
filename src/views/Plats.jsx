@@ -7,8 +7,8 @@ import { showNavbar } from "features/snackbar.slice";
 import SnackBar from "common/SnackBar";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
-import { TryOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom/dist";
+import { fileServerAPI } from "services/apiUrl";
 
 export default function Plats() {
   const dispatch = useDispatch();
@@ -33,8 +33,10 @@ export default function Plats() {
   const [aromeParfum, setAromeParfum] = useState();
   const [recom, setRecom] = useState();
   const [photo, setPhoto] = useState();
+  const [filename, setFilename] = useState();
   const [plats, setPlats] = useState();
   let [allPlats, setallPlats] = useState([]);
+  let [file, setFile] = useState("Ajouter photo");
 
   function domaineChange(event) {
     setDomaine(event.target.value);
@@ -65,8 +67,8 @@ export default function Plats() {
   }
   function photoChange(event) {
     setPhoto(event.target.files);
+    setFile(event.target.files[0].name);
   }
-
 
   const token = useSelector((state) => state.user.token);
 
@@ -128,10 +130,35 @@ export default function Plats() {
     }
   }
 
+  async function savePhotos() {
+    var formData = new FormData();
+    if (photo) {
+      for (const i of Object.keys(photo)) {
+        formData.append("images", photo[i]);
+      }
+    }
+
+    console.log("Photo => ", photo[0]);
+    await axios({
+      method: "post",
+      url: `${fileServerAPI}/upload`,
+      data: formData,
+    })
+      .then((res) => {
+        setFilename(res.data);
+      })
+      .catch(() => {
+        alert("Une erreur est survenu lors du téléchargement des images");
+      });
+  }
+
   async function savePlat() {
     let IAResponse = plats.replace(/(\r\n|\n|\r)/gm, "");
 
     setSaveLoading(true);
+
+    await savePhotos();
+
     await axios
       .post(
         `${apiURL}/recipe/create`,
@@ -146,6 +173,7 @@ export default function Plats() {
           aromeParfum,
           recom,
           IAResponse,
+          image: filename[0],
         },
         {
           headers: {
@@ -606,8 +634,8 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <label htmlFor="input-file" className="input-file">
-                  Ajouter photos
+                <label htmlFor="input-file" className="input-file labelPhoto">
+                  <p>{file}</p>
                 </label>
                 <input
                   type="file"
