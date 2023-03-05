@@ -6,6 +6,7 @@ import Register from "./views/Register";
 import Vins from "./views/Vins";
 import Plats from "./views/Plats";
 import NoPage from "./views/NoPage";
+import AllVins from "views/AllVins";
 
 function App() {
   return (
@@ -13,12 +14,13 @@ function App() {
       <BrowserRouter>
         <NavBar />
         <Routes>
-            <Route exact path="/" element={<Home />}></Route>
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/register" element={<Register />} />
-            <Route exact path="/wine" element={<Vins />} />
-            <Route exact path="/pal" element={<Plats />} />
-            <Route exact path="*" element={<NoPage />} />
+          <Route exact path="/" element={<Home />}></Route>
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/wine" element={<Vins />} />
+          <Route exact path="/pal" element={<Plats />} />
+          <Route exact path="/all-wines" element={<AllVins />} />
+          <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -13,6 +13,7 @@ import VinCard from "components/VinCard";
 import Footer from "components/Footer";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
+import { NavLink } from "react-router-dom";
 
 export default function Home() {
   const [allVin, setallVin] = useState([]);
@@ -79,9 +80,11 @@ export default function Home() {
               : ""}
           </div>
           <div className="all-vins">
-            <Button variant="outlined" className="all-vins-btn">
-              VOIR TOUS
-            </Button>
+            <NavLink to="/all-wines">
+              <Button variant="outlined" className="all-vins-btn">
+                VOIR TOUS
+              </Button>
+            </NavLink>
           </div>
         </div>
         <div className="vin-icons">
