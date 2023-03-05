@@ -5,7 +5,7 @@ import SnackBar from "common/SnackBar";
 import { showNavbar } from "features/snackbar.slice";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { setAuthentication } from "../features/user.slice";
+import { setAuthentication, setToken } from "../features/user.slice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "styles/login.css";
@@ -58,6 +58,7 @@ export default function Register() {
           dispatch(showNavbar(true));
           setErrorMessage(response.data.MESSAGE);
           dispatch(setAuthentication(true));
+          dispatch(setToken(response.data.DATA));
           setSnackBg("#4caf50");
           setTimeout(() => {
             navigate("/wine");
@@ -65,7 +66,7 @@ export default function Register() {
         })
         .catch((err) => {
           setOpen(true);
-
+          dispatch(showNavbar(true));
           setErrorMessage(err.response.data.MESSAGE);
           setLoading(false);
           setSnackBg("#f44336");
