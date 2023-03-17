@@ -9,6 +9,7 @@ import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import { fileServerAPI } from "services/apiUrl";
+import Switch from "@mui/material/Switch";
 
 export default function Plats() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function Plats() {
   const [plats, setPlats] = useState();
   let [allPlats, setallPlats] = useState([]);
   let [file, setFile] = useState("Ajouter photo");
+  const [advanced, setAdvanced] = useState(false);
 
   function domaineChange(event) {
     setDomaine(event.target.value);
@@ -79,8 +81,7 @@ export default function Plats() {
     if (
       domaine == undefined ||
       millesime == undefined ||
-      region == undefined ||
-      aromeParfum == undefined
+      appelation == undefined
     ) {
       setErrorMessage("Verifier tous les champs");
       setSnackBg("#f44336");
@@ -99,10 +100,10 @@ export default function Plats() {
         ${millesime} ,
         ${region} ,
         ${appelation} ,
-        ${cru} ,
-        ${assemblage} ,
-        ${aromeParfum} ,
-        ${recom} ,
+        ${cru ? cru : ''} ,
+        ${assemblage ? assemblage : ''} ,
+        ${aromeParfum ? aromeParfum : ''} ,
+        ${recom ? recom : ''} ,
 
         et une phrase à chaque réponse`,
           },
@@ -209,6 +210,12 @@ export default function Plats() {
     getAllPlats();
   }, []);
 
+  const label = { inputProps: { "aria-label": "advanced search" } };
+
+  function switchToAdvanced() {
+    setAdvanced(!advanced);
+  }
+
   return (
     <div className="main-plat">
       <div className="left-plat">
@@ -219,7 +226,7 @@ export default function Plats() {
           </h1>
 
           <div className="form-input-pal">
-            <div className="left-form">
+            <div className={advanced ? "left-form" : "full-left-form"}>
               <div className="input-icon">
                 <input
                   type="text"
@@ -450,238 +457,248 @@ export default function Plats() {
                 </svg>
               </div>
             </div>
-            <div className="right-form">
-              <div className="input-icon">
-                <input type="text" placeholder="Cru..." onChange={cruChange} />
+            {advanced && (
+              <div className="right-form">
+                <div className="input-icon">
+                  <input
+                    type="text"
+                    placeholder="Cru..."
+                    onChange={cruChange}
+                  />
 
-                <svg
-                  className="svg-icon-1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="34"
-                  height="34"
-                  viewBox="0 0 34 34"
-                >
-                  <g
-                    id="Groupe_51"
-                    data-name="Groupe 51"
-                    transform="translate(0.446 -0.787)"
-                    opacity="0.92"
+                  <svg
+                    className="svg-icon-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="34"
+                    height="34"
+                    viewBox="0 0 34 34"
                   >
-                    <rect
-                      id="Rectangle_40"
-                      data-name="Rectangle 40"
-                      width="34"
-                      height="34"
-                      transform="translate(-0.446 0.787)"
-                      fill="#232323"
-                      opacity="0"
-                    />
                     <g
-                      id="Groupe_50"
-                      data-name="Groupe 50"
-                      transform="translate(9.954 2.814)"
+                      id="Groupe_51"
+                      data-name="Groupe 51"
+                      transform="translate(0.446 -0.787)"
+                      opacity="0.92"
                     >
-                      <path
-                        id="Tracé_25"
-                        data-name="Tracé 25"
-                        d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
-                        transform="translate(-7 -2)"
+                      <rect
+                        id="Rectangle_40"
+                        data-name="Rectangle 40"
+                        width="34"
+                        height="34"
+                        transform="translate(-0.446 0.787)"
                         fill="#232323"
+                        opacity="0"
                       />
+                      <g
+                        id="Groupe_50"
+                        data-name="Groupe 50"
+                        transform="translate(9.954 2.814)"
+                      >
+                        <path
+                          id="Tracé_25"
+                          data-name="Tracé 25"
+                          d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
+                          transform="translate(-7 -2)"
+                          fill="#232323"
+                        />
+                      </g>
                     </g>
-                  </g>
-                </svg>
-              </div>
+                  </svg>
+                </div>
 
-              <div className="input-icon">
-                <input
-                  type="text"
-                  placeholder="Assemblage"
-                  onChange={assemblageChange}
-                />
+                <div className="input-icon">
+                  <input
+                    type="text"
+                    placeholder="Assemblage"
+                    onChange={assemblageChange}
+                  />
 
-                <svg
-                  className="svg-icon-1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="34"
-                  height="34"
-                  viewBox="0 0 34 34"
-                >
-                  <g
-                    id="Groupe_51"
-                    data-name="Groupe 51"
-                    transform="translate(0.446 -0.787)"
-                    opacity="0.92"
+                  <svg
+                    className="svg-icon-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="34"
+                    height="34"
+                    viewBox="0 0 34 34"
                   >
-                    <rect
-                      id="Rectangle_40"
-                      data-name="Rectangle 40"
-                      width="34"
-                      height="34"
-                      transform="translate(-0.446 0.787)"
-                      fill="#232323"
-                      opacity="0"
-                    />
                     <g
-                      id="Groupe_50"
-                      data-name="Groupe 50"
-                      transform="translate(9.954 2.814)"
+                      id="Groupe_51"
+                      data-name="Groupe 51"
+                      transform="translate(0.446 -0.787)"
+                      opacity="0.92"
                     >
-                      <path
-                        id="Tracé_25"
-                        data-name="Tracé 25"
-                        d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
-                        transform="translate(-7 -2)"
+                      <rect
+                        id="Rectangle_40"
+                        data-name="Rectangle 40"
+                        width="34"
+                        height="34"
+                        transform="translate(-0.446 0.787)"
                         fill="#232323"
+                        opacity="0"
                       />
+                      <g
+                        id="Groupe_50"
+                        data-name="Groupe 50"
+                        transform="translate(9.954 2.814)"
+                      >
+                        <path
+                          id="Tracé_25"
+                          data-name="Tracé 25"
+                          d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
+                          transform="translate(-7 -2)"
+                          fill="#232323"
+                        />
+                      </g>
                     </g>
-                  </g>
-                </svg>
-              </div>
+                  </svg>
+                </div>
 
-              <div className="input-icon">
-                <input
-                  type="text"
-                  placeholder="Arômes et parfums*"
-                  onChange={aromeParfumChange}
-                />
+                <div className="input-icon">
+                  <input
+                    type="text"
+                    placeholder="Arômes et parfums*"
+                    onChange={aromeParfumChange}
+                  />
 
-                <svg
-                  className="svg-icon-1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="34"
-                  height="34"
-                  viewBox="0 0 34 34"
-                >
-                  <g
-                    id="Groupe_51"
-                    data-name="Groupe 51"
-                    transform="translate(0.446 -0.787)"
-                    opacity="0.92"
+                  <svg
+                    className="svg-icon-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="34"
+                    height="34"
+                    viewBox="0 0 34 34"
                   >
-                    <rect
-                      id="Rectangle_40"
-                      data-name="Rectangle 40"
-                      width="34"
-                      height="34"
-                      transform="translate(-0.446 0.787)"
-                      fill="#232323"
-                      opacity="0"
-                    />
                     <g
-                      id="Groupe_50"
-                      data-name="Groupe 50"
-                      transform="translate(9.954 2.814)"
+                      id="Groupe_51"
+                      data-name="Groupe 51"
+                      transform="translate(0.446 -0.787)"
+                      opacity="0.92"
                     >
-                      <path
-                        id="Tracé_25"
-                        data-name="Tracé 25"
-                        d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
-                        transform="translate(-7 -2)"
+                      <rect
+                        id="Rectangle_40"
+                        data-name="Rectangle 40"
+                        width="34"
+                        height="34"
+                        transform="translate(-0.446 0.787)"
                         fill="#232323"
+                        opacity="0"
                       />
+                      <g
+                        id="Groupe_50"
+                        data-name="Groupe 50"
+                        transform="translate(9.954 2.814)"
+                      >
+                        <path
+                          id="Tracé_25"
+                          data-name="Tracé 25"
+                          d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
+                          transform="translate(-7 -2)"
+                          fill="#232323"
+                        />
+                      </g>
                     </g>
-                  </g>
-                </svg>
-              </div>
+                  </svg>
+                </div>
 
-              <div className="input-icon">
-                <input
-                  type="text"
-                  placeholder="Recommandations d’accompagnement.."
-                  onChange={recomChange}
-                />
+                <div className="input-icon">
+                  <input
+                    type="text"
+                    placeholder="Recommandations d’accompagnement.."
+                    onChange={recomChange}
+                  />
 
-                <svg
-                  className="svg-icon-1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="34"
-                  height="34"
-                  viewBox="0 0 34 34"
-                >
-                  <g
-                    id="Groupe_51"
-                    data-name="Groupe 51"
-                    transform="translate(0.446 -0.787)"
-                    opacity="0.92"
+                  <svg
+                    className="svg-icon-1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="34"
+                    height="34"
+                    viewBox="0 0 34 34"
                   >
-                    <rect
-                      id="Rectangle_40"
-                      data-name="Rectangle 40"
-                      width="34"
-                      height="34"
-                      transform="translate(-0.446 0.787)"
-                      fill="#232323"
-                      opacity="0"
-                    />
                     <g
-                      id="Groupe_50"
-                      data-name="Groupe 50"
-                      transform="translate(9.954 2.814)"
+                      id="Groupe_51"
+                      data-name="Groupe 51"
+                      transform="translate(0.446 -0.787)"
+                      opacity="0.92"
                     >
-                      <path
-                        id="Tracé_25"
-                        data-name="Tracé 25"
-                        d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
-                        transform="translate(-7 -2)"
+                      <rect
+                        id="Rectangle_40"
+                        data-name="Rectangle 40"
+                        width="34"
+                        height="34"
+                        transform="translate(-0.446 0.787)"
                         fill="#232323"
+                        opacity="0"
                       />
+                      <g
+                        id="Groupe_50"
+                        data-name="Groupe 50"
+                        transform="translate(9.954 2.814)"
+                      >
+                        <path
+                          id="Tracé_25"
+                          data-name="Tracé 25"
+                          d="M11.315,2V4.876h5.753V2Zm0,4.315V9.191A5.644,5.644,0,0,0,7,14.944v15.82H21.382V14.944a5.644,5.644,0,0,0-4.315-5.753V6.315Zm2.157,4.764a4.728,4.728,0,0,0-2.157,3.865V17.82h7.191v5.753H11.315v1.438h7.191v1.438H11.315v1.438H9.876V14.944C9.876,11.635,13.472,11.079,13.472,11.079Z"
+                          transform="translate(-7 -2)"
+                          fill="#232323"
+                        />
+                      </g>
                     </g>
-                  </g>
-                </svg>
-              </div>
+                  </svg>
+                </div>
 
-              <div className="input-icon">
-                <label htmlFor="input-file" className="input-file labelPhoto">
-                  <p>{file}</p>
-                </label>
-                <input
-                  type="file"
-                  placeholder="Ajouter photos"
-                  accept="image/*"
-                  id="input-file"
-                  className="input-hidden"
-                  onChange={photoChange}
-                />
+                <div className="input-icon">
+                  <label htmlFor="input-file" className="input-file labelPhoto">
+                    <p>{file}</p>
+                  </label>
+                  <input
+                    type="file"
+                    placeholder="Ajouter photos"
+                    accept="image/*"
+                    id="input-file"
+                    className="input-hidden"
+                    onChange={photoChange}
+                  />
 
-                <svg
-                  className="svg-icon-1 image-input"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="47"
-                  height="47"
-                  viewBox="0 0 47 47"
-                >
-                  <g
-                    id="Groupe_68"
-                    data-name="Groupe 68"
-                    transform="translate(-0.157)"
+                  <svg
+                    className="svg-icon-1 image-input"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="47"
+                    height="47"
+                    viewBox="0 0 47 47"
                   >
-                    <rect
-                      id="Rectangle_48"
-                      data-name="Rectangle 48"
-                      width="47"
-                      height="47"
-                      transform="translate(0.157)"
-                      fill="#f5f5f5"
-                      opacity="0"
-                    />
                     <g
-                      id="Groupe_66"
-                      data-name="Groupe 66"
-                      transform="translate(3.979 6.779)"
+                      id="Groupe_68"
+                      data-name="Groupe 68"
+                      transform="translate(-0.157)"
                     >
-                      <path
-                        id="Tracé_33"
-                        data-name="Tracé 33"
-                        d="M4.683,2.85A3.737,3.737,0,0,0,.95,6.583V25.249a3.737,3.737,0,0,0,3.733,3.733H28.949a3.737,3.737,0,0,0,3.733-3.733V6.583A3.737,3.737,0,0,0,28.949,2.85Zm31.733,7.466v22.4h-28v3.733h28a3.761,3.761,0,0,0,3.733-3.733v-22.4ZM21.753,14.028,30.01,25.249H3.622l6.54-8.338,4.882,5.877Z"
-                        transform="translate(-0.95 -2.85)"
+                      <rect
+                        id="Rectangle_48"
+                        data-name="Rectangle 48"
+                        width="47"
+                        height="47"
+                        transform="translate(0.157)"
                         fill="#f5f5f5"
+                        opacity="0"
                       />
+                      <g
+                        id="Groupe_66"
+                        data-name="Groupe 66"
+                        transform="translate(3.979 6.779)"
+                      >
+                        <path
+                          id="Tracé_33"
+                          data-name="Tracé 33"
+                          d="M4.683,2.85A3.737,3.737,0,0,0,.95,6.583V25.249a3.737,3.737,0,0,0,3.733,3.733H28.949a3.737,3.737,0,0,0,3.733-3.733V6.583A3.737,3.737,0,0,0,28.949,2.85Zm31.733,7.466v22.4h-28v3.733h28a3.761,3.761,0,0,0,3.733-3.733v-22.4ZM21.753,14.028,30.01,25.249H3.622l6.54-8.338,4.882,5.877Z"
+                          transform="translate(-0.95 -2.85)"
+                          fill="#f5f5f5"
+                        />
+                      </g>
                     </g>
-                  </g>
-                </svg>
+                  </svg>
+                </div>
               </div>
-            </div>
+            )}
+          </div>
+          <div className="advanced-search">
+            <Switch {...label} className="switch" onClick={switchToAdvanced} />
+            <p>Recherche avancée</p>
           </div>
 
           <div className="login-btn">
