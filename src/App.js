@@ -1,11 +1,11 @@
-import NavBar from "./components/NavBar";
-import Home from "./views/Home";
+import NavBar from "components/NavBar";
+import Home from "views/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./views/Login";
-import Register from "./views/Register";
-import Vins from "./views/Vins";
-import Plats from "./views/Plats";
-import NoPage from "./views/NoPage";
+import Login from "views/Login";
+import Register from "views/Register";
+import Vins from "views/Vins";
+import Plats from "views/Plats";
+import NoPage from "views/NoPage";
 import AllVins from "views/AllVins";
 
 function App() {

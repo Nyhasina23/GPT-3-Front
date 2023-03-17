@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import "styles/button.css";
 import "styles/card.css";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 export default function Card({
   image,
@@ -15,15 +15,13 @@ export default function Card({
   borderColor,
 }) {
   const navigate = useNavigate();
-  const userAuthenticated = useSelector((state) => state.user.isAuthenticate);
+  // const userAuthenticated = useSelector((state) => state.user.isAuthenticate);
 
   function switchToWinePal(buttonType) {
-    if (buttonType === "primary" && userAuthenticated) {
+    if (buttonType === "primary") {
       navigate("/pal");
-    } else if (buttonType === "secondary" && userAuthenticated) {
+    } else if (buttonType === "secondary") {
       navigate("/wine");
-    } else {
-      navigate("/login");
     }
   }
 

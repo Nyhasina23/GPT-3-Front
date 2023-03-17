@@ -1,18 +1,14 @@
 import React from "react";
 import "styles/header.css";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 export default function Header() {
   const navigate = useNavigate();
-  const userAuthenticated = useSelector((state) => state.user.isAuthenticate);
+  // const userAuthenticated = useSelector((state) => state.user.isAuthenticate);
 
   function switchToWine() {
-    if (userAuthenticated) {
-      navigate("/wine");
-    } else {
-      navigate("/login");
-    }
+    navigate("/wine");
   }
 
   return (

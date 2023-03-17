@@ -58,7 +58,7 @@ export default function Home() {
         />
       </div>
       <Welcome />
-      <div className="main-vin-icons">
+      {/* <div className="main-vin-icons">
         <div className="vin-card">
           <div className="vins">
             {allVin
@@ -92,7 +92,7 @@ export default function Home() {
           <img src={vin2} alt={vin2} />
           <img src={vin3} alt={vin3} />
         </div>
-      </div>
+      </div> */}
       <Footer />
     </div>
   );

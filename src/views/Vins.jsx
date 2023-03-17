@@ -52,7 +52,10 @@ export default function Vins() {
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt: `Donner moi 3 accord-mets vins avec du ${nomPlat} et le robe du vin est ${robeVin} avec une phrase à chaque réponse`,
+            prompt: `Peux-tu me recommander trois vins ${robeVin} à la façon d'un caviste professionnel 
+            dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
+            ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
+            A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`,
           },
           {
             headers: {
@@ -292,7 +295,11 @@ export default function Vins() {
                 ></LoadingButton>
               )}
             </Button>
-            {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ''}
+            {open ? (
+              <SnackBar open={open} message={errorMessage} bg={snackBg} />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
@@ -343,21 +350,26 @@ export default function Vins() {
                 {robeVin ? <p> Vin {robeVin} </p> : ""}
               </div>
               {vins ? <p className="bodyResponse">{vins}</p> : ""}
-              {allVin.length > 0
-                ? allVin.map((item) => {
-                    return (
-                      <div>
-                        <div className="head">
-                          {<p className="title"> {item.plat_name} </p>}
-                          {<p> Vin {item.robeVin} </p>}
-                        </div>
-                        <p className="bodyResponse" key={item.id}>
-                          {item.IAResponse}{" "}
-                        </p>
+              {allVin.length > 0 ? (
+                allVin.map((item) => {
+                  return (
+                    <div>
+                      <div className="head">
+                        {<p className="title"> {item.plat_name} </p>}
+                        {<p> Vin {item.robeVin} </p>}
                       </div>
-                    );
-                  })
-                : <p style={{color:'#b1b1b1'}}>!!!Oups, il semble que vous n'avez pas encore des reponses suggérées</p> }
+                      <p className="bodyResponse" key={item.id}>
+                        {item.IAResponse}{" "}
+                      </p>
+                    </div>
+                  );
+                })
+              ) : (
+                <p style={{ color: "#b1b1b1" }}>
+                  !!!Oups, il semble que vous n'avez pas encore des reponses
+                  suggérées
+                </p>
+              )}
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={saveVin}>
