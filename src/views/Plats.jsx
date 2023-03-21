@@ -50,6 +50,7 @@ export default function Plats() {
     setMillesime(event.target.value);
   }
   function regionChange(event) {
+    alert(event.target.value)
     setRegion(event.target.value);
   }
   function appelationChange(event) {
@@ -100,10 +101,10 @@ export default function Plats() {
         ${millesime} ,
         ${region} ,
         ${appelation} ,
-        ${cru ? cru : ''} ,
-        ${assemblage ? assemblage : ''} ,
-        ${aromeParfum ? aromeParfum : ''} ,
-        ${recom ? recom : ''} ,
+        ${cru ? cru : ""} ,
+        ${assemblage ? assemblage : ""} ,
+        ${aromeParfum ? aromeParfum : ""} ,
+        ${recom ? recom : ""} ,
 
         et une phrase à chaque réponse`,
           },
@@ -366,11 +367,32 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input
+                {/* <input
                   type="text"
-                  placeholder="Région du vin*"
+                  placeholder="Région du vin"
                   onChange={regionChange}
-                />
+                /> */}
+
+                <select className="input-file" name="region" id="region-du-vin" placeholder="Région du vin"
+                  onChange={regionChange}>
+                  <option value="Alsace">Alsace</option>
+                  <option value="Champagne">Champagne</option>
+                  <option value="Bordeaux">Bordeaux</option>
+                  <option value="Beaujolais">Beaujolais</option>
+                  <option value="Jura">Jura</option>
+                  <option value="Bourgogne">Bourgogne</option>
+                  <option value="Provence">Provence</option>
+                  <option value="Corse">Corse</option>
+                  <option value="Languedoc-Roussillon">
+                    Languedoc-Roussillon
+                  </option>
+                  <option value="Vallée du Rhône">Vallée du Rhône</option>
+                  <option value="Vallée de la Loire">Vallée de la Loire</option>
+                  <option value="Lorraine">Lorraine</option>
+                  <option value="Sud-Ouest">Sud-Ouest</option>
+                  <option value="Savoie-Bugey">Savoie-Bugey</option>
+                  <option value="Roussillon">Roussillon</option>
+                </select>
 
                 <svg
                   className="svg-icon-1"
@@ -414,7 +436,7 @@ export default function Plats() {
               <div className="input-icon">
                 <input
                   type="text"
-                  placeholder="Appelation..."
+                  placeholder="Appelation*"
                   onChange={appelationChange}
                 />
 
@@ -554,7 +576,7 @@ export default function Plats() {
                 <div className="input-icon">
                   <input
                     type="text"
-                    placeholder="Arômes et parfums*"
+                    placeholder="Arômes et parfums"
                     onChange={aromeParfumChange}
                   />
 
