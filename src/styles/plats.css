@@ -1,12 +1,11 @@
 .main-plat {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start; 
 }
 
 .main-plat .left-plat {
-    flex: 7;
-    height: calc(100vh - 4rem);
+    flex: 6;
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/images/pal_image.jpeg');
     background-size: cover;
     display: flex;
@@ -15,7 +14,7 @@
 }
 
 .main-plat .left-plat .left-plat-content {
-    width: 60rem;
+    width:40rem;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -132,7 +131,6 @@
     display: flex;
     flex-direction: column;
     flex: 4;
-    max-height: calc(100vh - 4rem);
 }
 
 .main-plat .right .right-content {
