@@ -18,8 +18,8 @@ export default function Header() {
         Artificielle
       </h1>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, alias
-        cum! Rerum placeat, iesse neque sequi fugiat sapiente dolorem ?
+        Découvrez l'accord ultime entre mets et vins, grâce à notre technologie
+        d'Intelligence Artificielle qui révolutionne l'art de la dégustation !
       </p>
       <div className="header-form">
         <input type="text" placeholder="Rechercher votre accord-mets..." />

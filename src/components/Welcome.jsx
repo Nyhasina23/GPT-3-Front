@@ -12,13 +12,12 @@ export default function Welcome() {
       <h1>Bienvenue sur WinePal</h1>
       <p>
         {" "}
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium
-        nobis tempora dolores, debitis cum ea! Suscipit quibusdam, eaque itaque
-        eius ut cumque saepe magni, voluptas molestias fugiat earum alias
-        labore. Fugiat eius neque laboriosam voluptatibus porro? Nulla
-        reiciendis consequuntur eos ut. Quia repudiandae inventore assumenda,
-        impedit minima, ad accusantium reiciendis similique fugit labore saepe
-        id! Inventore nulla maxime quo molestiae? Officiis, hic assumenda.{" "}
+        Vous êtes-vous déjà retrouvé dans la situation où vous ne savez pas quel
+        vin choisir pour accompagner votre plat préféré ? Ou peut-être avez-vous
+        acheté une bouteille de vin qui n'était pas tout à fait à votre goût ?
+        Eh bien, grâce aux avancées de l'intelligence artificielle, il est
+        désormais possible de trouver le parfait accord-mets vins en un rien de
+        temps.{" "}
       </p>
       <Button
         variant="contained"
