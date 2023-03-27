@@ -41,8 +41,8 @@ export default function Vins() {
     // /gpt3/api/
     setLoading(true);
 
-    if (nomPlat == undefined || robeVin == undefined) {
-      setErrorMessage("Verifier tous les champs");
+    if (nomPlat == undefined) {
+      setErrorMessage("Veuillez remplir le nom du plat");
       setSnackBg("#f44336");
       dispatch(showNavbar(true));
       setOpen(true);
@@ -66,7 +66,7 @@ export default function Vins() {
         .then((response) => {
           setErrorMessage(response.data.STATUS);
           setSnackBg("#4caf50");
-          setVins(response.data.DATA);
+          setVins((response.data.DATA));
           dispatch(showNavbar(true));
           setOpen(true);
           setLoading(false);
@@ -350,7 +350,7 @@ export default function Vins() {
                 {robeVin ? <p> Vin {robeVin} </p> : ""}
               </div>
               {vins ? <p className="bodyResponse">{vins}</p> : ""}
-              {allVin.length > 0 ? (
+              {allVin?.length > 0 || vins ? (
                 allVin.map((item) => {
                   return (
                     <div>
@@ -358,9 +358,9 @@ export default function Vins() {
                         {<p className="title"> {item.plat_name} </p>}
                         {<p> Vin {item.robeVin} </p>}
                       </div>
-                      <p className="bodyResponse" key={item.id}>
-                        {item.IAResponse}{" "}
-                      </p>
+                        <p className="bodyResponse" key={item.id}>
+                          {item.IAResponse.replace(/(?:\r\n|\r|\n)/g, "<br>")}{" "}
+                        </p>
                     </div>
                   );
                 })

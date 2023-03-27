@@ -42,6 +42,12 @@
     margin: 0 1rem;
     color: #212121;
 }
+.main-footer .link > h3 > a {
+    color: #212121;
+}
+.main-footer .link > h3 > a:hover{
+    color: #DE0941;
+}
 
 .main-footer .link > h4 {
     margin: 0 1rem;

@@ -21,10 +21,10 @@ export default function Header() {
         Découvrez l'accord ultime entre mets et vins, grâce à notre technologie
         d'Intelligence Artificielle qui révolutionne l'art de la dégustation !
       </p>
-      <div className="header-form">
+      {/* <div className="header-form">
         <input type="text" placeholder="Rechercher votre accord-mets..." />
         <button onClick={switchToWine}>GO</button>
-      </div>
+      </div> */}
     </div>
   );
 }

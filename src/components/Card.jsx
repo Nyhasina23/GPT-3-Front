@@ -3,7 +3,6 @@ import "styles/button.css";
 import "styles/card.css";
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useSelector } from "react-redux";
 export default function Card({
   image,
   title,
@@ -15,7 +14,6 @@ export default function Card({
   borderColor,
 }) {
   const navigate = useNavigate();
-  // const userAuthenticated = useSelector((state) => state.user.isAuthenticate);
 
   function switchToWinePal(buttonType) {
     if (buttonType === "primary") {
@@ -28,7 +26,7 @@ export default function Card({
   return (
     <div className={`main-card ${borderColor}`}>
       <img src={image} alt={title} />
-      <h1 className={titleColor}>{title}</h1>
+      <h2 className={titleColor}>{title}</h2>
       <p className={descColor}>{description}</p>
       <div onClick={() => switchToWinePal(`${classButton}`)}>
         <Button variant="contained" className={`${classButton} white`}>

@@ -38,7 +38,7 @@ export default function Home() {
           titleColor={"title-secondary"}
           descColor={"desc-secondary"}
           description={
-            "Générez 3 différentes types de vin accorder avec vos plats"
+            "Générez 3 vins différents à accorder avec votre plat"
           }
           textButton={"GENEREZ MON VIN"}
           classButton={"secondary"}
@@ -50,7 +50,7 @@ export default function Home() {
           titleColor={"title-primary"}
           descColor={"desc-primary"}
           description={
-            "Générez 3 différentes types de plats accorder avec vos vins"
+            "Générez un plat à accorder avec votre vin"
           }
           textButton={"GENEREZ MON PLATS"}
           classButton={"primary"}

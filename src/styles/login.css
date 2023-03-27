@@ -99,10 +99,11 @@
     background: #b90837;
 }
 
-.loadButton{
-    padding: 0 3rem !important;
+.loadButton {
+    padding: 0.8rem 5rem !important;
 }
-.MuiLoadingButton-loadingIndicator{
+
+.MuiLoadingButton-loadingIndicator {
     color: white !important;
 }
 
@@ -140,10 +141,11 @@
 }
 
 @media screen and (max-width:510px) {
-    
+
     .main-login .left .left-content .login-btn {
         flex-direction: column-reverse;
     }
+
     .main-login .left .left-content .login-btn button {
         width: 100%;
     }

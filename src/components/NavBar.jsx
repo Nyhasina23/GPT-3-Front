@@ -8,7 +8,11 @@ import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { setAuthentication , setUserIdentity , setToken } from "features/user.slice";
+import {
+  setAuthentication,
+  setUserIdentity,
+  setToken,
+} from "features/user.slice";
 
 const TabsMui = styled(Tab)({
   "&.Mui-selected": {
@@ -41,15 +45,17 @@ export default function NavBar() {
   }, []);
 
   function logout() {
-    dispatch(setAuthentication(false))
-    dispatch(setUserIdentity(''))
-    dispatch(setToken(''))
+    dispatch(setAuthentication(false));
+    dispatch(setUserIdentity(""));
+    dispatch(setToken(""));
   }
 
   return (
     <div className="main-navbar">
       <div className="logo">
-        <img src={winepalLogo} alt="winepalLogo" className="winepal-logo" />
+        <NavLink to="/">
+          <img src={winepalLogo} alt="winepalLogo" className="winepal-logo" />
+        </NavLink>
       </div>
       <div className="navlink">
         <Tabs

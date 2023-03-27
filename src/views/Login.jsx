@@ -79,6 +79,12 @@ export default function Login() {
     setPassword(event.target.value);
   }
 
+  function showMdp(){
+    let password = document.querySelector('#password');
+    const attrPass = password.getAttribute('type');
+    attrPass === "password" ? password.setAttribute('type' , 'text') : password.setAttribute('type' , 'password')
+  }
+
   return (
     <div className="main-login">
       <div className="left">
@@ -138,6 +144,7 @@ export default function Login() {
               type="password"
               placeholder="Mot de passe..."
               onChange={handlePasswordChange}
+              id="password"
             />
 
             <svg
@@ -146,6 +153,7 @@ export default function Login() {
               width="32"
               height="32"
               viewBox="0 0 32 32"
+              onClick={showMdp}
             >
               <g
                 id="Groupe_40"

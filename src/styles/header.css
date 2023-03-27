@@ -99,11 +99,11 @@
 
 @media screen and (max-width : 520px) {
     .main-header h1 {
-        width: 100%;
+        width: 90%;
     }
 
     .main-header p {
-        width: 100%;
+        width: 90%;
     }
 
     .header-form {

@@ -37,7 +37,7 @@ export default function Plats() {
   const [filename, setFilename] = useState();
   const [plats, setPlats] = useState();
   let [allPlats, setallPlats] = useState([]);
-  let [file, setFile] = useState("Ajouter photo");
+  let [file, setFile] = useState("Photo");
   const [advanced, setAdvanced] = useState(false);
 
   function domaineChange(event) {
@@ -50,7 +50,6 @@ export default function Plats() {
     setMillesime(event.target.value);
   }
   function regionChange(event) {
-    alert(event.target.value)
     setRegion(event.target.value);
   }
   function appelationChange(event) {
@@ -277,7 +276,7 @@ export default function Plats() {
               <div className="input-icon">
                 <input
                   type="text"
-                  placeholder="Nom de la cuvée..."
+                  placeholder="Appelation*"
                   onChange={cuveChange}
                 />
 
@@ -367,32 +366,11 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                {/* <input
+                <input
                   type="text"
-                  placeholder="Région du vin"
-                  onChange={regionChange}
-                /> */}
-
-                <select className="input-file" name="region" id="region-du-vin" placeholder="Région du vin"
-                  onChange={regionChange}>
-                  <option value="Alsace">Alsace</option>
-                  <option value="Champagne">Champagne</option>
-                  <option value="Bordeaux">Bordeaux</option>
-                  <option value="Beaujolais">Beaujolais</option>
-                  <option value="Jura">Jura</option>
-                  <option value="Bourgogne">Bourgogne</option>
-                  <option value="Provence">Provence</option>
-                  <option value="Corse">Corse</option>
-                  <option value="Languedoc-Roussillon">
-                    Languedoc-Roussillon
-                  </option>
-                  <option value="Vallée du Rhône">Vallée du Rhône</option>
-                  <option value="Vallée de la Loire">Vallée de la Loire</option>
-                  <option value="Lorraine">Lorraine</option>
-                  <option value="Sud-Ouest">Sud-Ouest</option>
-                  <option value="Savoie-Bugey">Savoie-Bugey</option>
-                  <option value="Roussillon">Roussillon</option>
-                </select>
+                  placeholder="Nom de la cuvée"
+                  onChange={appelationChange}
+                />
 
                 <svg
                   className="svg-icon-1"
@@ -436,8 +414,8 @@ export default function Plats() {
               <div className="input-icon">
                 <input
                   type="text"
-                  placeholder="Appelation*"
-                  onChange={appelationChange}
+                  placeholder="Arômes et parfums"
+                  onChange={aromeParfumChange}
                 />
 
                 <svg
@@ -574,11 +552,33 @@ export default function Plats() {
                 </div>
 
                 <div className="input-icon">
-                  <input
-                    type="text"
-                    placeholder="Arômes et parfums"
-                    onChange={aromeParfumChange}
-                  />
+                  <select
+                    className="input-file"
+                    name="region"
+                    id="region-du-vin"
+                    placeholder="Région du vin"
+                    onChange={regionChange}
+                  >
+                    <option value="Alsace">Alsace</option>
+                    <option value="Champagne">Champagne</option>
+                    <option value="Bordeaux">Bordeaux</option>
+                    <option value="Beaujolais">Beaujolais</option>
+                    <option value="Jura">Jura</option>
+                    <option value="Bourgogne">Bourgogne</option>
+                    <option value="Provence">Provence</option>
+                    <option value="Corse">Corse</option>
+                    <option value="Languedoc-Roussillon">
+                      Languedoc-Roussillon
+                    </option>
+                    <option value="Vallée du Rhône">Vallée du Rhône</option>
+                    <option value="Vallée de la Loire">
+                      Vallée de la Loire
+                    </option>
+                    <option value="Lorraine">Lorraine</option>
+                    <option value="Sud-Ouest">Sud-Ouest</option>
+                    <option value="Savoie-Bugey">Savoie-Bugey</option>
+                    <option value="Roussillon">Roussillon</option>
+                  </select>
 
                   <svg
                     className="svg-icon-1"
@@ -671,7 +671,7 @@ export default function Plats() {
                   </label>
                   <input
                     type="file"
-                    placeholder="Ajouter photos"
+                    placeholder="Photos"
                     accept="image/*"
                     id="input-file"
                     className="input-hidden"
@@ -831,7 +831,7 @@ export default function Plats() {
                 {cuve ? <p> {cuve} </p> : ""}
               </div>
               {plats ? <p className="bodyResponse">{plats}</p> : ""}
-              {allPlats.length > 0 ? (
+              {allPlats.length > 0 || plats ? (
                 allPlats.map((item) => {
                   return (
                     <div>
@@ -840,7 +840,7 @@ export default function Plats() {
                         {<p> {item.cuve} </p>}
                       </div>
                       <p className="bodyResponse" key={item.id}>
-                        {item.IAResponse}{" "}
+                        { item.IAResponse.replace(/(?:\r\n|\r|\n)/g, '<br>')}{" "}
                       </p>
                     </div>
                   );
