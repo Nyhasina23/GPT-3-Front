@@ -8,6 +8,7 @@ import SnackBar from "common/SnackBar";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
+import Switch from "@mui/material/Switch";
 
 export default function Vins() {
   const dispatch = useDispatch();
@@ -26,13 +27,22 @@ export default function Vins() {
   let [nomPlat, setNomPlat] = useState();
   let [robeVin, setRobeVin] = useState();
   let [allVin, setallVin] = useState([]);
-
+  const [region, setRegion] = useState("");
+  const [advanced, setAdvanced] = useState(false);
+  const label = { inputProps: { "aria-label": "advanced search" } };
+  function switchToAdvanced() {
+    setAdvanced(!advanced);
+  }
   function handleNomPlatChange(event) {
     setNomPlat(event.target.value);
   }
 
   function handleRobeVinChange(event) {
     setRobeVin(event.target.value);
+  }
+
+  function regionChange(event) {
+    setRegion(event.target.value);
   }
 
   const token = useSelector((state) => state.user.token);
@@ -48,14 +58,22 @@ export default function Vins() {
       setOpen(true);
       setLoading(false);
     } else {
+      let prompt = `Peux-tu me recommander trois vins  à la façon d'un caviste professionnel 
+      dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
+      ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
+      A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`;
+
+      if(region != undefined && robeVin != undefined){
+        prompt = `Peux-tu me recommander trois vins ${robeVin} dans la région ${region} à la façon d'un caviste professionnel 
+        dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
+        ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
+        A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`
+      }
       await axios
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt: `Peux-tu me recommander trois vins ${robeVin} à la façon d'un caviste professionnel 
-            dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
-            ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
-            A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`,
+            prompt
           },
           {
             headers: {
@@ -66,7 +84,7 @@ export default function Vins() {
         .then((response) => {
           setErrorMessage(response.data.STATUS);
           setSnackBg("#4caf50");
-          setVins((response.data.DATA));
+          setVins(response.data.DATA);
           dispatch(showNavbar(true));
           setOpen(true);
           setLoading(false);
@@ -83,7 +101,11 @@ export default function Vins() {
 
   async function saveVin() {
     nomPlat = nomPlat.replace(/(\r\n|\n|\r)/gm, "");
-    robeVin = robeVin.replace(/(\r\n|\n|\r)/gm, "");
+    if(robeVin != undefined){
+      robeVin = robeVin.replace(/(\r\n|\n|\r)/gm, "");
+    }else{
+      robeVin = " "
+    }
     let IAResponse = vins.replace(/(\r\n|\n|\r)/gm, "");
 
     setSaveLoading(true);
@@ -142,7 +164,7 @@ export default function Vins() {
           <div className="input-icon">
             <input
               type="text"
-              placeholder="Nom du plat..."
+              placeholder="Nom du plat*"
               onChange={handleNomPlatChange}
             />
 
@@ -206,73 +228,167 @@ export default function Vins() {
             </svg>
           </div>
 
-          <div className="input-icon">
-            <input
-              type="text"
-              placeholder="Robe du vin..."
-              onChange={handleRobeVinChange}
-            />
+          {advanced && (
+            <div className="input-icon">
+              <input
+                type="text"
+                placeholder="Robe du vin..."
+                onChange={handleRobeVinChange}
+              />
 
-            <svg
-              className="svg-icon-1"
-              xmlns="http://www.w3.org/2000/svg"
-              width="33"
-              height="33"
-              viewBox="0 0 33 33"
-            >
-              <g
-                id="Groupe_47"
-                data-name="Groupe 47"
-                transform="translate(0 -0.031)"
-                opacity="0.88"
+              <svg
+                className="svg-icon-1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="33"
+                height="33"
+                viewBox="0 0 33 33"
               >
-                <rect
-                  id="Rectangle_37"
-                  data-name="Rectangle 37"
-                  width="33"
-                  height="33"
-                  transform="translate(0 0.031)"
-                  fill="#232323"
-                  opacity="0"
-                />
                 <g
-                  id="Groupe_46"
-                  data-name="Groupe 46"
-                  transform="translate(2.808 5.8)"
+                  id="Groupe_47"
+                  data-name="Groupe 47"
+                  transform="translate(0 -0.031)"
+                  opacity="0.88"
                 >
-                  <g id="Groupe_45" data-name="Groupe 45">
-                    <g
-                      id="Groupe_43"
-                      data-name="Groupe 43"
-                      transform="translate(0 16.861)"
-                    >
-                      <path
-                        id="Tracé_23"
-                        data-name="Tracé 23"
-                        d="M26.273,14.425H1.142a1.142,1.142,0,0,0,0,2.285H2.353a1.142,1.142,0,0,1,.948.5l.514.754a2.285,2.285,0,0,0,1.9,1.028H21.7a2.285,2.285,0,0,0,1.9-1.028l.514-.754a1.142,1.142,0,0,1,.948-.5h1.211a1.142,1.142,0,1,0,0-2.285Z"
-                        transform="translate(0 -14.425)"
-                        fill="#232323"
-                      />
-                    </g>
-                    <g
-                      id="Groupe_44"
-                      data-name="Groupe 44"
-                      transform="translate(2.856 0)"
-                    >
-                      <path
-                        id="Tracé_24"
-                        data-name="Tracé 24"
-                        d="M2.646,17.322H23.208a.571.571,0,0,0,.571-.571A10.863,10.863,0,0,0,15.463,6.2a.3.3,0,0,1-.183-.16.32.32,0,0,1,0-.251,2.467,2.467,0,0,0,.228-1.04,2.57,2.57,0,0,0-5.14,0,2.467,2.467,0,0,0,.228,1.04.274.274,0,0,1,0,.251.3.3,0,0,1-.183.149A10.863,10.863,0,0,0,2.075,16.751.571.571,0,0,0,2.646,17.322ZM6.6,10.6a8.921,8.921,0,0,1,5.06-2.627.86.86,0,1,1,.251,1.7,7.083,7.083,0,0,0-4.078,2.068.891.891,0,0,1-.617.263.845.845,0,0,1-.605-.263A.857.857,0,0,1,6.6,10.6Z"
-                        transform="translate(-2.075 -2.175)"
-                        fill="#232323"
-                      />
+                  <rect
+                    id="Rectangle_37"
+                    data-name="Rectangle 37"
+                    width="33"
+                    height="33"
+                    transform="translate(0 0.031)"
+                    fill="#232323"
+                    opacity="0"
+                  />
+                  <g
+                    id="Groupe_46"
+                    data-name="Groupe 46"
+                    transform="translate(2.808 5.8)"
+                  >
+                    <g id="Groupe_45" data-name="Groupe 45">
+                      <g
+                        id="Groupe_43"
+                        data-name="Groupe 43"
+                        transform="translate(0 16.861)"
+                      >
+                        <path
+                          id="Tracé_23"
+                          data-name="Tracé 23"
+                          d="M26.273,14.425H1.142a1.142,1.142,0,0,0,0,2.285H2.353a1.142,1.142,0,0,1,.948.5l.514.754a2.285,2.285,0,0,0,1.9,1.028H21.7a2.285,2.285,0,0,0,1.9-1.028l.514-.754a1.142,1.142,0,0,1,.948-.5h1.211a1.142,1.142,0,1,0,0-2.285Z"
+                          transform="translate(0 -14.425)"
+                          fill="#232323"
+                        />
+                      </g>
+                      <g
+                        id="Groupe_44"
+                        data-name="Groupe 44"
+                        transform="translate(2.856 0)"
+                      >
+                        <path
+                          id="Tracé_24"
+                          data-name="Tracé 24"
+                          d="M2.646,17.322H23.208a.571.571,0,0,0,.571-.571A10.863,10.863,0,0,0,15.463,6.2a.3.3,0,0,1-.183-.16.32.32,0,0,1,0-.251,2.467,2.467,0,0,0,.228-1.04,2.57,2.57,0,0,0-5.14,0,2.467,2.467,0,0,0,.228,1.04.274.274,0,0,1,0,.251.3.3,0,0,1-.183.149A10.863,10.863,0,0,0,2.075,16.751.571.571,0,0,0,2.646,17.322ZM6.6,10.6a8.921,8.921,0,0,1,5.06-2.627.86.86,0,1,1,.251,1.7,7.083,7.083,0,0,0-4.078,2.068.891.891,0,0,1-.617.263.845.845,0,0,1-.605-.263A.857.857,0,0,1,6.6,10.6Z"
+                          transform="translate(-2.075 -2.175)"
+                          fill="#232323"
+                        />
+                      </g>
                     </g>
                   </g>
                 </g>
-              </g>
-            </svg>
-          </div>
+              </svg>
+            </div>
+          )}
+          {advanced && (
+            <div className="input-icon">
+              <select
+                className="select-input"
+                name="region"
+                id="region-du-vin"
+                placeholder="Région du vin"
+                onChange={regionChange}
+              >
+                <option value="">Région du vin...</option>
+                <option value="Alsace">Alsace</option>
+                <option value="Champagne">Champagne</option>
+                <option value="Bordeaux">Bordeaux</option>
+                <option value="Beaujolais">Beaujolais</option>
+                <option value="Jura">Jura</option>
+                <option value="Bourgogne">Bourgogne</option>
+                <option value="Provence">Provence</option>
+                <option value="Corse">Corse</option>
+                <option value="Languedoc-Roussillon">
+                  Languedoc-Roussillon
+                </option>
+                <option value="Vallée du Rhône">Vallée du Rhône</option>
+                <option value="Vallée de la Loire">Vallée de la Loire</option>
+                <option value="Lorraine">Lorraine</option>
+                <option value="Sud-Ouest">Sud-Ouest</option>
+                <option value="Savoie-Bugey">Savoie-Bugey</option>
+                <option value="Roussillon">Roussillon</option>
+              </select>
 
+              <svg
+                className="svg-icon-1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="33"
+                height="33"
+                viewBox="0 0 33 33"
+              >
+                <g
+                  id="Groupe_47"
+                  data-name="Groupe 47"
+                  transform="translate(0 -0.031)"
+                  opacity="0.88"
+                >
+                  <rect
+                    id="Rectangle_37"
+                    data-name="Rectangle 37"
+                    width="33"
+                    height="33"
+                    transform="translate(0 0.031)"
+                    fill="#232323"
+                    opacity="0"
+                  />
+                  <g
+                    id="Groupe_46"
+                    data-name="Groupe 46"
+                    transform="translate(2.808 5.8)"
+                  >
+                    <g id="Groupe_45" data-name="Groupe 45">
+                      <g
+                        id="Groupe_43"
+                        data-name="Groupe 43"
+                        transform="translate(0 16.861)"
+                      >
+                        <path
+                          id="Tracé_23"
+                          data-name="Tracé 23"
+                          d="M26.273,14.425H1.142a1.142,1.142,0,0,0,0,2.285H2.353a1.142,1.142,0,0,1,.948.5l.514.754a2.285,2.285,0,0,0,1.9,1.028H21.7a2.285,2.285,0,0,0,1.9-1.028l.514-.754a1.142,1.142,0,0,1,.948-.5h1.211a1.142,1.142,0,1,0,0-2.285Z"
+                          transform="translate(0 -14.425)"
+                          fill="#232323"
+                        />
+                      </g>
+                      <g
+                        id="Groupe_44"
+                        data-name="Groupe 44"
+                        transform="translate(2.856 0)"
+                      >
+                        <path
+                          id="Tracé_24"
+                          data-name="Tracé 24"
+                          d="M2.646,17.322H23.208a.571.571,0,0,0,.571-.571A10.863,10.863,0,0,0,15.463,6.2a.3.3,0,0,1-.183-.16.32.32,0,0,1,0-.251,2.467,2.467,0,0,0,.228-1.04,2.57,2.57,0,0,0-5.14,0,2.467,2.467,0,0,0,.228,1.04.274.274,0,0,1,0,.251.3.3,0,0,1-.183.149A10.863,10.863,0,0,0,2.075,16.751.571.571,0,0,0,2.646,17.322ZM6.6,10.6a8.921,8.921,0,0,1,5.06-2.627.86.86,0,1,1,.251,1.7,7.083,7.083,0,0,0-4.078,2.068.891.891,0,0,1-.617.263.845.845,0,0,1-.605-.263A.857.857,0,0,1,6.6,10.6Z"
+                          transform="translate(-2.075 -2.175)"
+                          fill="#232323"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+          )}
+          <div className="advanced-search">
+            <Switch {...label} className="switch" onClick={switchToAdvanced} />
+            <p>Recherche avancée</p>
+          </div>
           <div className="login-btn">
             <Button
               variant="outlined"
@@ -358,9 +474,9 @@ export default function Vins() {
                         {<p className="title"> {item.plat_name} </p>}
                         {<p> Vin {item.robeVin} </p>}
                       </div>
-                        <p className="bodyResponse" key={item.id}>
-                          {item.IAResponse.replace(/(?:\r\n|\r|\n)/g, "<br>")}{" "}
-                        </p>
+                      <p className="bodyResponse" key={item.id}>
+                        {item.IAResponse.replace(/(?:\r\n|\r|\n)/g, "<br>")}{" "}
+                      </p>
                     </div>
                   );
                 })

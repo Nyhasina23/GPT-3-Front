@@ -27,7 +27,7 @@ export default function Plats() {
   const [domaine, setDomaine] = useState();
   const [cuve, setCuve] = useState();
   const [millesime, setMillesime] = useState();
-  const [region, setRegion] = useState();
+  const [region, setRegion] = useState('');
   const [appelation, setAppelation] = useState();
   const [cru, setCru] = useState();
   const [assemblage, setAssemblage] = useState();
@@ -83,7 +83,7 @@ export default function Plats() {
       millesime == undefined ||
       appelation == undefined
     ) {
-      setErrorMessage("Verifier tous les champs");
+      setErrorMessage("Verifier tous les champs obligatoire");
       setSnackBg("#f44336");
       dispatch(showNavbar(true));
       setOpen(true);
@@ -131,29 +131,30 @@ export default function Plats() {
     }
   }
 
-  async function savePhotos() {
-    var formData = new FormData();
-    if (photo) {
-      for (const i of Object.keys(photo)) {
-        formData.append("images", photo[i]);
-      }
-    }
-    await axios({
-      method: "post",
-      url: `${fileServerAPI}/upload`,
-      data: formData,
-    })
-      .then((res) => {
-        setFilename(res.data[0]);
-      })
-      .catch(() => {
-        alert("Une erreur est survenu lors du téléchargement des images");
-      });
-  }
+  // async function savePhotos() {
+  //   var formData = new FormData();
+  //   if (photo) {
+  //     for (const i of Object.keys(photo)) {
+  //       formData.append("images", photo[i]);
+  //     }
+  //   }
+  //   await axios({
+  //     method: "post",
+  //     url: `${fileServerAPI}/upload`,
+  //     data: formData,
+  //   })
+  //     .then((res) => {
+  //       setFilename(res.data[0]);
+  //     })
+  //     .catch(() => {
+  //       alert("Une erreur est survenu lors du téléchargement des images");
+  //     });
+  // }
 
   async function savePlat() {
-    await savePhotos();
-
+    // if(filename != undefined){
+    //   await savePhotos();
+    // }
     let IAResponse = plats.replace(/(\r\n|\n|\r)/gm, "");
 
     setSaveLoading(true);
@@ -171,8 +172,8 @@ export default function Plats() {
           assemblage,
           aromeParfum,
           recom,
-          IAResponse,
-          image: filename,
+          IAResponse
+          // image: filename,
         },
         {
           headers: {
@@ -276,7 +277,7 @@ export default function Plats() {
               <div className="input-icon">
                 <input
                   type="text"
-                  placeholder="Appelation*"
+                  placeholder="L'Appelation*"
                   onChange={cuveChange}
                 />
 
@@ -559,6 +560,7 @@ export default function Plats() {
                     placeholder="Région du vin"
                     onChange={regionChange}
                   >
+                    <option value="">Région du vin...</option>
                     <option value="Alsace">Alsace</option>
                     <option value="Champagne">Champagne</option>
                     <option value="Bordeaux">Bordeaux</option>
@@ -622,7 +624,7 @@ export default function Plats() {
                 <div className="input-icon">
                   <input
                     type="text"
-                    placeholder="Recommandations d’accompagnement.."
+                    placeholder="Accompagnement.."
                     onChange={recomChange}
                   />
 

@@ -14,13 +14,8 @@ export default function Header() {
   return (
     <div className="main-header">
       <h1>
-        Trouver votre accord-mets vins parfait grâce à l'Intelligence
-        Artificielle
+      Trouvez vos accords mets & vins parfaits grâce à l'intelligence artificielle
       </h1>
-      <p>
-        Découvrez l'accord ultime entre mets et vins, grâce à notre technologie
-        d'Intelligence Artificielle qui révolutionne l'art de la dégustation !
-      </p>
       {/* <div className="header-form">
         <input type="text" placeholder="Rechercher votre accord-mets..." />
         <button onClick={switchToWine}>GO</button>

@@ -65,6 +65,7 @@
     margin: 1.5rem;
     border-radius: 1rem;
     border: 2px solid #b1b1b173;
+    font-size: 1.2rem;
 }
 
 .main-vin .left-vin .left-vin-content .input-icon input::placeholder {
@@ -152,7 +153,11 @@
 }
 
 .loadGenerateButton {
-    padding: 0rem !important;
+    color: white;
+    background: #DE0941;
+    font-weight: 550;
+    border-radius: 3rem;
+    margin-top: 1rem;
 }
 
 .ia-response .bodyResponse {
@@ -200,14 +205,41 @@
     padding: 13px 53px !important;
 }
 
+.select-input {
+    width: 100%;
+    padding: 1.15rem;
+    margin: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #b1b1b173;
+    background: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+@media screen and (max-width:1435px) {
+
+    .main-vin .left-vin{
+        background-position-y: 0;
+    } 
+}
+
 @media screen and (max-width:1110px) {
 
 
     .main-vin .left-vin-content {
         align-items: center;
         justify-content: center;
-        height: calc(100vh - 4rem);
     }
+    
+}
+@media screen and (max-width:1028px) {
+
+    .main-vin .left-vin{
+        background-position-y: center;
+    } 
+    .main-vin .right{
+        width: 100%;
+    } 
 }
 
 @media screen and (max-width:1027px) {
