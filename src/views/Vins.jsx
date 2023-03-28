@@ -230,11 +230,19 @@ export default function Vins() {
 
           {advanced && (
             <div className="input-icon">
-              <input
-                type="text"
+              <select
+                className="select-input"
+                name="Robe"
+                id="Robe-du-vin"
                 placeholder="Robe du vin..."
                 onChange={handleRobeVinChange}
-              />
+
+              >
+                <option value="">Robe du vin...</option>
+                <option value="Rouge">Rouge</option>
+                <option value="Blanc">Blanc</option>
+                <option value="Rosé">Rosé</option>
+              </select>
 
               <svg
                 className="svg-icon-1"
@@ -489,7 +497,7 @@ export default function Vins() {
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={saveVin}>
-            {saveLoading ? (
+            {!saveLoading ? (
               <span> Enregistrer </span>
             ) : (
               <LoadingButton
