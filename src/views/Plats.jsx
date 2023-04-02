@@ -27,7 +27,7 @@ export default function Plats() {
   const [domaine, setDomaine] = useState();
   const [cuve, setCuve] = useState();
   const [millesime, setMillesime] = useState();
-  const [region, setRegion] = useState('');
+  const [region, setRegion] = useState("");
   const [appelation, setAppelation] = useState();
   const [cru, setCru] = useState();
   const [assemblage, setAssemblage] = useState();
@@ -172,7 +172,7 @@ export default function Plats() {
           assemblage,
           aromeParfum,
           recom,
-          IAResponse
+          IAResponse,
           // image: filename,
         },
         {
@@ -413,11 +413,32 @@ export default function Plats() {
               </div>
 
               <div className="input-icon">
-                <input
-                  type="text"
-                  placeholder="Arômes et parfums"
-                  onChange={aromeParfumChange}
-                />
+                <select
+                  className="input-file"
+                  name="region"
+                  id="region-du-vin"
+                  placeholder="Région du vin"
+                  onChange={regionChange}
+                >
+                  <option value="">Région du vin...</option>
+                  <option value="Alsace">Alsace</option>
+                  <option value="Champagne">Champagne</option>
+                  <option value="Bordeaux">Bordeaux</option>
+                  <option value="Beaujolais">Beaujolais</option>
+                  <option value="Jura">Jura</option>
+                  <option value="Bourgogne">Bourgogne</option>
+                  <option value="Provence">Provence</option>
+                  <option value="Corse">Corse</option>
+                  <option value="Languedoc-Roussillon">
+                    Languedoc-Roussillon
+                  </option>
+                  <option value="Vallée du Rhône">Vallée du Rhône</option>
+                  <option value="Vallée de la Loire">Vallée de la Loire</option>
+                  <option value="Lorraine">Lorraine</option>
+                  <option value="Sud-Ouest">Sud-Ouest</option>
+                  <option value="Savoie-Bugey">Savoie-Bugey</option>
+                  <option value="Roussillon">Roussillon</option>
+                </select>
 
                 <svg
                   className="svg-icon-1"
@@ -551,36 +572,12 @@ export default function Plats() {
                     </g>
                   </svg>
                 </div>
-
                 <div className="input-icon">
-                  <select
-                    className="input-file"
-                    name="region"
-                    id="region-du-vin"
-                    placeholder="Région du vin"
-                    onChange={regionChange}
-                  >
-                    <option value="">Région du vin...</option>
-                    <option value="Alsace">Alsace</option>
-                    <option value="Champagne">Champagne</option>
-                    <option value="Bordeaux">Bordeaux</option>
-                    <option value="Beaujolais">Beaujolais</option>
-                    <option value="Jura">Jura</option>
-                    <option value="Bourgogne">Bourgogne</option>
-                    <option value="Provence">Provence</option>
-                    <option value="Corse">Corse</option>
-                    <option value="Languedoc-Roussillon">
-                      Languedoc-Roussillon
-                    </option>
-                    <option value="Vallée du Rhône">Vallée du Rhône</option>
-                    <option value="Vallée de la Loire">
-                      Vallée de la Loire
-                    </option>
-                    <option value="Lorraine">Lorraine</option>
-                    <option value="Sud-Ouest">Sud-Ouest</option>
-                    <option value="Savoie-Bugey">Savoie-Bugey</option>
-                    <option value="Roussillon">Roussillon</option>
-                  </select>
+                  <input
+                    type="text"
+                    placeholder="Arômes et parfums"
+                    onChange={aromeParfumChange}
+                  />
 
                   <svg
                     className="svg-icon-1"
@@ -842,7 +839,7 @@ export default function Plats() {
                         {<p> {item.cuve} </p>}
                       </div>
                       <p className="bodyResponse" key={item.id}>
-                        { item.IAResponse.replace(/(?:\r\n|\r|\n)/g, '<br>')}{" "}
+                        {item.IAResponse.replace(/(?:\r\n|\r|\n)/g, "<br>")}{" "}
                       </p>
                     </div>
                   );
