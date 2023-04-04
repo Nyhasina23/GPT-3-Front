@@ -83,6 +83,12 @@ export default function Plats() {
       millesime == undefined ||
       appelation == undefined
     ) {
+
+
+      console.log('domaine ' , domaine)
+      console.log('millesime ' , millesime)
+      console.log('appelation ' , appelation)
+
       setErrorMessage("Verifier tous les champs obligatoire");
       setSnackBg("#f44336");
       dispatch(showNavbar(true));
@@ -277,8 +283,8 @@ export default function Plats() {
               <div className="input-icon">
                 <input
                   type="text"
-                  placeholder="L'Appelation*"
-                  onChange={cuveChange}
+                  placeholder="Appellation*"
+                  onChange={appelationChange}
                 />
 
                 <svg
@@ -370,7 +376,7 @@ export default function Plats() {
                 <input
                   type="text"
                   placeholder="Nom de la cuvée"
-                  onChange={appelationChange}
+                  onChange={cuveChange}
                 />
 
                 <svg
