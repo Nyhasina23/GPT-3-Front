@@ -83,11 +83,9 @@ export default function Plats() {
       millesime == undefined ||
       appelation == undefined
     ) {
-
-
-      console.log('domaine ' , domaine)
-      console.log('millesime ' , millesime)
-      console.log('appelation ' , appelation)
+      console.log("domaine ", domaine);
+      console.log("millesime ", millesime);
+      console.log("appelation ", appelation);
 
       setErrorMessage("Verifier tous les champs obligatoire");
       setSnackBg("#f44336");
@@ -122,7 +120,8 @@ export default function Plats() {
         .then((response) => {
           setErrorMessage(response.data.STATUS);
           setSnackBg("#4caf50");
-          setPlats(response.data.DATA);
+          const textFormated = formatText(response?.data.DATA);
+          setPlats(textFormated.slice(8));
           dispatch(showNavbar(true));
           setOpen(true);
           setLoading(false);
@@ -135,6 +134,18 @@ export default function Plats() {
           setLoading(false);
         });
     }
+  }
+
+  function formatText(text) {
+    // Remplacer les caractères de retour à la ligne par des balises <br>
+    text = text.replace(/\n/g, "<br>");
+
+    // Remplacer les espaces par des espaces insécables
+    text = text.replace(/ /g, "&nbsp;");
+
+    console.log("text formated => ", text);
+
+    return text;
   }
 
   // async function savePhotos() {
@@ -835,7 +846,12 @@ export default function Plats() {
                 {domaine ? <p className="title"> {domaine} </p> : ""}
                 {cuve ? <p> {cuve} </p> : ""}
               </div>
-              {plats ? <p className="bodyResponse">{plats}</p> : ""}
+              {plats && (
+                <p
+                  className="bodyResponse"
+                  dangerouslySetInnerHTML={{ __html: plats }}
+                ></p>
+              )}
               {allPlats.length > 0 || plats ? (
                 allPlats.map((item) => {
                   return (
@@ -844,9 +860,11 @@ export default function Plats() {
                         {<p className="title"> {item.domaine} </p>}
                         {<p> {item.cuve} </p>}
                       </div>
-                      <p className="bodyResponse" key={item.id}>
-                        {item.IAResponse.replace(/(?:\r\n|\r|\n)/g, "<br>")}{" "}
-                      </p>
+                      <p
+                        className="bodyResponse"
+                        key={item.id}
+                        dangerouslySetInnerHTML={{ __html: item.IAResponse }}
+                      ></p>
                     </div>
                   );
                 })

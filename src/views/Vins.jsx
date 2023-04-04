@@ -63,17 +63,17 @@ export default function Vins() {
       ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
       A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`;
 
-      if(region != undefined && robeVin != undefined){
+      if (region != undefined && robeVin != undefined) {
         prompt = `Peux-tu me recommander trois vins ${robeVin} dans la région ${region} à la façon d'un caviste professionnel 
         dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
         ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
-        A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`
+        A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`;
       }
       await axios
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt
+            prompt,
           },
           {
             headers: {
@@ -84,7 +84,8 @@ export default function Vins() {
         .then((response) => {
           setErrorMessage(response.data.STATUS);
           setSnackBg("#4caf50");
-          setVins(response.data.DATA);
+          const textFormated = formatText(response?.data.DATA);
+          setVins(textFormated.slice(8));
           dispatch(showNavbar(true));
           setOpen(true);
           setLoading(false);
@@ -99,12 +100,24 @@ export default function Vins() {
     }
   }
 
+  function formatText(text) {
+    // Remplacer les caractères de retour à la ligne par des balises <br>
+    text = text.replace(/\n/g, "<br>");
+
+    // Remplacer les espaces par des espaces insécables
+    text = text.replace(/ /g, "&nbsp;");
+
+    console.log("text formated => ", text);
+
+    return text;
+  }
+
   async function saveVin() {
     nomPlat = nomPlat.replace(/(\r\n|\n|\r)/gm, "");
-    if(robeVin != undefined){
+    if (robeVin != undefined) {
       robeVin = robeVin.replace(/(\r\n|\n|\r)/gm, "");
-    }else{
-      robeVin = " "
+    } else {
+      robeVin = " ";
     }
     let IAResponse = vins.replace(/(\r\n|\n|\r)/gm, "");
 
@@ -236,7 +249,6 @@ export default function Vins() {
                 id="Robe-du-vin"
                 placeholder="Robe du vin..."
                 onChange={handleRobeVinChange}
-
               >
                 <option value="">Robe du vin...</option>
                 <option value="Rouge">Rouge</option>
@@ -473,7 +485,7 @@ export default function Vins() {
                 {nomPlat ? <p className="title"> {nomPlat} </p> : ""}
                 {robeVin ? <p> Vin {robeVin} </p> : ""}
               </div>
-              {vins ? <p className="bodyResponse">{vins}</p> : ""}
+              {vins && <p className="bodyResponse" dangerouslySetInnerHTML={{ __html: vins }}></p>}
               {allVin?.length > 0 || vins ? (
                 allVin.map((item) => {
                   return (
@@ -482,8 +494,7 @@ export default function Vins() {
                         {<p className="title"> {item.plat_name} </p>}
                         {<p> Vin {item.robeVin} </p>}
                       </div>
-                      <p className="bodyResponse" key={item.id}>
-                        {item.IAResponse.replace(/(?:\r\n|\r|\n)/g, "<br>")}{" "}
+                      <p className="bodyResponse" key={item.id} dangerouslySetInnerHTML={{ __html: item.IAResponse }}>
                       </p>
                     </div>
                   );
