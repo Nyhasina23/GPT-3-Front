@@ -83,9 +83,6 @@ export default function Plats() {
       millesime == undefined ||
       appelation == undefined
     ) {
-      console.log("domaine ", domaine);
-      console.log("millesime ", millesime);
-      console.log("appelation ", appelation);
 
       setErrorMessage("Verifier tous les champs obligatoire");
       setSnackBg("#f44336");
@@ -100,9 +97,9 @@ export default function Plats() {
             prompt: `Donner moi 3 accord-mets avec ce vin 
         
         ${domaine} ,
-        ${cuve} ,
+        ${cuve ? cuve : ""} ,
         ${millesime} ,
-        ${region} ,
+        ${region ? region : ""} ,
         ${appelation} ,
         ${cru ? cru : ""} ,
         ${assemblage ? assemblage : ""} ,
