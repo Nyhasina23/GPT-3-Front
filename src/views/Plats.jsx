@@ -94,7 +94,7 @@ export default function Plats() {
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt: `Donner moi 3 accord-mets avec ce vin 
+            prompt: `A la façon d'un sommelier, recommande moi une recette qui irait parfaitement avec ce vin 
         
         ${domaine} ,
         ${cuve ? cuve : ""} ,
