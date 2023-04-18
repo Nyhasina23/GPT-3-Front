@@ -94,19 +94,7 @@ export default function Plats() {
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt: `A la façon d'un sommelier, recommande moi une recette qui irait parfaitement avec ce vin 
-        
-        ${domaine} ,
-        ${cuve ? cuve : ""} ,
-        ${millesime} ,
-        ${region ? region : ""} ,
-        ${appelation} ,
-        ${cru ? cru : ""} ,
-        ${assemblage ? assemblage : ""} ,
-        ${aromeParfum ? aromeParfum : ""} ,
-        ${recom ? recom : ""} ,
-
-        et une phrase à chaque réponse`,
+            prompt: `A la façon d'un sommelier, recommande moi une recette qui irait parfaitement avec ce vin : domaine ${domaine} millésime ${millesime} appellation ${appelation} ${cuve ? 'cuvé '+ cuve : ""} ${region ? 'région '+region : ""} ${cru ? 'cru ' + cru : ""} ${assemblage ? 'assemblage' + assemblage : ""} ${aromeParfum ? 'arômes et parfums ' + aromeParfum : ""} ${recom ? 'recommandations ' + recom : ""}`
           },
           {
             headers: {
@@ -117,13 +105,16 @@ export default function Plats() {
         .then((response) => {
           setErrorMessage(response.data.STATUS);
           setSnackBg("#4caf50");
+          console.log(' text ' , response?.data.DATA)
           const textFormated = formatText(response?.data.DATA);
+          console.log(' textFormated ' , textFormated)
           setPlats(textFormated.slice(8));
           dispatch(showNavbar(true));
           setOpen(true);
           setLoading(false);
         })
         .catch((err) => {
+          console.log('error  ', err)
           setErrorMessage(err.response.data.MESSAGE);
           setSnackBg("#f44336");
           dispatch(showNavbar(true));
