@@ -23,14 +23,14 @@
 }
 
 .main-plat .left-plat .left-plat-content .form-input-pal {
-    display: flex;
+    /* display: flex; */
     /* flex-wrap: wrap; */
     width: 100%;
 
 }
 
 .main-plat .left-plat .left-plat-content .form-input-pal .left-form {
-    width: 50%;
+    /* width: 50%; */
     display: flex;
     transition: .3s ease all;
     flex-direction: column;
@@ -38,7 +38,7 @@
 }
 
 .main-plat .left-plat .left-plat-content .form-input-pal .right-form {
-    width: 50%;
+    /* width: 50%; */
     transition: .3s ease all;
     display: flex;
     flex-direction: column;
@@ -87,6 +87,13 @@
     position: absolute;
     top: 2.5rem;
     right: 2.5rem;
+}
+
+.main-plat .left-plat .left-plat-content .svg-icon-info {
+    position: absolute;
+    top: 2.7rem;
+    right: 5rem;
+    cursor: pointer;
 }
 
 .main-plat .left-plat .left-plat-content .svg-icon-1.image-input {
