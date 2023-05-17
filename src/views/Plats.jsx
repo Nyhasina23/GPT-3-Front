@@ -12,15 +12,6 @@ import Switch from "@mui/material/Switch";
 import InformationCard from "components/InformationCard";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
-import imageIconInfo from "assets/images/info_ bouteille.png";
-
-const CustomWidthTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))({
-  [`& .${tooltipClasses.tooltip}`]: {
-    maxWidth: 500,
-  },
-});
 
 export default function Plats() {
   const dispatch = useDispatch();
@@ -184,7 +175,10 @@ export default function Plats() {
     setAdvanced(!advanced);
   }
   function handleClickInfo() {
-    // setShowInfo(true)
+    setShowInfo(true);
+  }
+  function closeInfoCard() {
+    setShowInfo(false);
   }
 
   return (
@@ -205,40 +199,31 @@ export default function Plats() {
                   onChange={domaineChange}
                 />
 
-                <CustomWidthTooltip
-                  title={
-                    <>
-                      {" "}
-                      <img className="imageIconInfo" src={imageIconInfo}></img>
-                    </>
-                  }
+                <svg
+                  className="svg-icon-info"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={handleClickInfo}
                 >
-                  <svg
-                    className="svg-icon-info"
-                    width="28"
-                    height="28"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                    onClick={handleClickInfo}
-                  >
-                    <g id="Layer_2" data-name="Layer 2">
-                      <g id="invisible_box" data-name="invisible box">
-                        <rect width="48" height="48" fill="none" />
-                      </g>
-                      <g id="icons_Q2" data-name="icons Q2">
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
-                        />
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
-                        />
-                        <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
-                      </g>
+                  <g id="Layer_2" data-name="Layer 2">
+                    <g id="invisible_box" data-name="invisible box">
+                      <rect width="48" height="48" fill="none" />
                     </g>
-                  </svg>
-                </CustomWidthTooltip>
+                    <g id="icons_Q2" data-name="icons Q2">
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
+                      />
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
+                      />
+                      <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
+                    </g>
+                  </g>
+                </svg>
 
                 <svg
                   className="svg-icon-1"
@@ -285,39 +270,32 @@ export default function Plats() {
                   placeholder="Appellation*"
                   onChange={appelationChange}
                 />
-                <CustomWidthTooltip
-                  title={
-                    <>
-                      {" "}
-                      <img className="imageIconInfo" src={imageIconInfo}></img>
-                    </>
-                  }
+
+                <svg
+                  className="svg-icon-info"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={handleClickInfo}
                 >
-                  <svg
-                    className="svg-icon-info"
-                    width="28"
-                    height="28"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="Layer_2" data-name="Layer 2">
-                      <g id="invisible_box" data-name="invisible box">
-                        <rect width="48" height="48" fill="none" />
-                      </g>
-                      <g id="icons_Q2" data-name="icons Q2">
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
-                        />
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
-                        />
-                        <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
-                      </g>
+                  <g id="Layer_2" data-name="Layer 2">
+                    <g id="invisible_box" data-name="invisible box">
+                      <rect width="48" height="48" fill="none" />
                     </g>
-                  </svg>
-                </CustomWidthTooltip>
+                    <g id="icons_Q2" data-name="icons Q2">
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
+                      />
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
+                      />
+                      <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
+                    </g>
+                  </g>
+                </svg>
 
                 <svg
                   className="svg-icon-1"
@@ -365,39 +343,31 @@ export default function Plats() {
                   onChange={millesimeChange}
                 />
 
-                <CustomWidthTooltip
-                  title={
-                    <>
-                      {" "}
-                      <img className="imageIconInfo" src={imageIconInfo}></img>
-                    </>
-                  }
+                <svg
+                  className="svg-icon-info"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={handleClickInfo}
                 >
-                  <svg
-                    className="svg-icon-info"
-                    width="28"
-                    height="28"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="Layer_2" data-name="Layer 2">
-                      <g id="invisible_box" data-name="invisible box">
-                        <rect width="48" height="48" fill="none" />
-                      </g>
-                      <g id="icons_Q2" data-name="icons Q2">
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
-                        />
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
-                        />
-                        <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
-                      </g>
+                  <g id="Layer_2" data-name="Layer 2">
+                    <g id="invisible_box" data-name="invisible box">
+                      <rect width="48" height="48" fill="none" />
                     </g>
-                  </svg>
-                </CustomWidthTooltip>
+                    <g id="icons_Q2" data-name="icons Q2">
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
+                      />
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
+                      />
+                      <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
+                    </g>
+                  </g>
+                </svg>
 
                 <svg
                   className="svg-icon-1"
@@ -445,39 +415,32 @@ export default function Plats() {
                   onChange={cuveChange}
                 />
 
-                <CustomWidthTooltip
-                  title={
-                    <>
-                      {" "}
-                      <img className="imageIconInfo" src={imageIconInfo}></img>
-                    </>
-                  }
+                <svg
+                  className="svg-icon-info"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={handleClickInfo}
+
                 >
-                  <svg
-                    className="svg-icon-info"
-                    width="28"
-                    height="28"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="Layer_2" data-name="Layer 2">
-                      <g id="invisible_box" data-name="invisible box">
-                        <rect width="48" height="48" fill="none" />
-                      </g>
-                      <g id="icons_Q2" data-name="icons Q2">
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
-                        />
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
-                        />
-                        <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
-                      </g>
+                  <g id="Layer_2" data-name="Layer 2">
+                    <g id="invisible_box" data-name="invisible box">
+                      <rect width="48" height="48" fill="none" />
                     </g>
-                  </svg>
-                </CustomWidthTooltip>
+                    <g id="icons_Q2" data-name="icons Q2">
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
+                      />
+                      <path
+                        fill="#BDBDBD"
+                        d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
+                      />
+                      <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
+                    </g>
+                  </g>
+                </svg>
 
                 <svg
                   className="svg-icon-1"
@@ -800,7 +763,7 @@ export default function Plats() {
           </Button>
         </div>
       </div>
-      {showInfo && <InformationCard />}
+      {showInfo && <InformationCard closeInfoCard={closeInfoCard} />}
     </div>
   );
 }
