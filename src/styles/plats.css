@@ -59,6 +59,10 @@
     display: flex;
 }
 
+.select-input{
+    color: #757575;
+}
+
 
 .main-plat .left-plat .left-plat-content .input-icon .input-file {
     width: 100%;
@@ -136,6 +140,7 @@
     border-radius: 1rem;
     border: 2px solid #b1b1b173;
     font-size: 1.2rem;
+    color: #757575;
 }
 
 .main-plat .left-plat .left-plat-content .input-icon input::placeholder {
@@ -233,7 +238,9 @@
     transition: .5s ease all;
     font-weight: regular;
     margin-top: 0;
-    word-wrap: break-word;
+    hyphenate-character: auto;
+    hyphens: auto;
+    hyphenate-limit-chars: auto;
     max-width: 95%;
 }
 

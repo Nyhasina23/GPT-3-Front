@@ -66,6 +66,7 @@
     border-radius: 1rem;
     border: 2px solid #b1b1b173;
     font-size: 1.2rem;
+    color: #757575;
 }
 
 .main-vin .left-vin .left-vin-content .input-icon input::placeholder {

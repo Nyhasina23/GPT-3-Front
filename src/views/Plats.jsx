@@ -10,8 +10,6 @@ import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import InformationCard from "components/InformationCard";
-import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import { styled } from "@mui/material/styles";
 
 export default function Plats() {
   const dispatch = useDispatch();
@@ -77,7 +75,7 @@ export default function Plats() {
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt: `A la façon d'un sommelier, recommande moi une recette qui irait parfaitement avec ce vin : domaine ${domaine} millésime ${millesime} appellation ${appelation} ${
+            prompt: `A la façon d'un sommelier, recommande moi une recette avec ses préparation et les détails  qui irait parfaitement avec ce vin : domaine ${domaine} millésime ${millesime} appellation ${appelation} ${
               cuve ? "cuvé " + cuve : ""
             } ${robeVin ? ", la robe est " + robeVin : ""} ${
               recom
@@ -113,7 +111,7 @@ export default function Plats() {
 
   function formatText(text) {
     text = text.replace(/\n/g, "<br>");
-    text = text.replace(/ /g, "&nbsp;");
+    // text = text.replace(/ /g, "&nbsp;");
     return text;
   }
 
@@ -543,31 +541,6 @@ export default function Plats() {
                   />
 
                   <svg
-                    className="svg-icon-info"
-                    width="28"
-                    height="28"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="Layer_2" data-name="Layer 2">
-                      <g id="invisible_box" data-name="invisible box">
-                        <rect width="48" height="48" fill="none" />
-                      </g>
-                      <g id="icons_Q2" data-name="icons Q2">
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2Zm0,40A18,18,0,1,1,42,24,18.1,18.1,0,0,1,24,42Z"
-                        />
-                        <path
-                          fill="#BDBDBD"
-                          d="M24,20a2,2,0,0,0-2,2V34a2,2,0,0,0,4,0V22A2,2,0,0,0,24,20Z"
-                        />
-                        <circle fill="#BDBDBD" cx="24" cy="14" r="2" />
-                      </g>
-                    </g>
-                  </svg>
-
-                  <svg
                     className="svg-icon-1"
                     xmlns="http://www.w3.org/2000/svg"
                     width="34"
@@ -718,6 +691,8 @@ export default function Plats() {
             <div className="ia-response-plat">
               <div className="head">
                 {domaine ? <p className="title"> {domaine} </p> : ""}
+                {appelation ? <p className="title"> {appelation} </p> : ""}
+                {millesime ? <p className="title"> {millesime} </p> : ""}
                 {cuve ? <p> {cuve} </p> : ""}
               </div>
               {plats && (
@@ -732,7 +707,10 @@ export default function Plats() {
                     <div>
                       <div className="head">
                         {<p className="title"> {item.domaine} </p>}
+                        {<p className="title"> {item.appelation} </p>}
+                        {<p className="title"> {item.millesime} </p>}
                         {<p> {item.cuve} </p>}
+                        
                       </div>
                       <p
                         className="bodyResponse"
