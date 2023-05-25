@@ -22,7 +22,7 @@ export default function Plats() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const [snackBg, setSnackBg] = useState("#4caf50");
+  const [snackBg, setSnackBg] = useState("");
   const [errorMessage, setErrorMessage] = useState();
   const [domaine, setDomaine] = useState();
   const [cuve, setCuve] = useState();

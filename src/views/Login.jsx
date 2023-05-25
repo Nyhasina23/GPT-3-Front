@@ -23,7 +23,7 @@ export default function Login() {
   const [identity, setIdentity] = useState();
   const [password, setPassword] = useState();
   const [errorMessage, setErrorMessage] = useState();
-  const [snackBg, setSnackBg] = useState("#4caf50");
+  const [snackBg, setSnackBg] = useState("");
 
   async function login() {
     if (identity === undefined || password === undefined) {

@@ -20,7 +20,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState();
   const [errorMessage, setErrorMessage] = useState();
-  const [snackBg, setSnackBg] = useState("#4caf50");
+  const [snackBg, setSnackBg] = useState("");
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [passconf, setPassconf] = useState();

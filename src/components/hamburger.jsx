@@ -67,6 +67,18 @@ export default function Hamburger() {
         <NavLink to="/" className="nav-link-hamburger">
           <MenuItem onClick={handleClose}>Accueil</MenuItem>
         </NavLink>
+
+        <NavLink to="/wine" className="nav-link-hamburger">
+          <MenuItem onClick={handleClose}>Vins</MenuItem>
+        </NavLink>
+        <NavLink to="/pal" className="nav-link-hamburger">
+          <MenuItem onClick={handleClose}>Plats</MenuItem>
+        </NavLink>
+        {userAuthenticated && (
+          <NavLink to="/compte" className="nav-link-hamburger">
+            <MenuItem onClick={handleClose}>Compte</MenuItem>
+          </NavLink>
+        )}
         {!userAuthenticated ? (
           <NavLink to="/login" className="nav-link-hamburger">
             <MenuItem onClick={handleClose}>Connexion</MenuItem>
@@ -76,12 +88,6 @@ export default function Hamburger() {
             <MenuItem onClick={handleClose}>Deconnexion</MenuItem>
           </NavLink>
         )}
-        <NavLink to="/wine" className="nav-link-hamburger">
-          <MenuItem onClick={handleClose}>Vins</MenuItem>
-        </NavLink>
-        <NavLink to="/pal" className="nav-link-hamburger">
-          <MenuItem onClick={handleClose}>Plats</MenuItem>
-        </NavLink>
 
         <Outlet />
       </Menu>

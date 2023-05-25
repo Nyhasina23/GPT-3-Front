@@ -7,6 +7,7 @@ import Vins from "views/Vins";
 import Plats from "views/Plats";
 import NoPage from "views/NoPage";
 import AllVins from "views/AllVins";
+import Account from "views/Account";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/wine" element={<Vins />} />
           <Route exact path="/pal" element={<Plats />} />
           <Route exact path="/all-wines" element={<AllVins />} />
+          <Route exact path="/compte" element={<Account />} />
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

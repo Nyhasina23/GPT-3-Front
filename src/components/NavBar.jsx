@@ -87,6 +87,13 @@ export default function NavBar() {
             <TabsMui label="Plats" className="nav-link" />
           </NavLink>
 
+          {isAuthenticate && <NavLink
+            to="/compte"
+            className={({ isActive }) => (isActive ? "link-active" : "link")}
+          >
+            <TabsMui label="Compte" className="nav-link" />
+          </NavLink>}
+
           {!isAuthenticate ? (
             <NavLink
               to="/login"
