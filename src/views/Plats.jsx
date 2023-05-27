@@ -741,7 +741,8 @@ export default function Plats() {
           </Button>
         </div>
       </div>
-      {showInfo && <InformationCard closeInfoCard={closeInfoCard} />}
+      {showInfo && <InformationCard className="info-card" closeInfoCard={closeInfoCard} />}
+      {showInfo &&  <div className="info-card-overlay"></div>}
     </div>
   );
 }

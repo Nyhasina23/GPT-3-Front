@@ -10,6 +10,7 @@
     background: whitesmoke;
     border-radius: .3rem;
     transition: all ease .5s;
+    z-index: 100;
 }
 .main-info-anim {
     padding: 1rem;
