@@ -113,7 +113,10 @@ export default function Footer() {
         </h3>
       </div>
       <div className="copyright">
-        <p>Winepal | copyright 2023 - Tous droits réservés</p>
+        <p>
+          Winepal | copyright 2023 - Tous droits réservés |{" "}
+          <NavLink>Mentions légales</NavLink>
+        </p>
       </div>
     </div>
   );

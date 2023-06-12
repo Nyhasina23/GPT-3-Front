@@ -86,7 +86,7 @@ export default function UserPassword() {
           variant="contained"
           sx={{ background: "#b90837" }}
         >
-          Enregister
+          Enregistrer
         </Button>
       </Stack>
       {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}

@@ -49,7 +49,7 @@ export default function Account() {
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
+              <ListItemText primary="Profil" />
             </ListItemButton>
             <ListItemButton
               selected={selectedIndex === 1}

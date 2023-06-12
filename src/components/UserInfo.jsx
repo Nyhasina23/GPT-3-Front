@@ -114,7 +114,7 @@ export default function UserInfo() {
           variant="contained"
           sx={{ background: "#b90837" }}
         >
-          Enregister
+          Enregistrer
         </Button>
       </Stack>
       {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}

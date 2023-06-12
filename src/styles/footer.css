@@ -68,9 +68,14 @@
 .main-footer .contact h3 {
     margin-top: 1.5rem;
 }
-
+.main-footer .copyright{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .main-footer .copyright p {
     color: rgba(128, 128, 128, 0.507);
+    margin-right: 1rem;
 }
 
 

@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <div className="main-header">
       <h1>
-      Trouvez vos accords mets & vins parfaits grâce à l'intelligence artificielle
+      L’accord parfait, à portée de main !
       </h1>
       {/* <div className="header-form">
         <input type="text" placeholder="Rechercher votre accord-mets..." />

@@ -14,6 +14,7 @@ import Footer from "components/Footer";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { NavLink } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function Home() {
   const [allVin, setallVin] = useState([]);
@@ -25,6 +26,12 @@ export default function Home() {
   }
 
   useEffect(() => {
+    const cookieValue = Cookies.get("publicite");
+
+    if (!cookieValue) {
+      // Définir le cookie de publicité avec une valeur et une expiration
+      Cookies.set("publicite", "valeur-du-cookie", { expires: 30 }); // Exemple : expiration de 30 jours
+    }
     getAllVins();
   }, []);
 
@@ -37,9 +44,7 @@ export default function Home() {
           title={"VINS"}
           titleColor={"title-secondary"}
           descColor={"desc-secondary"}
-          description={
-            "Générez 3 vins différents à accorder avec votre plat"
-          }
+          description={"Générez 3 vins différents à accorder avec votre plat"}
           textButton={"GENEREZ MON VIN"}
           classButton={"secondary"}
           borderColor={"border-secondary"}
@@ -49,50 +54,13 @@ export default function Home() {
           title={"PLATS"}
           titleColor={"title-primary"}
           descColor={"desc-primary"}
-          description={
-            "Générez un plat à accorder avec votre vin"
-          }
+          description={"Générez un plat à accorder avec votre vin"}
           textButton={"GENEREZ MON PLATS"}
           classButton={"primary"}
           borderColor={"border-primary"}
         />
       </div>
       <Welcome />
-      {/* <div className="main-vin-icons">
-        <div className="vin-card">
-          <div className="vins">
-            {allVin
-              ? allVin.map((item) => (
-                  <VinCard
-                    title={item.domaine}
-                    key={item._id}
-                    image={item.image}
-                    cuve={item.cuve}
-                    millesime={item.millesime}
-                    region={item.region}
-                    appelation={item.appelation}
-                    cru={item.cru}
-                    aromeParfum={item.aromeParfum}
-                    assemblage={item.assemblage}
-                    recom={item.recom}
-                  />
-                ))
-              : ""}
-          </div>
-          <div className="all-vins">
-            <NavLink to="/all-wines">
-              <Button variant="outlined" className="all-vins-btn">
-                VOIR TOUS
-              </Button>
-            </NavLink>
-          </div>
-        </div>
-        <div className="vin-icons">
-          <img src={vin1} alt={vin1} />
-          <img src={vin2} alt={vin2} />
-          <img src={vin3} alt={vin3} />
-        </div>
-      </div> */}
       <Footer />
     </div>
   );

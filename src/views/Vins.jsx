@@ -552,7 +552,7 @@ export default function Vins() {
                   />
                 </g>
               </svg>
-              Vos réponses sont suggérées ici
+              Ici, les accords mets et vins sont tellement parfaits qu'ils devraient être illégaux !
             </h3>
             <hr />
             <div className="ia-response">
