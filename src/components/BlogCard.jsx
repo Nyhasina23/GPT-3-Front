@@ -3,27 +3,31 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, CardActions, Button } from "@mui/material";
-import image from "assets/images/back.jpeg";
+import { CardActionArea, CardActions, Button, Grid } from "@mui/material";
+import ReactMarkdown from "react-markdown";
+import { fileServerAPI } from "../services/apiUrl";
+import "styles/blog.css";
 
-export default function BlogCard() {
+export default function BlogCard({ title, content, image }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card
+      sx={{ maxWidth: 345, minHeight: 350, maxHeight: 350, overflow: "hidden" }}
+    >
       <CardActionArea>
         <CardMedia
           component="img"
           height="140"
-          image={image}
+          image={`${fileServerAPI}/public/${image}`}
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
+          <ReactMarkdown children={content} className="text-content" />
+          {/* <Typography variant="body2" color="text.secondary">
+            {content}
+          </Typography> */}
         </CardContent>
       </CardActionArea>
       <CardActions>
