@@ -8,6 +8,11 @@ import Plats from "views/Plats";
 import NoPage from "views/NoPage";
 import AllVins from "views/AllVins";
 import Account from "views/Account";
+import AddBlog from "views/AddBlog";
+import UserInfo from "./components/UserInfo";
+import UserPassword from "./components/UserPassword";
+import Bilbio from "./components/Bilbio";
+import PlatBilbio from "./components/PlatBilbio";
 
 function App() {
   return (
@@ -21,7 +26,13 @@ function App() {
           <Route exact path="/wine" element={<Vins />} />
           <Route exact path="/pal" element={<Plats />} />
           <Route exact path="/all-wines" element={<AllVins />} />
-          <Route exact path="/compte" element={<Account />} />
+          <Route path="compte" element={<Account />}>
+            <Route path="blog/add" element={<AddBlog />} />
+            <Route path="user/info" element={<UserInfo />} />
+            <Route path="user/password" element={<UserPassword />} />
+            <Route path="user/biblio/wine" element={<Bilbio />} />
+            <Route path="user/biblio/pal" element={<PlatBilbio />} />
+          </Route>
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

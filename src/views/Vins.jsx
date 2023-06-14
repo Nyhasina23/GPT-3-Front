@@ -46,7 +46,7 @@ export default function Vins() {
     setRegion(event.target.value);
   }
 
-  function handleAromeChange(event){
+  function handleAromeChange(event) {
     setArome(event.target.value);
   }
 
@@ -411,7 +411,7 @@ export default function Vins() {
             </div>
           )}
 
-          {advanced &&
+          {advanced && (
             <div className="input-icon">
               <input
                 type="text"
@@ -478,7 +478,7 @@ export default function Vins() {
                 </g>
               </svg>
             </div>
-          }
+          )}
 
           <div className="advanced-search">
             <Switch {...label} className="switch" onClick={switchToAdvanced} />
@@ -516,7 +516,13 @@ export default function Vins() {
       </div>
       <div className="right">
         <div className="right-content">
-          <Button variant="outlined" className="right-btn">
+          <Button
+            variant="outlined"
+            className="right-btn"
+            onClick={() => {
+              navigate("/compte/user/biblio/wine");
+            }}
+          >
             Vos accords
           </Button>
 
@@ -552,13 +558,16 @@ export default function Vins() {
                   />
                 </g>
               </svg>
-              Ici, les accords mets et vins sont tellement parfaits qu'ils devraient être illégaux !
+              Ici, les accords mets et vins sont tellement parfaits qu'ils
+              devraient être illégaux !
             </h3>
             <hr />
             <div className="ia-response">
               <div className="head">
                 {nomPlat ? <p className="title"> {nomPlat} </p> : ""}
-                {robeVin ? <p> Vin {robeVin} </p> : ""}
+                {robeVin ? <p> {robeVin} </p> : ""}
+                {region ? <p> {region} </p> : ""}
+                {arome ? <p> {arome} </p> : ""}
               </div>
               {vins && (
                 <p
@@ -566,29 +575,11 @@ export default function Vins() {
                   dangerouslySetInnerHTML={{ __html: vins }}
                 ></p>
               )}
-              {allVin?.length > 0 || vins ? (
-                allVin.map((item) => {
-                  return (
-                    <div>
-                      <div className="head">
-                        {<p className="title"> {item.plat_name} </p>}
-                        {<p> Vin {item.robeVin} </p>}
-                      </div>
-                      <p
-                        className="bodyResponse"
-                        key={item.id}
-                        dangerouslySetInnerHTML={{ __html: item.IAResponse }}
-                      ></p>
-                    </div>
-                  );
-                })
-              ) : (
-                <p style={{ color: "#b1b1b1" }}>
-                  Prêt pour une aventure gustative ? Tapez votre recherche dans
-                  la barre prévue à cet effet et partez à la découverte de notre
-                  sélection de vins et de mets raffinés. Bon voyage !
-                </p>
-              )}
+              <p style={{ color: "#b1b1b1" }}>
+                Prêt pour une aventure gustative ? Tapez votre recherche dans la
+                barre prévue à cet effet et partez à la découverte de notre
+                sélection de vins et de mets raffinés. Bon voyage !
+              </p>
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={saveVin}>

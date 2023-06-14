@@ -1,0 +1,37 @@
+.head {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.head .title {
+    margin-right: .5rem;
+    word-break: break-all;
+}
+
+.head p {
+    padding: .5rem;
+    border: 2px solid #DE0941;
+    border-radius: 3rem;
+    color: #DE0941;
+    font-weight: bold;
+}
+.bodyResponse {
+    background: #DE0941;
+    padding: 1rem;
+    color: whitesmoke;
+    border-radius: .5rem;
+    transition: .5s ease all;
+    font-weight: regular;
+    margin-top: 0;
+    hyphenate-character: auto;
+    hyphens: auto;
+    hyphenate-limit-chars: auto;
+    word-wrap: break-word;
+    width: 97%;
+}
+
+.biblio-data{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 50rem;
+}

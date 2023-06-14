@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import "styles/button.css";
 import "styles/welcome.css";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,9 @@ export default function Welcome() {
 
   return (
     <div className="main-welcome">
-      <h1>Bienvenue sur WinePal</h1>
+      <Typography variant="h4" fontWeight="bold">
+        Bienvenue sur WinePal
+      </Typography>
       <p>
         {" "}
         Vous êtes-vous déjà retrouvé dans la situation où vous ne savez pas quel

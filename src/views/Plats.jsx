@@ -420,7 +420,6 @@ export default function Plats() {
                   viewBox="0 0 48 48"
                   xmlns="http://www.w3.org/2000/svg"
                   onClick={handleClickInfo}
-
                 >
                   <g id="Layer_2" data-name="Layer 2">
                     <g id="invisible_box" data-name="invisible box">
@@ -618,7 +617,13 @@ export default function Plats() {
       </div>
       <div className="right">
         <div className="right-content">
-          <Button variant="outlined" className="right-btn">
+          <Button
+            variant="outlined"
+            className="right-btn"
+            onClick={() => {
+              navigate("/compte/user/biblio/pal");
+            }}
+          >
             Vos accords
           </Button>
 
@@ -685,7 +690,8 @@ export default function Plats() {
                   </g>
                 </g>
               </svg>
-              Vos réponses sont suggérées ici
+              Ici, les accords mets et vins sont tellement parfaits qu'ils
+              devraient être illégaux !
             </h3>
             <hr />
             <div className="ia-response-plat">
@@ -701,32 +707,11 @@ export default function Plats() {
                   dangerouslySetInnerHTML={{ __html: plats }}
                 ></p>
               )}
-              {allPlats.length > 0 || plats ? (
-                allPlats.map((item) => {
-                  return (
-                    <div>
-                      <div className="head">
-                        {<p className="title"> {item.domaine} </p>}
-                        {<p className="title"> {item.appelation} </p>}
-                        {<p className="title"> {item.millesime} </p>}
-                        {<p> {item.cuve} </p>}
-                        
-                      </div>
-                      <p
-                        className="bodyResponse"
-                        key={item.id}
-                        dangerouslySetInnerHTML={{ __html: item.IAResponse }}
-                      ></p>
-                    </div>
-                  );
-                })
-              ) : (
-                <p style={{ color: "#b1b1b1" }}>
-                  Prêt pour une aventure gustative ? Tapez votre recherche dans
-                  la barre prévue à cet effet et partez à la découverte de notre
-                  sélection de vins et de mets raffinés. Bon voyage !
-                </p>
-              )}
+              <p style={{ color: "#b1b1b1" }}>
+                Prêt pour une aventure gustative ? Tapez votre recherche dans la
+                barre prévue à cet effet et partez à la découverte de notre
+                sélection de vins et de mets raffinés. Bon voyage !
+              </p>
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={savePlat}>
@@ -741,8 +726,10 @@ export default function Plats() {
           </Button>
         </div>
       </div>
-      {showInfo && <InformationCard className="info-card" closeInfoCard={closeInfoCard} />}
-      {showInfo &&  <div className="info-card-overlay"></div>}
+      {showInfo && (
+        <InformationCard className="info-card" closeInfoCard={closeInfoCard} />
+      )}
+      {showInfo && <div className="info-card-overlay"></div>}
     </div>
   );
 }

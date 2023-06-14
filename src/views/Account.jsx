@@ -8,27 +8,18 @@ import ListItemText from "@mui/material/ListItemText";
 import "../styles/account.css";
 import PersonIcon from "@mui/icons-material/Person";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import UserInfo from "components/UserInfo";
-import UserPassword from "components/UserPassword";
-import WidgetsIcon from '@mui/icons-material/Widgets';
-
+import WidgetsIcon from "@mui/icons-material/Widgets";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import { NavLink, Outlet } from "react-router-dom";
+import WineBarIcon from '@mui/icons-material/WineBar';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 export default function Account() {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [userInfo, setUserInfo] = React.useState(true);
-
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-    index == 0  ? setUserInfo(true) : setUserInfo(false);
-    showMenu()
-  };
-
   const showMenu = () => {
-    let menu = document.querySelector('.box-container');
-    menu.classList.toggle('show');
-  }
-
+    let menu = document.querySelector(".box-container");
+    menu.classList.toggle("show");
+  };
   return (
-    <Grid container >
+    <Grid container>
       <Grid item md={2}>
         <Box
           className="box-container"
@@ -38,39 +29,58 @@ export default function Account() {
             bgcolor: "background.paper",
             marginTop: ".2rem",
             zIndex: 0,
-
           }}
         >
           <List component="nav" aria-label="main mailbox folders">
-            <ListItemButton
-              selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}
-            >
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary="Profil" />
-            </ListItemButton>
-            <ListItemButton
-              selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}
-            >
-              <ListItemIcon>
-                <LockOpenIcon />
-              </ListItemIcon>
-              <ListItemText primary="Mot de passe" />
-            </ListItemButton>
+            <NavLink to="/compte/user/info">
+              <ListItemButton onClick={showMenu}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Profil" />
+              </ListItemButton>
+            </NavLink>
+            <NavLink to="/compte/user/password">
+              <ListItemButton onClick={showMenu}>
+                <ListItemIcon>
+                  <LockOpenIcon />
+                </ListItemIcon>
+                <ListItemText primary="Mot de passe" />
+              </ListItemButton>
+            </NavLink>
+            <NavLink to="/compte/blog/add">
+              <ListItemButton onClick={showMenu}>
+                <ListItemIcon>
+                  <PostAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Blog" />
+              </ListItemButton>
+            </NavLink>
+            <NavLink to="/compte/user/biblio/wine">
+              <ListItemButton onClick={showMenu}>
+                <ListItemIcon>
+                  <WineBarIcon />
+                </ListItemIcon>
+                <ListItemText primary="Vins" />
+              </ListItemButton>
+            </NavLink>
+            <NavLink to="/compte/user/biblio/pal">
+              <ListItemButton onClick={showMenu}>
+                <ListItemIcon>
+                  <RestaurantIcon />
+                </ListItemIcon>
+                <ListItemText primary="Plats" />
+              </ListItemButton>
+            </NavLink>
           </List>
         </Box>
       </Grid>
-      <Grid className="grid-container" item xs={12} sm={9} md={3} padding={2}>
-        <Box >
-          {userInfo && <UserInfo />}
-          {!userInfo && <UserPassword />}
+      <Grid className="grid-container" item xs={12} sm={9} md={10} padding={2}>
+        <Box>
+          <Outlet />
         </Box>
       </Grid>
       <WidgetsIcon className="menu" onClick={showMenu} />
-
     </Grid>
   );
 }

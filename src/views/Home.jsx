@@ -5,16 +5,12 @@ import Card from "components/Card";
 import Welcome from "components/Welcome";
 import vins from "assets/icons/vins.svg";
 import plats from "assets/icons/plats.svg";
-import vin1 from "assets/icons/vin1.svg";
-import vin2 from "assets/icons/vin2.svg";
-import vin3 from "assets/icons/vin3.svg";
 import "styles/home.css";
-import VinCard from "components/VinCard";
 import Footer from "components/Footer";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
-import { NavLink } from "react-router-dom";
 import Cookies from "js-cookie";
+import Blog from "components/Blog";
 
 export default function Home() {
   const [allVin, setallVin] = useState([]);
@@ -61,6 +57,9 @@ export default function Home() {
         />
       </div>
       <Welcome />
+      <div className="blog">
+        <Blog />
+      </div>
       <Footer />
     </div>
   );

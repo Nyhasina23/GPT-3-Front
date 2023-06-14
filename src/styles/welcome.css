@@ -5,9 +5,9 @@
     flex-direction: column;
     align-items: center;
     background: #F3F3F3;
-    margin-bottom: 2rem;
-    padding: 1rem;
-    padding-bottom: 3rem;
+    margin: 3rem 0 5rem 0;
+    padding: 3rem 0 3rem 0;
+
 }
 
 .main-welcome h1{

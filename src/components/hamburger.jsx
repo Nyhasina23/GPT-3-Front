@@ -75,7 +75,7 @@ export default function Hamburger() {
           <MenuItem onClick={handleClose}>Plats</MenuItem>
         </NavLink>
         {userAuthenticated && (
-          <NavLink to="/compte" className="nav-link-hamburger">
+          <NavLink to="/compte/user/info" className="nav-link-hamburger">
             <MenuItem onClick={handleClose}>Compte</MenuItem>
           </NavLink>
         )}
