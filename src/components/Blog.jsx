@@ -10,6 +10,7 @@ import { apiURL } from "../services/apiUrl";
 
 export default function Blog() {
   const [allBlog, setAllBlog] = useState();
+  const [accord, setAccord] = useState();
   const token = useSelector((state) => state.user.token);
   const getAllBlog = async () => {
     await axios({
@@ -27,7 +28,24 @@ export default function Blog() {
       });
   };
 
+  const getAccordMonth = async () => {
+    await axios({
+      method: "GET",
+      url: `${apiURL}/blog/accord`,
+      headers: {
+        authorization: token,
+      },
+    })
+      .then((response) => {
+        setAccord(response.data?.DATA);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
+    getAccordMonth();
     getAllBlog();
   }, []);
   return (
@@ -43,9 +61,26 @@ export default function Blog() {
         Blog et accord du mois
       </Typography>
       <Grid container columns={{ md: 12 }}>
-        <Grid item md={6}>
+        <Grid
+          md={6}
+          item
+          xs={12}
+          mt={2}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           {" "}
-          <BlogMonth />
+          {accord?.map((blog) => {
+            return (
+              <BlogMonth
+                id={blog?._id}
+                title={blog?.title}
+                content={blog?.content}
+                image={blog?.image}
+              />
+            );
+          })}
         </Grid>
 
         <Grid item md={6}>
@@ -58,7 +93,16 @@ export default function Blog() {
             >
               {allBlog?.map((blog) => {
                 return (
-                  <Grid item xs={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    mt={2}
+                    sm={6}
+                    md={6}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
                     <BlogCard
                       id={blog?._id}
                       title={blog?.title}

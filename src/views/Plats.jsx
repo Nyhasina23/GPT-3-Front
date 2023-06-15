@@ -699,7 +699,9 @@ export default function Plats() {
                 {domaine ? <p className="title"> {domaine} </p> : ""}
                 {appelation ? <p className="title"> {appelation} </p> : ""}
                 {millesime ? <p className="title"> {millesime} </p> : ""}
-                {cuve ? <p> {cuve} </p> : ""}
+                {cuve ? <p className="title"> {cuve} </p> : ""}
+                {robeVin ? <p className="title"> {robeVin} </p> : ""}
+                {recom ? <p> {recom} </p> : ""}
               </div>
               {plats && (
                 <p

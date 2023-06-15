@@ -3,7 +3,7 @@ import "styles/markdown.css";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import ReactMde from "react-mde";
 import ReactMarkdown from "react-markdown";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { apiURL, fileServerAPI } from "../services/apiUrl";
 import { Button, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -14,39 +14,81 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BlogModal from "./BlogModal";
+import SnackBar from "common/SnackBar";
+import { showNavbar } from "features/snackbar.slice";
 
 export default function BlogEdit() {
+  const [snackBg, setSnackBg] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState();
+  const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingDeleteBtn, setLoadingDeleteBtn] = useState(false);
   const [content, setContent] = React.useState("Write your blog post here...");
   const [selectedTab, setSelectedTab] = useState("write");
   const [file, setFileUpload] = useState();
-  const [filename, setFileUploadFilename] = useState();
   const [title, setTitle] = useState();
   const [showModal, setShowModal] = useState(false);
   const token = useSelector((state) => state.user.token);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
 
   const uploadFile = (event) => {
-    setFileUpload(event.target.files);
+    setFileUpload(event.target?.files);
   };
 
-  const uploadImage = async () => {
+  const updateBlog = async () => {
+    setLoading(true);
     const formData = new FormData();
-    formData.append("images", file[0]);
+    if (file) {
+      formData.append("images", file[0]);
+    }
     await axios({
       method: "POST",
       url: `${fileServerAPI}/upload`,
       data: formData,
     })
-      .then((res) => {
-        setFileUploadFilename(res.data[0]);
+      .then(async (res) => {
+        await axios({
+          method: "PUT",
+          url: `${apiURL}/blog/update/`,
+          headers: {
+            Authorization: token,
+          },
+          data: {
+            id,
+            title,
+            content,
+            image: res?.data[0],
+          },
+        })
+          .then((response) => {
+            setLoading(false);
+            setSnackBg("#4caf50");
+            setErrorMessage(response.data.MESSAGE);
+            setOpen(true);
+            dispatch(showNavbar(true));
+            setTimeout(() => {
+              navigate("/");
+            }, 2000);
+          })
+          .catch((error) => {
+            setLoading(false);
+            setSnackBg("#f44336");
+            setErrorMessage(error.response.data.MESSAGE);
+            setOpen(true);
+            dispatch(showNavbar(true));
+          });
       })
-      .catch(() => {
-        console.log("Error uploading file");
+      .catch((error) => {
+        setLoading(false);
+        setSnackBg("#f44336");
+        setErrorMessage(error.response.data.MESSAGE);
+        setOpen(true);
+        dispatch(showNavbar(true));
       });
   };
 
@@ -61,34 +103,15 @@ export default function BlogEdit() {
       },
     })
       .then((response) => {
-        console.log(response);
         setTitle(response.data.DATA.title);
         setContent(response.data.DATA.content);
       })
       .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const updateBlog = async () => {
-    await axios({
-      method: "PUT",
-      url: `${apiURL}/blog/update/`,
-      headers: {
-        Authorization: token,
-      },
-      data: {
-        id,
-        title,
-        content,
-        image: filename,
-      },
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
+        setLoading(false);
+        setSnackBg("#f44336");
+        setErrorMessage(error.response.data.MESSAGE);
+        setOpen(true);
+        dispatch(showNavbar(true));
       });
   };
 
@@ -99,6 +122,7 @@ export default function BlogEdit() {
     setShowModal(false);
   };
   const deleteBlog = async () => {
+    setLoadingDeleteBtn(true);
     await axios({
       method: "DELETE",
       url: `${apiURL}/blog/delete/`,
@@ -110,13 +134,24 @@ export default function BlogEdit() {
       },
     })
       .then((response) => {
+        setLoadingDeleteBtn(false);
         setShowModal(false);
+        setLoading(false);
+        setSnackBg("#4caf50");
+        setErrorMessage(response.data.MESSAGE);
+        setOpen(true);
+        dispatch(showNavbar(true));
         setTimeout(() => {
           navigate("/");
         }, 2000);
       })
       .catch((error) => {
-        console.log(error);
+        setLoadingDeleteBtn(false);
+        setLoading(false);
+        setSnackBg("#f44336");
+        setErrorMessage(error.response.data.MESSAGE);
+        setOpen(true);
+        dispatch(showNavbar(true));
       });
   };
 
@@ -182,7 +217,7 @@ export default function BlogEdit() {
           sx={{ marginLeft: "1rem" }}
           onClick={showDeleteBlogConfirm}
         >
-          {!loading ? (
+          {!loadingDeleteBtn ? (
             <span> Supprimer </span>
           ) : (
             <LoadingButton
@@ -200,6 +235,7 @@ export default function BlogEdit() {
           deleteBlog={deleteBlog}
         />
       )}
+      {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}
     </div>
   );
 }

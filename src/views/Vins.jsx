@@ -565,9 +565,9 @@ export default function Vins() {
             <div className="ia-response">
               <div className="head">
                 {nomPlat ? <p className="title"> {nomPlat} </p> : ""}
-                {robeVin ? <p> {robeVin} </p> : ""}
-                {region ? <p> {region} </p> : ""}
-                {arome ? <p> {arome} </p> : ""}
+                {robeVin ? <p className="title"> {robeVin} </p> : ""}
+                {region ? <p className="title"> {region} </p> : ""}
+                {arome ? <p className="title"> {arome} </p> : ""}
               </div>
               {vins && (
                 <p

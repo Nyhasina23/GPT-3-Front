@@ -10,64 +10,93 @@ import TextField from "@mui/material/TextField";
 import Input from "@mui/material/Input";
 import { apiURL, fileServerAPI } from "../services/apiUrl";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import SnackBar from "common/SnackBar";
+import { showNavbar } from "features/snackbar.slice";
+import { useNavigate } from "react-router-dom";
 
 export default function MarkdowmEditor() {
+  const [snackBg, setSnackBg] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState();
+  const [open, setOpen] = React.useState(false);
   const [content, setContent] = React.useState("Write your blog post here...");
   const [selectedTab, setSelectedTab] = useState("write");
   const [loading, setLoading] = useState(false);
   const [file, setFileUpload] = useState();
-  const [filename, setFileUploadFilename] = useState();
   const [title, setTitle] = useState();
+  const [type, setType] = useState();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const token = useSelector((state) => state.user.token);
 
   const handleChangeTitle = (event) => {
     setTitle(event.target.value);
   };
+  const handleChangeType = (event) => {
+    setType(event.target.value);
+  };
 
   const uploadFile = (event) => {
     setFileUpload(event.target.files);
   };
 
-  const uploadImage = async () => {
+  const saveBlog = async () => {
+    setLoading(true);
     const formData = new FormData();
-    formData.append("images", file[0]);
+    if (file) {
+      formData.append("images", file[0]);
+    }
     await axios({
       method: "POST",
       url: `${fileServerAPI}/upload`,
       data: formData,
     })
-      .then((res) => {
-        setFileUploadFilename(res.data[0]);
-      })
-      .catch(() => {
-        console.log("Error uploading file");
-      });
-  };
+      .then(async (res) => {
+        console.log("res ", res);
 
-  const saveBlog = async () => {
-    //upload image
-    await uploadImage();
-
-    //create blog
-    await axios({
-      method: "POST",
-      url: `${apiURL}/blog/create`,
-      headers: {
-        authorization: token,
-      },
-      data: {
-        title,
-        content,
-        image: filename,
-      },
-    })
-      .then((response) => {
-        console.log(" blog created ", response);
+        await axios({
+          method: "POST",
+          url: `${apiURL}/blog/create`,
+          headers: {
+            authorization: token,
+          },
+          data: {
+            title,
+            content,
+            image: res?.data[0],
+            type,
+          },
+        })
+          .then((response) => {
+            setLoading(false);
+            setSnackBg("#4caf50");
+            setErrorMessage(response.data.MESSAGE);
+            setOpen(true);
+            dispatch(showNavbar(true));
+            setTimeout(() => {
+              navigate("/");
+            }, 2000);
+          })
+          .catch((error) => {
+            setLoading(false);
+            setSnackBg("#f44336");
+            setErrorMessage(error.response.data.MESSAGE);
+            setOpen(true);
+            dispatch(showNavbar(true));
+          });
       })
       .catch((error) => {
-        console.log(" error when creating blog ", error);
+        setLoading(false);
+        setSnackBg("#f44336");
+        setErrorMessage("Error on uploading image");
+        setOpen(true);
+        dispatch(showNavbar(true));
       });
   };
 
@@ -93,7 +122,7 @@ export default function MarkdowmEditor() {
             <ReactMarkdown children={markdown} source={markdown} />
           )
         }
-        minEditorHeight={500}
+        minEditorHeight={400}
         childProps={{
           writeButton: {
             tabIndex: -1,
@@ -101,6 +130,15 @@ export default function MarkdowmEditor() {
         }}
       />
       <div>
+        <Box sx={{ minWidth: 120 }} mt={2}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Type</InputLabel>
+            <Select value={type} label="Type" onChange={handleChangeType}>
+              <MenuItem value="ACCORD">ACCORD</MenuItem>
+              <MenuItem value="BLOG">BLOG</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
         <Typography variant="h6" mt={2}>
           Ajouter une image
         </Typography>
@@ -122,6 +160,7 @@ export default function MarkdowmEditor() {
           )}
         </Button>
       </div>
+      {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}
     </div>
   );
 }

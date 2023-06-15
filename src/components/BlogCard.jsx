@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, CardActions, Button, Grid } from "@mui/material";
+import { CardActionArea, CardActions, Button } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import { fileServerAPI } from "../services/apiUrl";
 import EditIcon from "@mui/icons-material/Edit";
@@ -21,7 +21,7 @@ export default function BlogCard({ id, title, content, image }) {
           component="img"
           height="140"
           image={`${fileServerAPI}/public/${image}`}
-          alt="green iguana"
+          alt="article de blog"
         />
         <CardContent>
           <Typography
@@ -32,14 +32,17 @@ export default function BlogCard({ id, title, content, image }) {
           >
             {title}
           </Typography>
-          <ReactMarkdown
-            children={content}
-            className="text-content"
-          />
+          <ReactMarkdown children={content} className="text-content" />
         </CardContent>
       </CardActionArea>
       <CardActions sx={{ justifyContent: "space-between" }}>
-        <Button size="small" sx={{ color: "#DE0941" }}>
+        <Button
+          size="small"
+          sx={{ color: "#DE0941" }}
+          onClick={() => {
+            navigate(`/blog/${id}`);
+          }}
+        >
           EN SAVOIR PLUS
         </Button>
         <div>

@@ -14,6 +14,8 @@ import UserPassword from "./components/UserPassword";
 import Bilbio from "./components/Bilbio";
 import PlatBilbio from "./components/PlatBilbio";
 import BlogEdit from "components/BlogEdit";
+import BlogDetail from "views/BlogDetail";
+import { useEffect } from "react";
 
 function App() {
   return (
@@ -35,6 +37,7 @@ function App() {
             <Route path="user/biblio/pal" element={<PlatBilbio />} />
           </Route>
           <Route exact path="/blog/edit/:id" element={<BlogEdit />} />
+          <Route exact path="/blog/:id" element={<BlogDetail />} />
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
