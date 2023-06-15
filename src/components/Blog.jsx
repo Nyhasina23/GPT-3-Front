@@ -20,8 +20,6 @@ export default function Blog() {
       },
     })
       .then((response) => {
-        console.log("response ", response);
-
         setAllBlog(response.data?.DATA);
       })
       .catch((err) => {
@@ -62,6 +60,7 @@ export default function Blog() {
                 return (
                   <Grid item xs={6}>
                     <BlogCard
+                      id={blog?._id}
                       title={blog?.title}
                       content={blog?.content}
                       image={blog?.image}

@@ -13,6 +13,7 @@ import UserInfo from "./components/UserInfo";
 import UserPassword from "./components/UserPassword";
 import Bilbio from "./components/Bilbio";
 import PlatBilbio from "./components/PlatBilbio";
+import BlogEdit from "components/BlogEdit";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="user/biblio/wine" element={<Bilbio />} />
             <Route path="user/biblio/pal" element={<PlatBilbio />} />
           </Route>
+          <Route exact path="/blog/edit/:id" element={<BlogEdit />} />
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

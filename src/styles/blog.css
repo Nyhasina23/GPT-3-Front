@@ -7,3 +7,17 @@
   -webkit-line-clamp: 3; /* number of lines to show */
   -webkit-box-orient: vertical;
 }
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /* line-height: 16px; /* fallback */
+  max-height: 5rem;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.MuiCardContent-root.css-46bh2p-MuiCardContent-root {
+  min-height: 10rem !important;
+  max-height: 10rem !important;
+}

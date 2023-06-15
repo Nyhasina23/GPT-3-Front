@@ -6,9 +6,12 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions, Button, Grid } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import { fileServerAPI } from "../services/apiUrl";
+import EditIcon from "@mui/icons-material/Edit";
 import "styles/blog.css";
+import { useNavigate } from "react-router-dom";
 
-export default function BlogCard({ title, content, image }) {
+export default function BlogCard({ id, title, content, image }) {
+  const navigate = useNavigate();
   return (
     <Card
       sx={{ maxWidth: 345, minHeight: 350, maxHeight: 350, overflow: "hidden" }}
@@ -21,19 +24,32 @@ export default function BlogCard({ title, content, image }) {
           alt="green iguana"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            className="title"
+          >
             {title}
           </Typography>
-          <ReactMarkdown children={content} className="text-content" />
-          {/* <Typography variant="body2" color="text.secondary">
-            {content}
-          </Typography> */}
+          <ReactMarkdown
+            children={content}
+            className="text-content"
+          />
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      <CardActions sx={{ justifyContent: "space-between" }}>
         <Button size="small" sx={{ color: "#DE0941" }}>
           EN SAVOIR PLUS
         </Button>
+        <div>
+          <EditIcon
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate(`/blog/edit/${id}`);
+            }}
+          />
+        </div>
       </CardActions>
     </Card>
   );
