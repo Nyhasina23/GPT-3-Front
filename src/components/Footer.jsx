@@ -115,7 +115,7 @@ export default function Footer() {
       <div className="copyright">
         <p>
           Winepal | copyright 2023 - Tous droits réservés |{" "}
-          <NavLink>Mentions légales</NavLink>
+          <NavLink to="/mention">Mentions légales</NavLink>
         </p>
       </div>
     </div>

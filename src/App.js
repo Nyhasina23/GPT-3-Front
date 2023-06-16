@@ -16,6 +16,7 @@ import PlatBilbio from "./components/PlatBilbio";
 import BlogEdit from "components/BlogEdit";
 import BlogDetail from "views/BlogDetail";
 import { useEffect } from "react";
+import Mention from "views/Mention";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           </Route>
           <Route exact path="/blog/edit/:id" element={<BlogEdit />} />
           <Route exact path="/blog/:id" element={<BlogDetail />} />
+          <Route exact path="/mention" element={<Mention />} />
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
