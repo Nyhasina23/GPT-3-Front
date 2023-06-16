@@ -46,7 +46,8 @@
   .css-10mzr36-MuiGrid-root > .MuiGrid-item {
     padding-left: 0 !important;
   }
-  .css-vo4od0-MuiPaper-root-MuiCard-root {
+  .css-vo4od0-MuiPaper-root-MuiCard-root,
+  .css-15oqozr {
     max-width: 100% !important;
   }
 }
