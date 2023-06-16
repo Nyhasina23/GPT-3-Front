@@ -11,7 +11,9 @@ import { apiURL } from "../services/apiUrl";
 export default function Blog() {
   const [allBlog, setAllBlog] = useState();
   const [accord, setAccord] = useState();
+
   const token = useSelector((state) => state.user.token);
+  
   const getAllBlog = async () => {
     await axios({
       method: "GET",

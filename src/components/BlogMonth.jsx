@@ -15,7 +15,9 @@ import "styles/blogMonth.css";
 export default function BlogMonth({ id, title, content, image }) {
   const navigate = useNavigate();
   const token = useSelector((state) => state.user.token);
-  const role = jwtDecode(token).role;
+  if (token) {
+    var role = jwtDecode(token).role;
+  }
 
   return (
     <Card sx={{ maxWidth: "90%", height: "100%" }}>
@@ -49,14 +51,16 @@ export default function BlogMonth({ id, title, content, image }) {
         >
           EN SAVOIR PLUS
         </Button>
-        {role > 1 && <div>
-          <EditIcon
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              navigate(`/blog/edit/${id}`);
-            }}
-          />
-        </div>}
+        {role > 1 && (
+          <div>
+            <EditIcon
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate(`/blog/edit/${id}`);
+              }}
+            />
+          </div>
+        )}
       </CardActions>
     </Card>
   );

@@ -1,8 +1,21 @@
 import React from "react";
 import "styles/footer.css";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAuthentication,
+  setUserIdentity,
+  setToken,
+} from "features/user.slice";
 
 export default function Footer() {
+  const dispatch = useDispatch();
+  const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
+  function logout() {
+    dispatch(setAuthentication(false));
+    dispatch(setUserIdentity(""));
+    dispatch(setToken(""));
+  }
   return (
     <div className="main-footer">
       <div className="social">
@@ -108,9 +121,15 @@ export default function Footer() {
           <NavLink to="/pal">PLATS</NavLink>
         </h3>
         <h4>|</h4>
-        <h3>
-          <NavLink to="/login">CONNEXION</NavLink>
-        </h3>
+        {!isAuthenticate ? (
+          <h3>
+            <NavLink to="/login">CONNEXION</NavLink>
+          </h3>
+        ) : (
+          <h3>
+            <NavLink onClick={logout}>DECONNEXION</NavLink>
+          </h3>
+        )}
       </div>
       <div className="copyright">
         <p>

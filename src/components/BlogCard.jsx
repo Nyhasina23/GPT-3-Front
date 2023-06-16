@@ -15,7 +15,9 @@ import jwtDecode from "jwt-decode";
 export default function BlogCard({ id, title, content, image }) {
   const navigate = useNavigate();
   const token = useSelector((state) => state.user.token);
-  const role = jwtDecode(token).role;
+  if (token) {
+    var role = jwtDecode(token).role;
+  }
 
   return (
     <Card
