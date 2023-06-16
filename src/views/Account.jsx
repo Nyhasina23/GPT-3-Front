@@ -11,9 +11,14 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import { NavLink, Outlet } from "react-router-dom";
-import WineBarIcon from '@mui/icons-material/WineBar';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
+import WineBarIcon from "@mui/icons-material/WineBar";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import { useSelector } from "react-redux";
+import jwtDecode from "jwt-decode";
+
 export default function Account() {
+  const token = useSelector((state) => state.user.token);
+  const role = jwtDecode(token).role;
   const showMenu = () => {
     let menu = document.querySelector(".box-container");
     menu.classList.toggle("show");
@@ -48,14 +53,16 @@ export default function Account() {
                 <ListItemText primary="Mot de passe" />
               </ListItemButton>
             </NavLink>
-            <NavLink to="/compte/blog/add">
-              <ListItemButton onClick={showMenu}>
-                <ListItemIcon>
-                  <PostAddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Blog" />
-              </ListItemButton>
-            </NavLink>
+            {role > 1 && (
+              <NavLink to="/compte/blog/add">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <PostAddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Blog" />
+                </ListItemButton>
+              </NavLink>
+            )}
             <NavLink to="/compte/user/biblio/wine">
               <ListItemButton onClick={showMenu}>
                 <ListItemIcon>
