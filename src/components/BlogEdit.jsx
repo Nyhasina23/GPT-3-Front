@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import BlogModal from "./BlogModal";
 import SnackBar from "common/SnackBar";
 import { showNavbar } from "features/snackbar.slice";
+import "styles/blogEdit.css";
 
 export default function BlogEdit() {
   const [snackBg, setSnackBg] = React.useState("");
@@ -160,7 +161,7 @@ export default function BlogEdit() {
   }, []);
 
   return (
-    <div className="container" style={{ width: "60%", margin: "auto" }}>
+    <div className="container edit" style={{ width: "60%", margin: "auto" }}>
       <Typography variant="h5" mb={2}>
         Modification d'article - {title}
       </Typography>
@@ -190,7 +191,7 @@ export default function BlogEdit() {
           },
         }}
       />
-      <div>
+      <div className="button-container">
         <Typography variant="h6" mt={2}>
           Ajouter une image
         </Typography>

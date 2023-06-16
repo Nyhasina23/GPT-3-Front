@@ -1,0 +1,9 @@
+@media screen and (max-width: 650px) {
+  .container.edit {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+  }
+  .container {
+    height: fit-content !important;
+  }
+}

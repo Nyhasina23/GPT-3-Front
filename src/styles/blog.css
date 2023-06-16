@@ -30,3 +30,23 @@
   min-height: 10rem !important;
   max-height: 10rem !important;
 }
+
+@media screen and (max-width: 650px) {
+  .css-10mzr36-MuiGrid-root {
+    width: 100 !important;
+    margin-left: 0 !important;
+  }
+}
+
+@media (min-width: 0px) {
+  .css-10mzr36-MuiGrid-root {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+  .css-10mzr36-MuiGrid-root > .MuiGrid-item {
+    padding-left: 0 !important;
+  }
+  .css-vo4od0-MuiPaper-root-MuiCard-root {
+    max-width: 100% !important;
+  }
+}

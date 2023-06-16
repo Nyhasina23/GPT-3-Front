@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import { fileServerAPI } from "../services/apiUrl";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import "styles/blogMonth.css";
 
 export default function BlogMonth({ id, title, content, image }) {
   const navigate = useNavigate();
@@ -18,11 +19,17 @@ export default function BlogMonth({ id, title, content, image }) {
         <CardMedia
           component="img"
           height="500"
+          className="card-media"
           image={`${fileServerAPI}/public/${image}`}
           alt="accord du mois"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div" className="title">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            className="title"
+          >
             {title}
           </Typography>
           <ReactMarkdown children={content} className="text-content-accord" />

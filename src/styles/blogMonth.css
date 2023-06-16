@@ -1,0 +1,20 @@
+@media screen and (max-width: 650px) {
+  .card-media {
+    height: 200px !important;
+  }
+  .css-1lw5l13-MuiGrid-root {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .css-vfmseb-MuiPaper-root-MuiCard-root {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .css-vfmseb-MuiPaper-root-MuiCard-root {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
