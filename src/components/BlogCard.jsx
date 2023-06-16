@@ -9,9 +9,14 @@ import { fileServerAPI } from "../services/apiUrl";
 import EditIcon from "@mui/icons-material/Edit";
 import "styles/blog.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import jwtDecode from "jwt-decode";
 
 export default function BlogCard({ id, title, content, image }) {
   const navigate = useNavigate();
+  const token = useSelector((state) => state.user.token);
+  const role = jwtDecode(token).role;
+
   return (
     <Card
       sx={{ maxWidth: 345, minHeight: 350, maxHeight: 350, overflow: "hidden" }}
@@ -45,14 +50,16 @@ export default function BlogCard({ id, title, content, image }) {
         >
           EN SAVOIR PLUS
         </Button>
-        <div>
-          <EditIcon
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              navigate(`/blog/edit/${id}`);
-            }}
-          />
-        </div>
+        {role > 1 && (
+          <div>
+            <EditIcon
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate(`/blog/edit/${id}`);
+              }}
+            />
+          </div>
+        )}
       </CardActions>
     </Card>
   );

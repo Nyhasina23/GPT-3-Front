@@ -8,10 +8,14 @@ import ReactMarkdown from "react-markdown";
 import { fileServerAPI } from "../services/apiUrl";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import { useSelector } from "react-redux";
+import jwtDecode from "jwt-decode";
 import "styles/blogMonth.css";
 
 export default function BlogMonth({ id, title, content, image }) {
   const navigate = useNavigate();
+  const token = useSelector((state) => state.user.token);
+  const role = jwtDecode(token).role;
 
   return (
     <Card sx={{ maxWidth: "90%", height: "100%" }}>
@@ -45,14 +49,14 @@ export default function BlogMonth({ id, title, content, image }) {
         >
           EN SAVOIR PLUS
         </Button>
-        <div>
+        {role > 1 && <div>
           <EditIcon
             sx={{ cursor: "pointer" }}
             onClick={() => {
               navigate(`/blog/edit/${id}`);
             }}
           />
-        </div>
+        </div>}
       </CardActions>
     </Card>
   );
