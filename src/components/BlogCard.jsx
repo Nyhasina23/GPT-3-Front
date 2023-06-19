@@ -29,6 +29,7 @@ export default function BlogCard({ id, title, content, image }) {
           height="140"
           image={`${fileServerAPI}/public/${image}`}
           alt="article de blog"
+          className="blog-media-card"
         />
         <CardContent>
           <Typography

@@ -4,7 +4,7 @@
   display: -webkit-box;
   /* line-height: 16px; /* fallback */
   max-height: 5rem;
-  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
 }
 .text-content-accord {
@@ -50,5 +50,16 @@
   .css-15oqozr {
     max-width: 100% !important;
     max-height: 100% !important;
+    min-height: 100%;
+  }
+  .blog-media-card {
+    height: fit-content !important;
+  }
+  .css-t1nuxs {
+    margin: 0px 0px 0.35em;
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1.334;
+    letter-spacing: 0em;
   }
 }
