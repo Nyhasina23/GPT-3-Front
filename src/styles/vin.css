@@ -24,7 +24,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 4rem);
 }
 
 .main-vin .left-vin .left-vin-content .input-icon {
