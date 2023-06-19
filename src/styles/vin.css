@@ -24,6 +24,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: calc(100vh - 4rem);
 }
 
 .main-vin .left-vin .left-vin-content .input-icon {
@@ -276,6 +277,7 @@
 
   .main-vin .left-vin .left-vin-content {
     width: 90%;
+    height: 100%;
   }
 
   .main-vin .left-vin .left-vin-content .login-btn {
