@@ -153,19 +153,6 @@ export default function Plats() {
       });
   }
 
-  async function getAllPlats() {
-    const response = await axios.get(`${apiURL}/recipe/all`, {
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    setallPlats(response.data.DATA);
-  }
-
-  useEffect(() => {
-    getAllPlats();
-  }, []);
 
   const label = { inputProps: { "aria-label": "advanced search" } };
 

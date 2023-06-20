@@ -63,17 +63,17 @@ export default function Vins() {
       setOpen(true);
       setLoading(false);
     } else {
-      let prompt = `Peux-tu me recommander trois vins  à la façon d'un caviste professionnel 
-      dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
-      ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
-      A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`;
-
-      if (region != undefined && robeVin != undefined && arome != undefined) {
-        prompt = `Peux-tu me recommander trois vins ${robeVin} dans la région ${region} avec l'arôme ${arome} à la façon d'un caviste professionnel 
+      let prompt = `Peux-tu me recommander trois vins ${
+        robeVin ? robeVin : " "
+      } ${region ? " dans la région " + region : " "} ${
+        arome ? " avec l'arôme " + arome : " "
+      } à la façon d'un caviste professionnel 
         dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
         ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
         A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`;
-      }
+
+      console.log("prompt ", prompt);
+
       await axios
         .post(
           `${apiURL}/gpt3/api/`,
@@ -157,19 +157,6 @@ export default function Vins() {
       });
   }
 
-  async function getAllVins() {
-    const response = await axios.get(`${apiURL}/vin/all`, {
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    setallVin(response.data.DATA);
-  }
-
-  useEffect(() => {
-    getAllVins();
-  }, []);
 
   return (
     <div className="main-vin">
@@ -569,17 +556,18 @@ export default function Vins() {
                 {region ? <p className="title"> {region} </p> : ""}
                 {arome ? <p className="title"> {arome} </p> : ""}
               </div>
-              {vins && (
+              {vins ? (
                 <p
                   className="bodyResponse"
                   dangerouslySetInnerHTML={{ __html: vins }}
                 ></p>
+              ) : (
+                <p style={{ color: "#b1b1b1" }}>
+                  Prêt pour une aventure gustative ? Tapez votre recherche dans
+                  la barre prévue à cet effet et partez à la découverte de notre
+                  sélection de vins et de mets raffinés. Bon voyage !
+                </p>
               )}
-              <p style={{ color: "#b1b1b1" }}>
-                Prêt pour une aventure gustative ? Tapez votre recherche dans la
-                barre prévue à cet effet et partez à la découverte de notre
-                sélection de vins et de mets raffinés. Bon voyage !
-              </p>
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={saveVin}>
