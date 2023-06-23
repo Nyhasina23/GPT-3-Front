@@ -1,0 +1,28 @@
+.custom-height {
+  height: 15rem;
+}
+.list {
+  flex-direction: column;
+  max-height: 15rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid rgba(128, 128, 128, 0.184);
+  border-radius: 0.5rem;
+}
+
+.list-item {
+  flex-direction: column;
+  margin-left: 3rem;
+}
+.dep-title {
+  font-weight: bold;
+}
+
+.partenaire-container {
+  width: 100% !important;
+}
+@media (min-width: 1200px) {
+  .partenaire-container {
+    max-width: 100% !important;
+  }
+}

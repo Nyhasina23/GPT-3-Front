@@ -18,6 +18,7 @@ import BlogDetail from "views/BlogDetail";
 import { useEffect } from "react";
 import Mention from "views/Mention";
 import SnackBar from "common/SnackBar";
+import { AddPartenaire } from "views/AddPartenaire";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="user/password" element={<UserPassword />} />
             <Route path="user/biblio/wine" element={<Bilbio />} />
             <Route path="user/biblio/pal" element={<PlatBilbio />} />
+            <Route exact path="partenaire/add" element={<AddPartenaire />} />
           </Route>
           <Route exact path="/blog/edit/:id" element={<BlogEdit />} />
           <Route exact path="/blog/:id" element={<BlogDetail />} />
