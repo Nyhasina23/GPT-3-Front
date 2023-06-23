@@ -67,7 +67,6 @@ export default function BlogDetail() {
       >
         <CardMedia
           component="img"
-          height="500"
           image={`${fileServerAPI}/public/${image}`}
           alt="green iguana"
         />
@@ -81,7 +80,6 @@ export default function BlogDetail() {
             gutterBottom
             variant="h4"
             component="div"
-            className="title"
           >
             {title}
           </Typography>
