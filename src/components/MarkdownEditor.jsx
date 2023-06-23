@@ -16,14 +16,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import SnackBar from "common/SnackBar";
 import { showNavbar } from "features/snackbar.slice";
 import { useNavigate } from "react-router-dom";
 
 export default function MarkdowmEditor() {
-  const [snackBg, setSnackBg] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState();
-  const [open, setOpen] = React.useState(false);
   const [content, setContent] = React.useState("Write your blog post here...");
   const [selectedTab, setSelectedTab] = useState("write");
   const [loading, setLoading] = useState(false);
@@ -74,29 +70,38 @@ export default function MarkdowmEditor() {
           },
         })
           .then((response) => {
+            dispatch(
+              showNavbar({
+                message: response.data.MESSAGE,
+                type: "SUCCESS",
+                open: true,
+              })
+            );
             setLoading(false);
-            setSnackBg("#4caf50");
-            setErrorMessage(response.data.MESSAGE);
-            setOpen(true);
-            dispatch(showNavbar(true));
             setTimeout(() => {
               navigate("/");
             }, 2000);
           })
           .catch((error) => {
+            dispatch(
+              showNavbar({
+                message: error.response.data.MESSAGE,
+                type: "FAIL",
+                open: true,
+              })
+            );
             setLoading(false);
-            setSnackBg("#f44336");
-            setErrorMessage(error.response.data.MESSAGE);
-            setOpen(true);
-            dispatch(showNavbar(true));
           });
       })
       .catch((error) => {
+        dispatch(
+          showNavbar({
+            message: "Error on uploading image",
+            type: "FAIL",
+            open: true,
+          })
+        );
         setLoading(false);
-        setSnackBg("#f44336");
-        setErrorMessage("Error on uploading image");
-        setOpen(true);
-        dispatch(showNavbar(true));
       });
   };
 
@@ -160,7 +165,6 @@ export default function MarkdowmEditor() {
           )}
         </Button>
       </div>
-      {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}
     </div>
   );
 }

@@ -14,14 +14,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BlogModal from "./BlogModal";
-import SnackBar from "common/SnackBar";
 import { showNavbar } from "features/snackbar.slice";
 import "styles/blogEdit.css";
 
 export default function BlogEdit() {
-  const [snackBg, setSnackBg] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState();
-  const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingDeleteBtn, setLoadingDeleteBtn] = useState(false);
   const [content, setContent] = React.useState("Write your blog post here...");
@@ -67,29 +63,38 @@ export default function BlogEdit() {
           },
         })
           .then((response) => {
+            dispatch(
+              showNavbar({
+                message: response.data.MESSAGE,
+                type: "SUCCESS",
+                open: true,
+              })
+            );
             setLoading(false);
-            setSnackBg("#4caf50");
-            setErrorMessage(response.data.MESSAGE);
-            setOpen(true);
-            dispatch(showNavbar(true));
             setTimeout(() => {
               navigate("/");
             }, 2000);
           })
           .catch((error) => {
+            dispatch(
+              showNavbar({
+                message: error.response.data.MESSAGE,
+                type: "FAIL",
+                open: true,
+              })
+            );
             setLoading(false);
-            setSnackBg("#f44336");
-            setErrorMessage(error.response.data.MESSAGE);
-            setOpen(true);
-            dispatch(showNavbar(true));
           });
       })
       .catch((error) => {
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
         setLoading(false);
-        setSnackBg("#f44336");
-        setErrorMessage(error.response.data.MESSAGE);
-        setOpen(true);
-        dispatch(showNavbar(true));
       });
   };
 
@@ -108,11 +113,14 @@ export default function BlogEdit() {
         setContent(response.data.DATA.content);
       })
       .catch((error) => {
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
         setLoading(false);
-        setSnackBg("#f44336");
-        setErrorMessage(error.response.data.MESSAGE);
-        setOpen(true);
-        dispatch(showNavbar(true));
       });
   };
 
@@ -135,24 +143,30 @@ export default function BlogEdit() {
       },
     })
       .then((response) => {
+        dispatch(
+          showNavbar({
+            message: response.data.MESSAGE,
+            type: "SUCCESS",
+            open: true,
+          })
+        );
         setLoadingDeleteBtn(false);
         setShowModal(false);
         setLoading(false);
-        setSnackBg("#4caf50");
-        setErrorMessage(response.data.MESSAGE);
-        setOpen(true);
-        dispatch(showNavbar(true));
         setTimeout(() => {
           navigate("/");
         }, 2000);
       })
       .catch((error) => {
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
         setLoadingDeleteBtn(false);
         setLoading(false);
-        setSnackBg("#f44336");
-        setErrorMessage(error.response.data.MESSAGE);
-        setOpen(true);
-        dispatch(showNavbar(true));
       });
   };
 
@@ -236,7 +250,6 @@ export default function BlogEdit() {
           deleteBlog={deleteBlog}
         />
       )}
-      {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}
     </div>
   );
 }

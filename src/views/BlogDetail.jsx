@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Card, CardActionArea, Grid } from "@mui/material";
+import { Card, CardActionArea } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import { apiURL, fileServerAPI } from "../services/apiUrl";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import "styles/blogContent.css";
+import { showNavbar } from "features/snackbar.slice";
 
 export default function BlogDetail() {
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [image, setImage] = useState();
   const token = useSelector((state) => state.user.token);
+  const dispatch = useDispatch();
 
   const { id } = useParams();
 
@@ -33,7 +35,13 @@ export default function BlogDetail() {
         setImage(response.data.DATA.image);
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
       });
   };
 
@@ -77,7 +85,7 @@ export default function BlogDetail() {
           >
             {title}
           </Typography>
-          <ReactMarkdown children={content} className="blog-content"/>
+          <ReactMarkdown children={content} className="blog-content" />
         </CardContent>
       </CardActionArea>
     </Card>

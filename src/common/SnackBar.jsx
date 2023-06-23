@@ -7,14 +7,16 @@ import { showNavbar } from "../features/snackbar.slice";
 import { useSelector } from "react-redux";
 import "styles/login.css";
 
-export default function SnackBar({message , bg}) {
-
-
-  const isOpen = useSelector((state) => state.snackbar.showNavbarSuccess);
+export default function SnackBar() {
+  const snackBar = useSelector((state) => state.snackBar.snackBarContent);
   const dispatch = useDispatch();
 
-  const handleClose = (event, reason) => {
-    dispatch(showNavbar(false));
+  const handleClose = () => {
+    dispatch(
+      showNavbar({
+        open: false,
+      })
+    );
   };
 
   const action = (
@@ -34,14 +36,14 @@ export default function SnackBar({message , bg}) {
   return (
     <div>
       <Snackbar
-        open={isOpen}
+        open={snackBar.open}
         autoHideDuration={2000}
         onClose={handleClose}
-        message={message}
+        message={snackBar.message}
         action={action}
         ContentProps={{
           sx: {
-            background: `${bg}`,
+            background: `${snackBar.bg}`,
           },
         }}
       />

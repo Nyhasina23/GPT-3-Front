@@ -6,14 +6,10 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
-import SnackBar from "common/SnackBar";
 import { showNavbar } from "features/snackbar.slice";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function UserPassword() {
-  const [snackBg, setSnackBg] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState();
-  const [open, setOpen] = React.useState(false);
   const [password, setPassword] = React.useState();
   const [newPassword, setNewPassword] = React.useState();
 
@@ -42,16 +38,22 @@ export default function UserPassword() {
         }
       )
       .then(() => {
-        setSnackBg("#4caf50");
-        setErrorMessage("Mot de passe modifiée ");
-        setOpen(true);
-        dispatch(showNavbar(true));
+        dispatch(
+          showNavbar({
+            message: "Mot de passe modifiée",
+            type: "SUCCESS",
+            open: true,
+          })
+        );
       })
       .catch((error) => {
-        setSnackBg("#f44336");
-        setErrorMessage(error.response.data.MESSAGE);
-        setOpen(true);
-        dispatch(showNavbar(true));
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
       });
   };
 
@@ -89,7 +91,6 @@ export default function UserPassword() {
           Enregistrer
         </Button>
       </Stack>
-      {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}
     </Box>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "styles/login.css";
 import { Button } from "@mui/material";
-import SnackBar from "common/SnackBar";
 import { useDispatch } from "react-redux";
 import {
   setAuthentication,
@@ -18,24 +17,21 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [identity, setIdentity] = useState();
   const [password, setPassword] = useState();
-  const [errorMessage, setErrorMessage] = useState();
-  const [snackBg, setSnackBg] = useState("");
 
   async function login() {
     if (identity === undefined || password === undefined) {
-      setOpen(true);
-
-      dispatch(showNavbar(true));
-      setErrorMessage("Remplir tous les champs");
-      setLoading(false);
-      setSnackBg("#f44336");
+      console.log("Here");
+      dispatch(
+        showNavbar({
+          message: "Remplir tous les champs",
+          type: "FAIL",
+          open: true,
+        })
+      );
     } else {
-      setOpen(true);
-      dispatch(showNavbar(true));
       setLoading(true);
 
       await axios
@@ -44,11 +40,14 @@ export default function Login() {
           password,
         })
         .then((response) => {
-          setOpen(true);
-
-          setErrorMessage("Connecté avec succès");
+          dispatch(
+            showNavbar({
+              message: "Connecté avec succès",
+              type: "SUCCESS",
+              open: true,
+            })
+          );
           dispatch(setAuthentication(true));
-          setSnackBg("#4caf50");
           dispatch(setToken(response.data.DATA.token));
           dispatch(setUserIdentity(response.data.DATA.user.username));
           setTimeout(() => {
@@ -56,11 +55,14 @@ export default function Login() {
           }, 2000);
         })
         .catch(() => {
-          setOpen(true);
-
-          setErrorMessage("email ou mot de passe incorrecte");
           setLoading(false);
-          setSnackBg("#f44336");
+          dispatch(
+            showNavbar({
+              message: "email ou mot de passe incorrecte",
+              type: "FAIL",
+              open: true,
+            })
+          );
         });
     }
   }
@@ -79,10 +81,12 @@ export default function Login() {
     setPassword(event.target.value);
   }
 
-  function showMdp(){
-    let password = document.querySelector('#password');
-    const attrPass = password.getAttribute('type');
-    attrPass === "password" ? password.setAttribute('type' , 'text') : password.setAttribute('type' , 'password')
+  function showMdp() {
+    let password = document.querySelector("#password");
+    const attrPass = password.getAttribute("type");
+    attrPass === "password"
+      ? password.setAttribute("type", "text")
+      : password.setAttribute("type", "password");
   }
 
   return (
@@ -206,12 +210,6 @@ export default function Login() {
                 <LoadingButton className="loadButton" loading></LoadingButton>
               )}
             </Button>
-
-            {open ? (
-              <SnackBar open={open} message={errorMessage} bg={snackBg} />
-            ) : (
-              ""
-            )}
           </div>
         </div>
       </div>

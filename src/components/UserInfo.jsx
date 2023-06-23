@@ -11,9 +11,6 @@ import { apiURL } from "services/apiUrl";
 import axios from "axios";
 
 export default function UserInfo() {
-  const [snackBg, setSnackBg] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState();
-  const [open, setOpen] = React.useState(false);
   const [identifiant, setIdentifiant] = React.useState();
   const [email, setEmail] = React.useState();
 
@@ -32,10 +29,11 @@ export default function UserInfo() {
         setEmail(response.data.DATA.email);
       })
       .catch((error) => {
-        setSnackBg("#f44336");
-        setErrorMessage("Utilisateur non trouvé");
-        setOpen(true);
-        dispatch(showNavbar(true));
+        showNavbar({
+          message: error.response.data.MESSAGE,
+          type: "FAIL",
+          open: true,
+        });
       });
   };
 
@@ -54,16 +52,22 @@ export default function UserInfo() {
         }
       )
       .then(() => {
-        setSnackBg("#4caf50");
-        setErrorMessage("Informations modifiée ");
-        setOpen(true);
-        dispatch(showNavbar(true));
+        dispatch(
+          showNavbar({
+            message: "Informations modifiée",
+            type: "SUCCESS",
+            open: true,
+          })
+        );
       })
       .catch((error) => {
-        setSnackBg("#f44336");
-        setErrorMessage(error.response.data.MESSAGE);
-        setOpen(true);
-        dispatch(showNavbar(true));
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
       });
   };
 
@@ -117,7 +121,7 @@ export default function UserInfo() {
           Enregistrer
         </Button>
       </Stack>
-      {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""}
+      {/* {open ? <SnackBar open={open} message={errorMessage} bg={snackBg} /> : ""} */}
     </Box>
   );
 }

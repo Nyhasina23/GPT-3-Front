@@ -1,7 +1,6 @@
 import React from "react";
 import "styles/register.css";
 import { Button } from "@mui/material";
-import SnackBar from "common/SnackBar";
 import { showNavbar } from "features/snackbar.slice";
 import { useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -16,11 +15,8 @@ export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState();
-  const [errorMessage, setErrorMessage] = useState();
-  const [snackBg, setSnackBg] = useState("");
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [passconf, setPassconf] = useState();
@@ -32,18 +28,24 @@ export default function Register() {
       passconf === undefined ||
       password === undefined
     ) {
-      setOpen(true);
-      dispatch(showNavbar(true));
-      setErrorMessage("Remplir tous les champs");
       setLoading(false);
-      setSnackBg("#f44336");
+      dispatch(
+        showNavbar({
+          message: "Remplir tous les champs",
+          type: "FAIL",
+          open: true,
+        })
+      );
       return;
     } else if (password != passconf) {
-      setOpen(true);
-      dispatch(showNavbar(true));
-      setErrorMessage("Mot de passe et confirmation différents");
       setLoading(false);
-      setSnackBg("#f44336");
+      dispatch(
+        showNavbar({
+          message: "Mot de passe et confirmation différents",
+          type: "FAIL",
+          open: true,
+        })
+      );
     } else {
       setLoading(true);
 
@@ -54,22 +56,28 @@ export default function Register() {
           password,
         })
         .then((response) => {
-          setOpen(true);
-          dispatch(showNavbar(true));
-          setErrorMessage(response.data.MESSAGE);
+          dispatch(
+            showNavbar({
+              message: response.data.MESSAGE,
+              type: "SUCCESS",
+              open: true,
+            })
+          );
           dispatch(setAuthentication(true));
           dispatch(setToken(response.data.DATA));
-          setSnackBg("#4caf50");
           setTimeout(() => {
             navigate("/wine");
           }, 2000);
         })
         .catch((err) => {
-          setOpen(true);
-          dispatch(showNavbar(true));
-          setErrorMessage(err.response.data.MESSAGE);
+          dispatch(
+            showNavbar({
+              message: err.response.data.MESSAGE,
+              type: "FAIL",
+              open: true,
+            })
+          );
           setLoading(false);
-          setSnackBg("#f44336");
         });
     }
   }
@@ -87,16 +95,20 @@ export default function Register() {
     setPassconf(event.target.value);
   }
 
-  function showMdp(){
-    let password = document.querySelector('#password');
-    const attrPass = password.getAttribute('type');
-    attrPass === "password" ? password.setAttribute('type' , 'text') : password.setAttribute('type' , 'password')
+  function showMdp() {
+    let password = document.querySelector("#password");
+    const attrPass = password.getAttribute("type");
+    attrPass === "password"
+      ? password.setAttribute("type", "text")
+      : password.setAttribute("type", "password");
   }
 
-  function showMdpConf(){
-    let password = document.querySelector('#passwordConf');
-    const attrPass = password.getAttribute('type');
-    attrPass === "password" ? password.setAttribute('type' , 'text') : password.setAttribute('type' , 'password')
+  function showMdpConf() {
+    let password = document.querySelector("#passwordConf");
+    const attrPass = password.getAttribute("type");
+    attrPass === "password"
+      ? password.setAttribute("type", "text")
+      : password.setAttribute("type", "password");
   }
 
   return (
@@ -314,12 +326,6 @@ export default function Register() {
                 <LoadingButton className="loadButton" loading></LoadingButton>
               )}
             </Button>
-
-            {open ? (
-              <SnackBar open={open} message={errorMessage} bg={snackBg} />
-            ) : (
-              ""
-            )}
           </div>
         </div>
       </div>

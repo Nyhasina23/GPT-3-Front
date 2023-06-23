@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@mui/material";
 import "styles/vin.css";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { showNavbar } from "features/snackbar.slice";
-import SnackBar from "common/SnackBar";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
@@ -18,16 +17,12 @@ export default function Vins() {
     navigate("/pal");
   }
 
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const [snackBg, setSnackBg] = useState("");
-  const [errorMessage, setErrorMessage] = useState();
   const [vins, setVins] = useState();
   let [nomPlat, setNomPlat] = useState();
   let [robeVin, setRobeVin] = useState();
   let [arome, setArome] = useState();
-  let [allVin, setallVin] = useState([]);
   const [region, setRegion] = useState("");
   const [advanced, setAdvanced] = useState(false);
   const label = { inputProps: { "aria-label": "advanced search" } };
@@ -57,10 +52,13 @@ export default function Vins() {
     setLoading(true);
 
     if (nomPlat == undefined) {
-      setErrorMessage("Veuillez remplir le nom du plat");
-      setSnackBg("#f44336");
-      dispatch(showNavbar(true));
-      setOpen(true);
+      dispatch(
+        showNavbar({
+          message: "Veuillez remplir le nom du plat",
+          type: "FAIL",
+          open: true,
+        })
+      );
       setLoading(false);
     } else {
       let prompt = `Peux-tu me recommander trois vins ${
@@ -71,8 +69,6 @@ export default function Vins() {
         dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
         ${nomPlat} ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
         A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${nomPlat}  ?`;
-
-      console.log("prompt ", prompt);
 
       await axios
         .post(
@@ -87,19 +83,25 @@ export default function Vins() {
           }
         )
         .then((response) => {
-          setErrorMessage(response.data.STATUS);
-          setSnackBg("#4caf50");
+          dispatch(
+            showNavbar({
+              message: "Accord généré avec succès",
+              type: "SUCCESS",
+              open: true,
+            })
+          );
           const textFormated = formatText(response?.data.DATA);
           setVins(textFormated.slice(8));
-          dispatch(showNavbar(true));
-          setOpen(true);
           setLoading(false);
         })
         .catch((err) => {
-          setErrorMessage(err.response.data.MESSAGE);
-          setSnackBg("#f44336");
-          dispatch(showNavbar(true));
-          setOpen(true);
+          dispatch(
+            showNavbar({
+              message: err.response.data.MESSAGE,
+              type: "FAIL",
+              open: true,
+            })
+          );
           setLoading(false);
         });
     }
@@ -111,8 +113,6 @@ export default function Vins() {
 
     // Remplacer les espaces par des espaces insécables
     text = text.replace(/ /g, "&nbsp;");
-
-    console.log("text formated => ", text);
 
     return text;
   }
@@ -142,21 +142,26 @@ export default function Vins() {
         }
       )
       .then((response) => {
-        setErrorMessage(response.data.STATUS);
-        setSnackBg("#4caf50");
-        dispatch(showNavbar(true));
-        setOpen(true);
+        dispatch(
+          showNavbar({
+            message: "Enregistré",
+            type: "SUCCESS",
+            open: true,
+          })
+        );
         setSaveLoading(false);
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.MESSAGE);
-        setSnackBg("#f44336");
-        dispatch(showNavbar(true));
-        setOpen(true);
+        dispatch(
+          showNavbar({
+            message: err.response.data.MESSAGE,
+            type: "SUCCESS",
+            open: true,
+          })
+        );
         setSaveLoading(false);
       });
   }
-
 
   return (
     <div className="main-vin">
@@ -493,11 +498,6 @@ export default function Vins() {
                 ></LoadingButton>
               )}
             </Button>
-            {open ? (
-              <SnackBar open={open} message={errorMessage} bg={snackBg} />
-            ) : (
-              ""
-            )}
           </div>
         </div>
       </div>

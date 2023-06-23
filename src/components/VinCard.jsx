@@ -19,15 +19,6 @@ export default function VinCard({
       <img src={`${fileServerAPI}/public/${image}`} alt="vinImg" />
       <div className="vin-info">
         <h1>{title}</h1>
-        {/* <div className="body-container">
-          <p className="bodyCard"> {cuve} - </p>
-          <p className="bodyCard"> {millesime} - </p>
-          <p className="bodyCard"> {region} - </p>
-          <p className="bodyCard"> {appelation} - </p>
-          <p className="bodyCard"> {cru} - </p>
-          <p className="bodyCard"> {aromeParfum} - </p>
-          <p className="bodyCard"> {assemblage} </p>
-        </div> */}
         <KeepMountedModal
           variant="contained"
           className="primary white"

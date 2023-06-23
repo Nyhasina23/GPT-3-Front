@@ -17,12 +17,14 @@ import BlogEdit from "components/BlogEdit";
 import BlogDetail from "views/BlogDetail";
 import { useEffect } from "react";
 import Mention from "views/Mention";
+import SnackBar from "common/SnackBar";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <NavBar />
+        <SnackBar />
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
           <Route exact path="/login" element={<Login />} />

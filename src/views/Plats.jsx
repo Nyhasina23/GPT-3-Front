@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@mui/material";
 import "styles/plats.css";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { showNavbar } from "features/snackbar.slice";
-import SnackBar from "common/SnackBar";
 import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
@@ -19,11 +18,8 @@ export default function Plats() {
     navigate("/wine");
   }
 
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const [snackBg, setSnackBg] = useState("");
-  const [errorMessage, setErrorMessage] = useState();
   const [domaine, setDomaine] = useState();
   const [cuve, setCuve] = useState();
   const [millesime, setMillesime] = useState();
@@ -32,7 +28,6 @@ export default function Plats() {
   const [recom, setRecom] = useState();
   const [plats, setPlats] = useState();
   const [showInfo, setShowInfo] = useState(false);
-  let [allPlats, setallPlats] = useState([]);
   const [advanced, setAdvanced] = useState(false);
 
   function domaineChange(event) {
@@ -65,10 +60,13 @@ export default function Plats() {
       millesime == undefined ||
       appelation == undefined
     ) {
-      setErrorMessage("Verifier tous les champs obligatoire");
-      setSnackBg("#f44336");
-      dispatch(showNavbar(true));
-      setOpen(true);
+      dispatch(
+        showNavbar({
+          message: "Verifier tous les champs obligatoire",
+          type: "FAIL",
+          open: true,
+        })
+      );
       setLoading(false);
     } else {
       await axios
@@ -91,19 +89,25 @@ export default function Plats() {
           }
         )
         .then((response) => {
-          setErrorMessage(response.data.STATUS);
-          setSnackBg("#4caf50");
+          dispatch(
+            showNavbar({
+              message: "Accord généré avec succès",
+              type: "SUCCESS",
+              open: true,
+            })
+          );
           const textFormated = formatText(response?.data.DATA);
           setPlats(textFormated.slice(8));
-          dispatch(showNavbar(true));
-          setOpen(true);
           setLoading(false);
         })
         .catch((err) => {
-          setErrorMessage(err.response.data.MESSAGE);
-          setSnackBg("#f44336");
-          dispatch(showNavbar(true));
-          setOpen(true);
+          dispatch(
+            showNavbar({
+              message: err.response.data.MESSAGE,
+              type: "FAIL",
+              open: true,
+            })
+          );
           setLoading(false);
         });
     }
@@ -137,22 +141,27 @@ export default function Plats() {
           },
         }
       )
-      .then((response) => {
-        setErrorMessage(response.data.STATUS);
-        setSnackBg("#4caf50");
-        dispatch(showNavbar(true));
-        setOpen(true);
+      .then(() => {
+        dispatch(
+          showNavbar({
+            message: "Enregisté",
+            type: "SUCCESS",
+            open: true,
+          })
+        );
         setSaveLoading(false);
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.MESSAGE);
-        setSnackBg("#f44336");
-        dispatch(showNavbar(true));
-        setOpen(true);
+        dispatch(
+          showNavbar({
+            message: err.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
         setSaveLoading(false);
       });
   }
-
 
   const label = { inputProps: { "aria-label": "advanced search" } };
 
@@ -594,11 +603,6 @@ export default function Plats() {
                 ></LoadingButton>
               )}
             </Button>
-            {open ? (
-              <SnackBar open={open} message={errorMessage} bg={snackBg} />
-            ) : (
-              ""
-            )}
           </div>
         </div>
       </div>

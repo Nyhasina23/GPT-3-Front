@@ -7,7 +7,6 @@ import thunk from "redux-thunk";
 import { combineReducers } from "redux";
 import { VinsSlice } from "features/vins.slice";
 
-
 const persistConfig = {
   key: "user",
   storage,
@@ -15,8 +14,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
-  snackbar: snackBarReducer,
   vins: VinsSlice.reducer,
+  snackBar: snackBarReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
