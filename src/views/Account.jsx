@@ -14,6 +14,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import WineBarIcon from "@mui/icons-material/WineBar";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+import AddIcon from "@mui/icons-material/Add";
 import { useSelector } from "react-redux";
 import jwtDecode from "jwt-decode";
 
@@ -86,6 +87,22 @@ export default function Account() {
                   <DashboardCustomizeIcon />
                 </ListItemIcon>
                 <ListItemText primary="Partenaires & Departements" />
+              </ListItemButton>
+            </NavLink>
+            <NavLink to="/compte/vins/add">
+              <ListItemButton onClick={showMenu}>
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add Vins" />
+              </ListItemButton>
+            </NavLink>
+            <NavLink to="/compte/plats/add">
+              <ListItemButton onClick={showMenu}>
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add Plats" />
               </ListItemButton>
             </NavLink>
           </List>
