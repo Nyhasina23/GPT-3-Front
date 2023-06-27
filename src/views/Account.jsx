@@ -15,6 +15,7 @@ import WineBarIcon from "@mui/icons-material/WineBar";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import AddIcon from "@mui/icons-material/Add";
+import DiningIcon from "@mui/icons-material/Dining";
 import { useSelector } from "react-redux";
 import jwtDecode from "jwt-decode";
 
@@ -81,28 +82,42 @@ export default function Account() {
                 <ListItemText primary="Plats" />
               </ListItemButton>
             </NavLink>
-            <NavLink to="/compte/partenaire/add">
+            {role > 1 && (
+              <NavLink to="/compte/partenaire/add">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <DashboardCustomizeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Partenaires & Departements" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {role > 1 && (
+              <NavLink to="/compte/vins/add">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add Vins" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {role > 1 && (
+              <NavLink to="/compte/plats/add">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add Plats" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            <NavLink to="/compte/user/biblio/accord">
               <ListItemButton onClick={showMenu}>
                 <ListItemIcon>
-                  <DashboardCustomizeIcon />
+                  <DiningIcon />
                 </ListItemIcon>
-                <ListItemText primary="Partenaires & Departements" />
-              </ListItemButton>
-            </NavLink>
-            <NavLink to="/compte/vins/add">
-              <ListItemButton onClick={showMenu}>
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Add Vins" />
-              </ListItemButton>
-            </NavLink>
-            <NavLink to="/compte/plats/add">
-              <ListItemButton onClick={showMenu}>
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Add Plats" />
+                <ListItemText primary="Accords" />
               </ListItemButton>
             </NavLink>
           </List>

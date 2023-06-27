@@ -389,6 +389,24 @@
     justify-content: center;
     padding: auto;
   }
+  .main-plat .left-plat .left-plat-content .input-icon input {
+    padding: 1.5rem;
+    margin: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #b1b1b173;
+    font-size: 1.2rem;
+    color: #757575;
+    width: auto;
+  }
+  .main-plat .left-plat .left-plat-content .input-icon select {
+    padding: 1.5rem;
+    margin: 1.5rem;
+    border-radius: 1rem;
+    border: 2px solid #b1b1b173;
+    font-size: 1.2rem;
+    color: #757575;
+    width: auto;
+  }
 }
 
 @media screen and (max-width: 510px) {

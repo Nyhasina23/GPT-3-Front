@@ -15,13 +15,13 @@ import Bilbio from "./components/Bilbio";
 import PlatBilbio from "./components/PlatBilbio";
 import BlogEdit from "components/BlogEdit";
 import BlogDetail from "views/BlogDetail";
-import { useEffect } from "react";
 import Mention from "views/Mention";
 import SnackBar from "common/SnackBar";
 import { AddPartenaire } from "views/AddPartenaire";
-import { GeneratePartenaire } from "views/GeneratePartenaire";
+import GenerateWithPartenaire from "views/GenerateWithPartenaire";
 import { AddVinPartenaire } from "components/AddVinPartenaire";
 import { AddPlatPartenaire } from "components/AddPlatPartenaire";
+import { AccordList } from "components/AccordList";
 
 function App() {
   return (
@@ -42,6 +42,7 @@ function App() {
             <Route path="user/password" element={<UserPassword />} />
             <Route path="user/biblio/wine" element={<Bilbio />} />
             <Route path="user/biblio/pal" element={<PlatBilbio />} />
+            <Route path="user/biblio/accord" element={<AccordList />} />
             <Route exact path="partenaire/add" element={<AddPartenaire />} />
             <Route exact path="vins/add" element={<AddVinPartenaire />} />
             <Route exact path="plats/add" element={<AddPlatPartenaire />} />
@@ -49,7 +50,7 @@ function App() {
           <Route exact path="/blog/edit/:id" element={<BlogEdit />} />
           <Route exact path="/blog/:id" element={<BlogDetail />} />
           <Route exact path="/mention" element={<Mention />} />
-          <Route exact path="/generate" element={<GeneratePartenaire />} />
+          <Route exact path="/generate" element={<GenerateWithPartenaire />} />
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
