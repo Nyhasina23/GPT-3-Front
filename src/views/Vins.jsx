@@ -46,6 +46,7 @@ export default function Vins() {
   }
 
   const token = useSelector((state) => state.user.token);
+  const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
   async function generateWine() {
     // /gpt3/api/
@@ -503,15 +504,17 @@ export default function Vins() {
       </div>
       <div className="right">
         <div className="right-content">
-          <Button
-            variant="outlined"
-            className="right-btn"
-            onClick={() => {
-              navigate("/compte/user/biblio/wine");
-            }}
-          >
-            Vos accords
-          </Button>
+          {isAuthenticate && (
+            <Button
+              variant="outlined"
+              className="right-btn"
+              onClick={() => {
+                navigate("/compte/user/biblio/wine");
+              }}
+            >
+              Vos accords
+            </Button>
+          )}
 
           <div className="vins-response">
             <h3>

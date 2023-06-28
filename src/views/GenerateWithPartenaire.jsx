@@ -103,6 +103,7 @@ const GenerateWithPartenaire = () => {
   };
 
   const token = useSelector((state) => state.user.token);
+  const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
   async function generate() {
     // /gpt3/api/
@@ -461,15 +462,17 @@ const GenerateWithPartenaire = () => {
       </div>
       <div className="right">
         <div className="right-content">
-          <Button
-            variant="outlined"
-            className="right-btn"
-            onClick={() => {
-              navigate("/compte/user/biblio/pal");
-            }}
-          >
-            Vos accords
-          </Button>
+          {isAuthenticate && (
+            <Button
+              variant="outlined"
+              className="right-btn"
+              onClick={() => {
+                navigate("/compte/user/biblio/accord");
+              }}
+            >
+              Vos accords
+            </Button>
+          )}
 
           <div className="vins-response">
             <h3>

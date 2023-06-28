@@ -31,10 +31,12 @@ export function AccordList() {
         {accords?.map((accord) => {
           return (
             <div>
-              <Chip
-                sx={{ marginTop: "1rem" }}
-                label={accord?.partenaireId?.name}
-              />
+              {accord?.partenaireId?.name && (
+                <Chip
+                  sx={{ marginTop: "1rem" }}
+                  label={accord?.partenaireId?.name}
+                />
+              )}
               <div className="head">
                 {accord?.domaine && (
                   <p className="title"> {accord?.domaine} </p>
@@ -52,11 +54,13 @@ export function AccordList() {
                 {accord?.region && <p className="title"> {accord?.region} </p>}
                 {accord?.arome && <p className="title"> {accord?.arome} </p>}
               </div>
-              <p
-                className="bodyResponse"
-                key={accord?._id}
-                dangerouslySetInnerHTML={{ __html: accord?.IAResponse }}
-              ></p>
+              {accord?.IAResponse && (
+                <p
+                  className="bodyResponse"
+                  key={accord?._id}
+                  dangerouslySetInnerHTML={{ __html: accord?.IAResponse }}
+                ></p>
+              )}
             </div>
           );
         })}

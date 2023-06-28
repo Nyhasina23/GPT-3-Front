@@ -16,10 +16,12 @@ export default function Card({
   const navigate = useNavigate();
 
   function switchToWinePal(buttonType) {
-    if (buttonType === "primary") {
+    if (buttonType === "secondary plat") {
       navigate("/pal");
     } else if (buttonType === "secondary") {
       navigate("/wine");
+    } else {
+      navigate("/generate");
     }
   }
 

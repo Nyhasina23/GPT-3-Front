@@ -5,6 +5,7 @@ import Card from "components/Card";
 import Welcome from "components/Welcome";
 import vins from "assets/icons/vins.svg";
 import plats from "assets/icons/plats.svg";
+import ray from "assets/icons/ray.svg";
 import "styles/home.css";
 import Footer from "components/Footer";
 import axios from "axios";
@@ -46,14 +47,24 @@ export default function Home() {
           borderColor={"border-secondary"}
         />
         <Card
-          image={plats}
-          title={"PLATS"}
+          image={ray}
+          title={"Déjà dans le rayon?"}
           titleColor={"title-primary"}
           descColor={"desc-primary"}
+          description={"Générez vos accords via un partenaire"}
+          textButton={"GENEREZ ACCORD"}
+          classButton={"primary mid"}
+          borderColor={"border-primary"}
+        />
+        <Card
+          image={plats}
+          title={"PLATS"}
+          titleColor={"title-secondary"}
+          descColor={"desc-secondary"}
           description={"Générez un plat à accorder avec votre vin"}
           textButton={"GENEREZ MON PLATS"}
-          classButton={"primary"}
-          borderColor={"border-primary"}
+          classButton={"secondary plat"}
+          borderColor={"border-secondary"}
         />
       </div>
       <Welcome />

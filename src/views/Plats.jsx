@@ -50,6 +50,7 @@ export default function Plats() {
   }
 
   const token = useSelector((state) => state.user.token);
+  const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
   async function generatePlats() {
     // /gpt3/api/
@@ -608,15 +609,17 @@ export default function Plats() {
       </div>
       <div className="right">
         <div className="right-content">
-          <Button
-            variant="outlined"
-            className="right-btn"
-            onClick={() => {
-              navigate("/compte/user/biblio/pal");
-            }}
-          >
-            Vos accords
-          </Button>
+          {isAuthenticate && (
+            <Button
+              variant="outlined"
+              className="right-btn"
+              onClick={() => {
+                navigate("/compte/user/biblio/pal");
+              }}
+            >
+              Vos accords
+            </Button>
+          )}
 
           <div className="vins-response">
             <h3>
@@ -694,17 +697,18 @@ export default function Plats() {
                 {robeVin ? <p className="title"> {robeVin} </p> : ""}
                 {recom ? <p> {recom} </p> : ""}
               </div>
-              {plats && (
+              {plats ? (
                 <p
                   className="bodyResponse"
                   dangerouslySetInnerHTML={{ __html: plats }}
                 ></p>
+              ) : (
+                <p style={{ color: "#b1b1b1" }}>
+                  Prêt pour une aventure gustative ? Tapez votre recherche dans
+                  la barre prévue à cet effet et partez à la découverte de notre
+                  sélection de vins et de mets raffinés. Bon voyage !
+                </p>
               )}
-              <p style={{ color: "#b1b1b1" }}>
-                Prêt pour une aventure gustative ? Tapez votre recherche dans la
-                barre prévue à cet effet et partez à la découverte de notre
-                sélection de vins et de mets raffinés. Bon voyage !
-              </p>
             </div>
           </div>
           <Button variant="contained" className="save-btn" onClick={savePlat}>
