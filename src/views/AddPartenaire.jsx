@@ -13,6 +13,9 @@ import { showNavbar } from "features/snackbar.slice";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PartenaireModal from "components/PartenaireModal";
+import DepartementModal from "components/DepartementModal";
 
 export const AddPartenaire = () => {
   const token = useSelector((state) => state.user.token);
@@ -23,6 +26,9 @@ export const AddPartenaire = () => {
   const [departementName, setDepartementName] = useState("");
   const [partenaireId, setPartenaireId] = useState("");
   const [departementId, setDepartementId] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [showModalDep, setShowModalDep] = useState(false);
+
   const dispatch = useDispatch();
 
   const getPartenaires = async () => {
@@ -178,6 +184,80 @@ export const AddPartenaire = () => {
     getDepartements();
   }, []);
 
+  const openPartenaireDeleteModal = (partenaireId, partenaireName) => {
+    setShowModal(true);
+    setPartenaireId(partenaireId);
+    setPartenaireName(partenaireName);
+  };
+
+  const openDepartementDeleteModal = (departementId, departementName) => {
+    setShowModalDep(true);
+    setDepartementId(departementId);
+    setDepartementName(departementName);
+  };
+  const hidePartenaireModal = () => {
+    setShowModal(false);
+  };
+  const hideDepartementModal = () => {
+    setShowModalDep(false);
+  };
+  const deletePartenaire = async () => {
+    await axios({
+      method: "DELETE",
+      url: `${apiURL}/partenaire/${partenaireId}`,
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then(() => {
+        dispatch(
+          showNavbar({
+            message: "Partenaire supprimé",
+            type: "SUCCESS",
+            open: true,
+          })
+        );
+        setShowModal(false);
+      })
+      .catch((error) => {
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
+      });
+  };
+
+  const deleteDepartement = async () => {
+    await axios({
+      method: "DELETE",
+      url: `${apiURL}/departement/${departementId}`,
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then(() => {
+        dispatch(
+          showNavbar({
+            message: "Departement supprimé",
+            type: "SUCCESS",
+            open: true,
+          })
+        );
+        setShowModalDep(false);
+      })
+      .catch((error) => {
+        dispatch(
+          showNavbar({
+            message: error.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
+      });
+  };
   return (
     <Container className="partenaire-container">
       <Grid container>
@@ -239,7 +319,18 @@ export const AddPartenaire = () => {
             <ListItem component="div" disablePadding className="list">
               {partenaires?.map((partenaire) => (
                 <ListItemButton sx={{ width: "100%" }}>
-                  <ListItemText primary={partenaire.name} />
+                  <div className="list-between">
+                    <ListItemText primary={partenaire?.name} />
+                    <DeleteIcon
+                      onClick={() =>
+                        openPartenaireDeleteModal(
+                          partenaire?._id,
+                          partenaire?.name
+                        )
+                      }
+                      className="trash"
+                    />
+                  </div>
                 </ListItemButton>
               ))}
             </ListItem>
@@ -260,10 +351,21 @@ export const AddPartenaire = () => {
               {departements?.map((departement) => (
                 <>
                   <ListItemButton sx={{ width: "100%" }}>
-                    <ListItemText
-                      primary={`Dep - ` + departement.name}
-                      className="dep-title"
-                    />
+                    <div className="list-between">
+                      <ListItemText
+                        primary={`Dep - ` + departement.name}
+                        className="dep-title"
+                      />
+                      <DeleteIcon
+                        onClick={() =>
+                          openDepartementDeleteModal(
+                            departement?._id,
+                            departement?.name
+                          )
+                        }
+                        className="trash"
+                      />
+                    </div>
                   </ListItemButton>
                   <ListItem
                     component="div"
@@ -341,6 +443,22 @@ export const AddPartenaire = () => {
           </Stack>
         </Grid>
       </Grid>
+      {showModal && (
+        <PartenaireModal
+          title={partenaireName}
+          open={showModal}
+          toggleModal={hidePartenaireModal}
+          deletePartenaire={deletePartenaire}
+        />
+      )}
+      {showModalDep && (
+        <DepartementModal
+          title={departementName}
+          open={showModalDep}
+          toggleModal={hideDepartementModal}
+          deleteDepartement={deleteDepartement}
+        />
+      )}
     </Container>
   );
 };

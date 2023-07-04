@@ -21,6 +21,18 @@
 .partenaire-container {
   width: 100% !important;
 }
+.list-between {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.trash {
+  transition: all ease-in-out 0.4s;
+}
+.trash:hover {
+  color: red;
+}
+
 @media (min-width: 1200px) {
   .partenaire-container {
     max-width: 100% !important;
