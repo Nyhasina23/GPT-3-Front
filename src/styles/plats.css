@@ -83,11 +83,10 @@
 
 #region-du-vin {
   width: 100%;
-  padding: 1.5rem;
-  margin: 1.5rem;
   border-radius: 1rem;
   border: 2px solid #b1b1b173;
-  font-size: 1.2rem;
+  font-size: 0.9rem !important;
+
 }
 
 .main-plat .left-plat .left-plat-content .input-icon .input-hidden {
@@ -96,14 +95,14 @@
 
 .main-plat .left-plat .left-plat-content .svg-icon-1 {
   position: absolute;
-  top: 2.5rem;
-  right: 2.5rem;
+  top: 1.6rem;
+  right: 1.7rem;
 }
 
 .main-plat .left-plat .left-plat-content .svg-icon-info {
   position: absolute;
-  top: 2.7rem;
-  right: 5rem;
+  top: 1.9rem;
+  right: 4rem;
   cursor: pointer;
 }
 
@@ -142,26 +141,29 @@
 
 .main-plat .left-plat .left-plat-content .input-icon input {
   width: 100%;
-  padding: 1.5rem;
-  margin: 1.5rem;
+  padding: 1rem;
+  margin: 1rem;
   border-radius: 1rem;
   border: 2px solid #b1b1b173;
   font-size: 1.2rem;
   color: #757575;
+}
+.main-plat .left-plat .left-plat-content .input-icon input::placeholder {
+  font-size: 0.9rem !important;
 }
 
 .main-plat .left-plat .left-plat-content .input-icon .select {
   width: 100%;
-  padding: 1.5rem;
-  margin: 1.5rem;
+  padding: 1rem;
+  margin: 1rem;
   border-radius: 1rem;
   border: 2px solid #b1b1b173;
-  font-size: 1.2rem;
+  font-size: 0.9rem !important;
   color: #757575;
 }
 
 .main-plat .left-plat .left-plat-content .input-icon input::placeholder {
-  font-size: 1.2rem;
+  font-size: 0.9rem !important;
   width: 90%;
 }
 
@@ -390,22 +392,18 @@
     padding: auto;
   }
   .main-plat .left-plat .left-plat-content .input-icon input {
-    padding: 1.5rem;
-    margin: 1.5rem;
     border-radius: 1rem;
     border: 2px solid #b1b1b173;
     font-size: 1.2rem;
     color: #757575;
-    width: auto;
+    /* width: auto; */
   }
   .main-plat .left-plat .left-plat-content .input-icon select {
-    padding: 1.5rem;
-    margin: 1.5rem;
     border-radius: 1rem;
     border: 2px solid #b1b1b173;
     font-size: 1.2rem;
     color: #757575;
-    width: auto;
+    /* width: auto; */
   }
 }
 
