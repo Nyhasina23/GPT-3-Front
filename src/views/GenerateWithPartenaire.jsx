@@ -165,10 +165,7 @@ const GenerateWithPartenaire = () => {
   const getDepartements = async () => {
     await axios({
       method: "GET",
-      url: `${apiURL}/departements`,
-      headers: {
-        Authorization: token,
-      },
+      url: `${apiURL}/departements`
     })
       .then((response) => {
         setDepartements(response?.data.DATA);
