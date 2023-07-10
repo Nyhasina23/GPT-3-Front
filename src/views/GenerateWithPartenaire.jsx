@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import "styles/plats.css";
+import "styles/generate.css";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { showNavbar } from "features/snackbar.slice";
@@ -299,11 +299,13 @@ const GenerateWithPartenaire = () => {
   };
 
   useEffect(() => {
-    getDepartements();
+    if(token){
+      getDepartements();
+    }
   }, []);
 
   return (
-    <div className="main-plat">
+    <div className="main-plat-accord">
       <div className="left-plat">
         <div className="left-plat-content">
           <h1>
