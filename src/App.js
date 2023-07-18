@@ -22,6 +22,7 @@ import GenerateWithPartenaire from "views/GenerateWithPartenaire";
 import { AddVinPartenaire } from "components/AddVinPartenaire";
 import { AddPlatPartenaire } from "components/AddPlatPartenaire";
 import { AccordList } from "components/AccordList";
+import BlogList from "views/BlogList";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route exact path="/blog/:id" element={<BlogDetail />} />
           <Route exact path="/mention" element={<Mention />} />
           <Route exact path="/generate" element={<GenerateWithPartenaire />} />
+          <Route exact path="/blogs" element={<BlogList />} />
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

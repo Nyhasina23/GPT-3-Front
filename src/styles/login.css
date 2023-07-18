@@ -1,152 +1,152 @@
 .main-login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-login .left {
-    flex: 5;
+  flex: 5;
 }
 
 .main-login .left .left-content {
-    width: 37rem;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  width: 37rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-login .left .left-content .input-icon {
-    position: relative;
-    width: 100%;
-    display: flex;
+  position: relative;
+  width: 100%;
+  display: flex;
 }
 
 .main-login .left .left-content .svg-icon-1 {
-    position: absolute;
-    top: 2.5rem;
-    right: 2.5rem;
+  position: absolute;
+  top: 2.5rem;
+  right: 2.5rem;
 }
 
 .main-login .left .left-content .svg-icon-2 {
-    position: absolute;
-    top: 2.5rem;
-    right: 2.5rem;
-    cursor: pointer;
+  position: absolute;
+  top: 2.5rem;
+  right: 2.5rem;
+  cursor: pointer;
+  fill: #232323;
+  width: 32px;
+  height: 32px;
 }
 
 .main-login .left .left-content .svg-icon-3 {
-    position: absolute;
-    top: 2.5rem;
-    right: 2.5rem;
-    cursor: pointer;
+  position: absolute;
+  top: 2.5rem;
+  right: 2.5rem;
+  cursor: pointer;
 }
 
 .main-login .left .left-content h1 {
-    font-size: 2.3rem;
+  font-size: 2.3rem;
 }
 
 .main-login .left .left-content h1 span {
-    color: #DE0941;
+  color: #de0941;
 }
 
 .main-login .left .left-content .input-icon input {
-    width: 100%;
-    padding: 1.5rem;
-    margin: 1.5rem;
-    border-radius: 1rem;
-    border: 2px solid #b1b1b173;
+  width: 100%;
+  padding: 1.5rem;
+  margin: 1.5rem;
+  border-radius: 1rem;
+  border: 2px solid #b1b1b173;
 }
 
 .main-login .left .left-content .input-icon input::placeholder {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .main-login .right {
-    display: flex;
-    flex: 5;
-    height: calc(100vh - 4rem);
-    background-image: url('assets/images/back.jpeg');
-    background-size: cover;
-    background-position-y: 100vh;
+  display: flex;
+  flex: 5;
+  height: calc(100vh - 4rem);
+  background-image: url("assets/images/back.jpeg");
+  background-size: cover;
+  background-position-y: 100vh;
 }
 
-
 .main-login .left .left-content .login-btn {
-    display: flex;
+  display: flex;
 }
 
 .login-btn .register-btn {
-    padding: 1rem 5rem;
-    border-radius: 3rem;
-    font-weight: bolder !important;
-    border: 2px solid #DE0941 !important;
-    color: #DE0941;
-    margin: 1rem;
+  padding: 1rem 5rem;
+  border-radius: 3rem;
+  font-weight: bolder !important;
+  border: 2px solid #de0941 !important;
+  color: #de0941;
+  margin: 1rem;
 }
 
 .login-btn .connexion-btn {
-    padding: 1rem 5rem;
-    border-radius: 3rem;
-    font-weight: bolder !important;
-    border: 2px solid #DE0941 !important;
-    background: #DE0941;
-    margin: 1rem;
+  padding: 1rem 5rem;
+  border-radius: 3rem;
+  font-weight: bolder !important;
+  border: 2px solid #de0941 !important;
+  background: #de0941;
+  margin: 1rem;
 }
 
 .login-btn .connexion-btn:hover {
-    background: #b90837;
+  background: #b90837;
 }
 
 .loadButton {
-    padding: 0.8rem 5rem !important;
+  padding: 0.8rem 5rem !important;
 }
 
 .MuiLoadingButton-loadingIndicator {
-    color: white !important;
+  color: white !important;
 }
 
+@media screen and (max-width: 1110px) {
+  .main-login .right {
+    display: none;
+  }
 
-@media screen and (max-width:1110px) {
-    .main-login .right {
-        display: none;
-    }
-
-    .main-login .left-content {
-        align-items: center;
-        justify-content: center;
-        height: calc(100vh - 4rem);
-    }
+  .main-login .left-content {
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 4rem);
+  }
 }
 
-@media screen and (max-width:650px) {
-    .main-login {
-        width: 90%;
-        margin: auto;
-        display: block;
-    }
+@media screen and (max-width: 650px) {
+  .main-login {
+    width: 90%;
+    margin: auto;
+    display: block;
+  }
 
-    .main-login .left .left-content {
-        width: 90%;
-    }
+  .main-login .left .left-content {
+    width: 90%;
+  }
 
-    .main-login .left .left-content .login-btn {
-        width: 90%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: auto;
-    }
+  .main-login .left .left-content .login-btn {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: auto;
+  }
 }
 
-@media screen and (max-width:510px) {
+@media screen and (max-width: 510px) {
+  .main-login .left .left-content .login-btn {
+    flex-direction: column-reverse;
+  }
 
-    .main-login .left .left-content .login-btn {
-        flex-direction: column-reverse;
-    }
-
-    .main-login .left .left-content .login-btn button {
-        width: 100%;
-    }
+  .main-login .left .left-content .login-btn button {
+    width: 100%;
+  }
 }
