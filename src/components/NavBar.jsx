@@ -86,6 +86,12 @@ export default function NavBar() {
           >
             <TabsMui label="Plats" className="nav-link" />
           </NavLink>
+          <NavLink
+            to="/blogs"
+            className={({ isActive }) => (isActive ? "link-active" : "link")}
+          >
+            <TabsMui label="Blog" className="nav-link" />
+          </NavLink>
 
           {isAuthenticate && (
             <NavLink

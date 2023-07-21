@@ -38,64 +38,74 @@ export default function BlogEdit() {
   };
 
   const updateBlog = async () => {
-    setLoading(true);
     const formData = new FormData();
-    if (file) {
-      formData.append("images", file[0]);
-    }
-    await axios({
-      method: "POST",
-      url: `${fileServerAPI}/upload`,
-      data: formData,
-    })
-      .then(async (res) => {
-        await axios({
-          method: "PUT",
-          url: `${apiURL}/blog/update/`,
-          headers: {
-            Authorization: token,
-          },
-          data: {
-            id,
-            title,
-            content,
-            image: res?.data[0],
-          },
+    setLoading(true);
+    if (!file) {
+      dispatch(
+        showNavbar({
+          message: "Veuillez ajouter une image",
+          type: "FAIL",
+          open: true,
         })
-          .then((response) => {
-            dispatch(
-              showNavbar({
-                message: response.data.MESSAGE,
-                type: "SUCCESS",
-                open: true,
-              })
-            );
-            setLoading(false);
-            setTimeout(() => {
-              navigate("/");
-            }, 2000);
-          })
-          .catch((error) => {
-            dispatch(
-              showNavbar({
-                message: error.response.data.MESSAGE,
-                type: "FAIL",
-                open: true,
-              })
-            );
-            setLoading(false);
-          });
+      );
+      setLoading(false);
+      return;
+    } else {
+      formData.append("images", file[0]);
+      await axios({
+        method: "POST",
+        url: `${fileServerAPI}/upload`,
+        data: formData,
       })
-      .catch((error) => {
-        dispatch(
-          showNavbar({
-            message: error.response.data.MESSAGE,
-            type: "FAIL",
-            open: true,
+        .then(async (res) => {
+          await axios({
+            method: "PUT",
+            url: `${apiURL}/blog/update/`,
+            headers: {
+              Authorization: token,
+            },
+            data: {
+              id,
+              title,
+              content,
+              image: res?.data[0],
+            },
           })
-        );
-        setLoading(false);
-      });
+            .then((response) => {
+              dispatch(
+                showNavbar({
+                  message: response.data.MESSAGE,
+                  type: "SUCCESS",
+                  open: true,
+                })
+              );
+              setLoading(false);
+              setTimeout(() => {
+                navigate("/");
+              }, 2000);
+            })
+            .catch((error) => {
+              dispatch(
+                showNavbar({
+                  message: error.response.data.MESSAGE,
+                  type: "FAIL",
+                  open: true,
+                })
+              );
+              setLoading(false);
+            });
+        })
+        .catch((error) => {
+          dispatch(
+            showNavbar({
+              message: error.response.data,
+              type: "FAIL",
+              open: true,
+            })
+          );
+          setLoading(false);
+        });
+    }
   };
 
   const { id } = useParams();

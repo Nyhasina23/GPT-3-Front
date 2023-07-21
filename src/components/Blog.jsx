@@ -13,17 +13,17 @@ export default function Blog() {
   const [accord, setAccord] = useState();
 
   const token = useSelector((state) => state.user.token);
-  
+
   const getAllBlog = async () => {
     await axios({
       method: "GET",
-      url: `${apiURL}/blog/all`,
+      url: `${apiURL}/blog/all/?page=0&limit=4`,
       headers: {
         authorization: token,
       },
     })
       .then((response) => {
-        setAllBlog(response.data?.DATA);
+        setAllBlog(response?.data?.DATA?.allBlog[0].data);
       })
       .catch((err) => {
         console.log(err);
@@ -33,13 +33,13 @@ export default function Blog() {
   const getAccordMonth = async () => {
     await axios({
       method: "GET",
-      url: `${apiURL}/blog/accord`,
+      url: `${apiURL}/blog/accord/?page=0&limit=1`,
       headers: {
         authorization: token,
       },
     })
       .then((response) => {
-        setAccord(response.data?.DATA);
+        setAccord(response?.data?.DATA?.allAccord[0].data);
       })
       .catch((err) => {
         console.log(err);

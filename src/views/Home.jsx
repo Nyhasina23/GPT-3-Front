@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@mui/material";
+import React from "react";
 import Header from "components/Header";
 import Card from "components/Card";
 import Welcome from "components/Welcome";
@@ -8,30 +7,9 @@ import plats from "assets/icons/plats.svg";
 import ray from "assets/icons/ray.svg";
 import "styles/home.css";
 import Footer from "components/Footer";
-import axios from "axios";
-import { apiURL } from "services/apiUrl";
-import Cookies from "js-cookie";
 import Blog from "components/Blog";
 
 export default function Home() {
-  const [allVin, setallVin] = useState([]);
-  const count = 4;
-  async function getAllVins() {
-    const response = await axios.get(`${apiURL}/recipes/?count=${count}`);
-
-    setallVin(response.data.DATA);
-  }
-
-  useEffect(() => {
-    const cookieValue = Cookies.get("publicite");
-
-    if (!cookieValue) {
-      // Définir le cookie de publicité avec une valeur et une expiration
-      Cookies.set("publicite", "valeur-du-cookie", { expires: 30 }); // Exemple : expiration de 30 jours
-    }
-    getAllVins();
-  }, []);
-
   return (
     <div>
       <Header />
