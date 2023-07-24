@@ -170,6 +170,15 @@ export default function Login() {
             )}
           </div>
 
+          <div>
+            <p
+              className="forgot-mdp"
+              onClick={() => navigate("/forgot-password")}
+            >
+              Mot de passe oublié ?
+            </p>
+          </div>
+
           <div className="login-btn">
             <Button
               variant="outlined"
@@ -178,17 +187,14 @@ export default function Login() {
             >
               S'inscrire
             </Button>
-            <Button
+            <LoadingButton
+              onClick={login}
+              loading={loading}
               variant="contained"
               className="connexion-btn"
-              onClick={login}
             >
-              {!loading ? (
-                <span> Connexion </span>
-              ) : (
-                <LoadingButton className="loadButton" loading></LoadingButton>
-              )}
-            </Button>
+              <span> Connexion</span>
+            </LoadingButton>
           </div>
         </div>
       </div>

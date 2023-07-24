@@ -23,6 +23,8 @@ import { AddVinPartenaire } from "components/AddVinPartenaire";
 import { AddPlatPartenaire } from "components/AddPlatPartenaire";
 import { AccordList } from "components/AccordList";
 import BlogList from "views/BlogList";
+import ForgotPassword from "views/ForgotPassword";
+import ResetPassword from "views/ResetPassword";
 
 function App() {
   return (
@@ -53,6 +55,12 @@ function App() {
           <Route exact path="/mention" element={<Mention />} />
           <Route exact path="/generate" element={<GenerateWithPartenaire />} />
           <Route exact path="/blogs" element={<BlogList />} />
+          <Route exact path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            exact
+            path="/reset-password/:email"
+            element={<ResetPassword />}
+          />
           <Route exact path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>

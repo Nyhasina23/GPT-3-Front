@@ -8,6 +8,14 @@
   flex: 5;
 }
 
+.forgot-mdp {
+  margin: 0;
+}
+.forgot-mdp:hover {
+  color: #b90837;
+  cursor: pointer;
+}
+
 .main-login .left .left-content {
   width: 37rem;
   margin: 0 auto;
@@ -92,7 +100,7 @@
   padding: 1rem 5rem;
   border-radius: 3rem;
   font-weight: bolder !important;
-  border: 2px solid #de0941 !important;
+  /* border: 2px solid #de0941 !important; */
   background: #de0941;
   margin: 1rem;
 }
