@@ -9,6 +9,7 @@ import { apiURL } from "services/apiUrl";
 import { useDispatch } from "react-redux";
 import { showNavbar } from "features/snackbar.slice";
 import LoadingButton from "@mui/lab/LoadingButton";
+import winepal from "assets/images/winepal_logo.png";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ export default function ForgotPassword() {
   };
   return (
     <div className="forgot-password-main">
+      <img src={winepal} alt="winepal_logo" className="logo-winepal" />
       <Typography mb={2} variant="h5" fontWeight={"bold"} textAlign={"center"}>
         Réinitialisation du mot de passe 1/2
       </Typography>
