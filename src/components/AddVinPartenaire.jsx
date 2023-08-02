@@ -17,6 +17,7 @@ export const AddVinPartenaire = () => {
   const [appelation, setAppellation] = useState(null);
   const [robeVin, setRobeVin] = useState(null);
   const [acomp, setAcomp] = useState(null);
+  const [price, setPrice] = useState(null);
   const [partenaireId, setPartenaireId] = useState(null);
   const [partenaires, setPartenaires] = useState([{}]);
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ export const AddVinPartenaire = () => {
         robeVin,
         acomp,
         partenaireId,
+        price,
       },
     })
       .then(() => {
@@ -91,17 +93,24 @@ export const AddVinPartenaire = () => {
         <Typography variant="h5">Ajouter Vin Partenaire</Typography>
         <TextField
           id="outlined-basic"
-          label="Domaine"
+          label="Domaine*"
           variant="outlined"
           fullWidth
           onChange={(e) => setDomaine(e.target.value)}
         />
         <TextField
           id="outlined-basic"
-          label="Millésime"
+          label="Millésime*"
           variant="outlined"
           fullWidth
           onChange={(e) => setMillesime(e.target.value)}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Appellation*"
+          variant="outlined"
+          fullWidth
+          onChange={(e) => setAppellation(e.target.value)}
         />
         <TextField
           id="outlined-basic"
@@ -110,13 +119,7 @@ export const AddVinPartenaire = () => {
           fullWidth
           onChange={(e) => setCuve(e.target.value)}
         />
-        <TextField
-          id="outlined-basic"
-          label="Appellation"
-          variant="outlined"
-          fullWidth
-          onChange={(e) => setAppellation(e.target.value)}
-        />
+
         <FormControl sx={{ m: 1, width: "100%" }}>
           <InputLabel htmlFor="grouped-native-select">Robe du vin</InputLabel>
           <Select
@@ -144,6 +147,13 @@ export const AddVinPartenaire = () => {
           variant="outlined"
           fullWidth
           onChange={(e) => setAcomp(e.target.value)}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Prix*"
+          variant="outlined"
+          fullWidth
+          onChange={(e) => setPrice(e.target.value)}
         />
         <FormControl sx={{ m: 1, width: "100%" }}>
           <InputLabel htmlFor="grouped-native-select">Partenaire</InputLabel>
