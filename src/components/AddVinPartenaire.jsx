@@ -9,6 +9,7 @@ import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { showNavbar } from "features/snackbar.slice";
 import { useDispatch, useSelector } from "react-redux";
+import { MuiChipsInput } from "mui-chips-input";
 
 export const AddVinPartenaire = () => {
   const [domaine, setDomaine] = useState(null);
@@ -22,6 +23,11 @@ export const AddVinPartenaire = () => {
   const [partenaires, setPartenaires] = useState([{}]);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.user.token);
+  const [chips, setChips] = React.useState([]);
+
+  const handleChange = (newChips) => {
+    setChips(newChips);
+  };
 
   const getPartenaires = async () => {
     await axios({
@@ -154,6 +160,11 @@ export const AddVinPartenaire = () => {
           variant="outlined"
           fullWidth
           onChange={(e) => setPrice(e.target.value)}
+        />
+        <MuiChipsInput
+          value={chips}
+          onChange={handleChange}
+          placeholder="Recommandations : type and press enter... "
         />
         <FormControl sx={{ m: 1, width: "100%" }}>
           <InputLabel htmlFor="grouped-native-select">Partenaire</InputLabel>
