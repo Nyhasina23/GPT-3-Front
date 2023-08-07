@@ -91,19 +91,15 @@ const GenerateWithPartenaire = () => {
   const generate = async () => {
     setLoading(true);
 
-    let url_query = `partenaireId=${partenaireId}&plat_name=${nomPlat}&robeVin=${
-      robeVin ? robeVin : ""
-    }&region=${region ? region : ""}&arome=${
-      arome ? arome : ""
-    }&page=${page}&limit=${rowsPerPage}&minPrice=${
-      minPrice ? minPrice : ""
-    }&maxPrice=${maxPrice ? maxPrice : ""}`;
+    let url_query = `partenaireId=${partenaireId}&plat_name=${nomPlat}${
+      robeVin ? "&robeVin=" + robeVin : ""
+    }${region ? "&region=" + region : ""}${
+      arome ? "&arome=" + arome : ""
+    }&page=${page}&limit=${rowsPerPage}${
+      minPrice ? "&minPrice=" + minPrice : ""
+    }${maxPrice ? "&maxPrice=" + maxPrice : ""}`;
     await axios
-      .get(`${apiURL}/vin/partenaire/suggest/?${url_query}`, {
-        headers: {
-          Authorization: token,
-        },
-      })
+      .get(`${apiURL}/vin/partenaire/suggest/?${url_query}`)
       .then((response) => {
         setLoading(false);
         console.log("response ", response);
@@ -121,13 +117,24 @@ const GenerateWithPartenaire = () => {
       .catch((err) => {
         setLoading(false);
 
-        dispatch(
-          showNavbar({
-            message: err.response.data.MESSAGE,
-            type: "FAIL",
-            open: true,
-          })
-        );
+        if (err.response.status === 404) {
+          dispatch(
+            showNavbar({
+              message: "Suggestion non trouvée",
+              type: "FAIL",
+              open: true,
+            })
+          );
+        } else {
+          dispatch(
+            showNavbar({
+              message: err.response.data.MESSAGE,
+              type: "FAIL",
+              open: true,
+            })
+          );
+        }
+
         setUserResponse("");
       });
   };
@@ -137,9 +144,9 @@ const GenerateWithPartenaire = () => {
   };
 
   useEffect(() => {
-    if (token) {
-      getDepartements();
-    }
+    // if (token) {
+    getDepartements();
+    // }
   }, []);
 
   useEffect(() => {
