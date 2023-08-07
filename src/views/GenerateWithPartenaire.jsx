@@ -9,6 +9,7 @@ import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import { memo } from "react";
+import TablePagination from "@mui/material/TablePagination";
 
 const GenerateWithPartenaire = () => {
   const dispatch = useDispatch();
@@ -20,17 +21,36 @@ const GenerateWithPartenaire = () => {
   const [vinsOrPlat, setVinOrPlat] = useState(null);
   const [departements, setDepartements] = useState([{}]);
   const [partenaireId, setPartenaireId] = useState(null);
-  const [vinPlatsPlaceHolder, setVinPlatsPlaceHolder] = useState(
-    "Liste de plats ou vins selon vos choix"
-  );
 
-  const [vinPartenaireList, setVinPartenaireList] = useState([{}]);
-  const [platPartenaireList, setPlatPartenaireList] = useState([{}]);
-  const [vinPrompt, setVinPrompt] = useState(null);
-  const [platPrompt, setPlatPromt] = useState(null);
   const [userResponse, setUserResponse] = useState(null);
-  const [vinByDomaine, setVinByDomaine] = useState(null);
-  const [platByName, setPlatByName] = useState(null);
+  const [nomPlat, setNomPlat] = useState(null);
+  const [region, setRegion] = useState(null);
+  const [robeVin, setRobeVin] = useState(null);
+  const [arome, setArome] = useState(null);
+
+  const [page, setPage] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+  const [minPrice, setMinPrice] = React.useState();
+  const [maxPrice, setMaxPrice] = React.useState();
+  const [rowsPerPage, setRowsPerPage] = React.useState(6);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const regionChange = (event) => {
+    setRegion(event.target.value);
+  };
+  const handleRobeVinChange = (event) => {
+    setRobeVin(event.target.value);
+  };
+  const handleAromeChange = (event) => {
+    setArome(event.target.value);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const label = { inputProps: { "aria-label": "advanced search" } };
 
@@ -40,132 +60,19 @@ const GenerateWithPartenaire = () => {
 
   const onChangeSelectVinOrPlat = (e) => {
     if (e.target.value === "VINS") {
-      setVinPlatsPlaceHolder("Choississez vos vins");
       setVinOrPlat("VINS");
-      setPlatPartenaireList(null);
-      setPlatByName(null);
-      getVinPartenaire(partenaireId);
     } else if (e.target.value === "PLATS") {
-      setVinPlatsPlaceHolder("Choississez vos plats");
       setVinOrPlat("PLATS");
-      setVinPartenaireList(null);
-      setVinByDomaine(null);
-      getPlatPartenaire(partenaireId);
-    } else {
-      setVinPlatsPlaceHolder("Liste de plats ou vins selon vos choix");
-      setPlatPartenaireList(null);
-      setVinPartenaireList(null);
-    }
-  };
-
-  const handleChangeUserChoixOnVinOrPlat = async (e) => {
-    if (vinsOrPlat === "VINS") {
-      setUserResponse(null);
-      setPlatPromt(null);
-      const vin = await getVinByDomaine(e.target.value);
-      setVinPrompt(
-        `A la façon d'un sommelier, recommande moi une recette avec ses préparation et les détails  qui irait parfaitement avec ce vin : domaine ${
-          vin.data.DATA?.domaine
-        } millésime ${vin.data.DATA?.millesime} appellation ${
-          vin.data.DATA?.appelation
-        } ${vin.data.DATA?.cuve ? "cuvée " + vin.data.DATA?.cuve : ""} ${
-          vin.data.DATA?.robeVin
-            ? ", la robe est " + vin.data.DATA?.robeVin
-            : ""
-        } ${
-          vin.data.DATA?.acomp
-            ? " et à savoir que j'ai déjà prévu un accompagnement qui est " +
-              vin.data.DATA?.acomp
-            : ""
-        }`
-      );
-    } else if (vinsOrPlat === "PLATS") {
-      setUserResponse(null);
-      setVinPrompt(null);
-      const plat = await getPlatByName(e.target.value);
-      setPlatPromt(`Peux-tu me recommander trois vins ${
-        plat.data.DATA?.robeVin ? plat.data.DATA?.robeVin : " "
-      } ${
-        plat.data.DATA?.region
-          ? " dans la région " + plat.data.DATA?.region
-          : " "
-      } ${
-        plat.data.DATA?.arome ? " avec l'arôme " + plat.data.DATA?.arome : " "
-      } à la façon d'un caviste professionnel 
-        dans trois gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros et plus pour accompagner 
-        ${
-          plat.data.DATA?.plat_name
-        } ? Et peux-tu recommander un domaine et ou une cuvée spécifique pour chaque vin ? 
-        A la fin peux-tu me faire une recommandation générale d’un type vin qui irait bien avec des ${
-          plat.data.DATA?.plat_name
-        }  ?`);
     }
   };
 
   const token = useSelector((state) => state.user.token);
   const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
-  async function generate() {
-    // /gpt3/api/
-    setLoading(true);
-
-    if (vinPrompt === null && platPrompt === null) {
-      dispatch(
-        showNavbar({
-          message: "Verifier tous les champs obligatoire",
-          type: "FAIL",
-          open: true,
-        })
-      );
-      setLoading(false);
-    } else {
-      await axios
-        .post(
-          `${apiURL}/gpt3/api/`,
-          {
-            prompt: vinPrompt ? vinPrompt : platPrompt,
-          },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        )
-        .then((response) => {
-          dispatch(
-            showNavbar({
-              message: "Accord généré avec succès",
-              type: "SUCCESS",
-              open: true,
-            })
-          );
-          const textFormated = formatText(response?.data.DATA);
-          setUserResponse(textFormated.slice(8));
-          setLoading(false);
-        })
-        .catch((err) => {
-          dispatch(
-            showNavbar({
-              message: err.response.data.MESSAGE,
-              type: "FAIL",
-              open: true,
-            })
-          );
-          setLoading(false);
-        });
-    }
-  }
-
-  function formatText(text) {
-    text = text.replace(/\n/g, "<br>");
-    // text = text.replace(/ /g, "&nbsp;");
-    return text;
-  }
-
   const getDepartements = async () => {
     await axios({
       method: "GET",
-      url: `${apiURL}/departements`
+      url: `${apiURL}/departements`,
     })
       .then((response) => {
         setDepartements(response?.data.DATA);
@@ -181,112 +88,37 @@ const GenerateWithPartenaire = () => {
       });
   };
 
-  const getVinPartenaire = async (partenaireIdentifiant) => {
-    await axios({
-      method: "GET",
-      url: `${apiURL}/vins/partenaire/${partenaireIdentifiant}`,
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((response) => {
-        setVinPartenaireList(response?.data.DATA);
-      })
-      .catch((error) => {
-        dispatch(
-          showNavbar({
-            message: error.response.data.MESSAGE,
-            type: "FAIL",
-            open: true,
-          })
-        );
-      });
-  };
+  const generate = async () => {
+    setLoading(true);
 
-  const getPlatPartenaire = async (partenaireIdentifiant) => {
-    await axios({
-      method: "GET",
-      url: `${apiURL}/plat/partenaire/${partenaireIdentifiant}`,
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((response) => {
-        setPlatPartenaireList(response?.data.DATA);
-      })
-      .catch((error) => {
-        dispatch(
-          showNavbar({
-            message: error.response.data.MESSAGE,
-            type: "FAIL",
-            open: true,
-          })
-        );
-      });
-  };
-
-  const getVinByDomaine = async (domaine) => {
-    const vin = await axios({
-      method: "GET",
-      url: `${apiURL}/vin/${domaine}`,
-      headers: {
-        Authorization: token,
-      },
-    });
-    setVinByDomaine(vin?.data?.DATA);
-    return vin;
-  };
-
-  const getPlatByName = async (plat_name) => {
-    const plat = await axios({
-      method: "GET",
-      url: `${apiURL}/plat/${plat_name}`,
-      headers: {
-        Authorization: token,
-      },
-    });
-    setPlatByName(plat?.data?.DATA);
-    return plat;
-  };
-
-  const saveAccord = async () => {
-    let IAResponse = userResponse.replace(/(\r\n|\n|\r)/gm, "");
-
-    setSaveLoading(true);
-
+    let url_query = `partenaireId=${partenaireId}&plat_name=${nomPlat}&robeVin=${
+      robeVin ? robeVin : ""
+    }&region=${region ? region : ""}&arome=${
+      arome ? arome : ""
+    }&page=${page}&limit=${rowsPerPage}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
     await axios
-      .post(
-        `${apiURL}/accord/create`,
-        {
-          partenaireId,
-          domaine: vinByDomaine?.domaine,
-          cuve: vinByDomaine?.cuve,
-          millesime: vinByDomaine?.millesime,
-          appelation: vinByDomaine?.appelation,
-          acomp: vinByDomaine?.acomp,
-          IAResponse,
-          plat_name: platByName?.plat_name,
-          robeVin: platByName?.robeVin,
-          region: platByName?.region,
-          arome: platByName?.arome,
+      .get(`${apiURL}/vin/partenaire/suggest/?${url_query}`, {
+        headers: {
+          Authorization: token,
         },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      )
-      .then(() => {
+      })
+      .then((response) => {
+        setLoading(false);
+        console.log("response ", response);
         dispatch(
           showNavbar({
-            message: "Accord Enregisté",
+            message: "Liste des accords génerés",
             type: "SUCCESS",
             open: true,
           })
         );
-        setSaveLoading(false);
+
+        setUserResponse(response?.data?.DATA?.suggestResponse[0]?.results);
+        setCount(response?.data?.DATA?.suggestResponse[0]?.count[0].totalCount);
       })
       .catch((err) => {
+        setLoading(false);
+
         dispatch(
           showNavbar({
             message: err.response.data.MESSAGE,
@@ -294,15 +126,25 @@ const GenerateWithPartenaire = () => {
             open: true,
           })
         );
-        setSaveLoading(false);
+        setUserResponse("");
       });
   };
 
+  const handleNomPlatChange = (event) => {
+    setNomPlat(event?.target.value);
+  };
+
   useEffect(() => {
-    if(token){
+    if (token) {
       getDepartements();
     }
   }, []);
+
+  useEffect(() => {
+    if (partenaireId) {
+      generate();
+    }
+  }, [page, rowsPerPage]);
 
   return (
     <div className="main-plat-accord">
@@ -336,102 +178,103 @@ const GenerateWithPartenaire = () => {
                   ))}
                 </select>
               </div>
-
               {partenaireId && (
                 <div className="input-icon">
                   <select className="select" onChange={onChangeSelectVinOrPlat}>
-                    <option value="">Choississez entre - Vins ou Plats</option>
+                    {/* <option value="">Choississez entre - Vins ou Plats</option> */}
                     <option value="VINS">VINS</option>
-                    <option value="PLATS">PLATS</option>
+                    {/* <option value="PLATS">PLATS</option> */}
                   </select>
                 </div>
               )}
-
               {partenaireId && (
                 <div className="input-icon">
-                  <select
-                    className="select"
-                    onChange={handleChangeUserChoixOnVinOrPlat}
-                  >
-                    <option value="">{vinPlatsPlaceHolder}</option>
-                    {vinPartenaireList?.map((vinPartenaire) => (
-                      <option value={vinPartenaire?.domaine}>
-                        {vinPartenaire?.domaine}
-                      </option>
-                    ))}
-                    {platPartenaireList?.map((platPartenaire) => (
-                      <option value={platPartenaire?.plat_name}>
-                        {platPartenaire?.plat_name}
-                      </option>
-                    ))}
-                  </select>
+                  <input
+                    type="text"
+                    placeholder="Nom du plat*"
+                    onChange={handleNomPlatChange}
+                  />
                 </div>
               )}
             </div>
-            {/* {advanced && vinsOrPlat === "PLATS" && (
-              <div className="right-form">
-                <div className="input-icon flex">
-                  <select
-                    className="select-input"
-                    name="Robe"
-                    id="Robe-du-vin"
-                    placeholder="Robe du vin..."
-                    onChange={(e) => setRobeVin(e.target.value)}
-                  >
-                    <option value="">Robe du vin...</option>
-                    <option value="Rouge">Rouge</option>
-                    <option value="Blanc">Blanc</option>
-                    <option value="Rosé">Rosé</option>
-                  </select>
-                  <select
-                    className="select-input"
-                    name="region"
-                    placeholder="Région du vin"
-                    onChange={(e) => setRegion(e.target.value)}
-                  >
-                    <option value="">Région du vin...</option>
-                    <option value="Alsace">Alsace</option>
-                    <option value="Champagne">Champagne</option>
-                    <option value="Bordeaux">Bordeaux</option>
-                    <option value="Beaujolais">Beaujolais</option>
-                    <option value="Jura">Jura</option>
-                    <option value="Bourgogne">Bourgogne</option>
-                    <option value="Provence">Provence</option>
-                    <option value="Corse">Corse</option>
-                    <option value="Languedoc-Roussillon">
-                      Languedoc-Roussillon
-                    </option>
-                    <option value="Vallée du Rhône">Vallée du Rhône</option>
-                    <option value="Vallée de la Loire">
-                      Vallée de la Loire
-                    </option>
-                    <option value="Lorraine">Lorraine</option>
-                    <option value="Sud-Ouest">Sud-Ouest</option>
-                    <option value="Savoie-Bugey">Savoie-Bugey</option>
-                    <option value="Roussillon">Roussillon</option>
-                  </select>
 
+            {advanced && (
+              <div className="right-form">
+                <div className="input-icon flex advanced">
+                  <div className="input-icon">
+                    <select
+                      className="select-input"
+                      name="Robe"
+                      id="Robe-du-vin"
+                      placeholder="Robe du vin..."
+                      onChange={handleRobeVinChange}
+                    >
+                      <option value="">Robe du vin...</option>
+                      <option value="Rouge">Rouge</option>
+                      <option value="Blanc">Blanc</option>
+                      <option value="Rosé">Rosé</option>
+                    </select>
+                  </div>
+
+                  <div className="input-icon ">
+                    <select
+                      className="select-input"
+                      name="region"
+                      id="region-du-vin"
+                      placeholder="Région du vin"
+                      onChange={regionChange}
+                    >
+                      <option value="">Région du vin...</option>
+                      <option value="Alsace">Alsace</option>
+                      <option value="Champagne">Champagne</option>
+                      <option value="Bordeaux">Bordeaux</option>
+                      <option value="Beaujolais">Beaujolais</option>
+                      <option value="Jura">Jura</option>
+                      <option value="Bourgogne">Bourgogne</option>
+                      <option value="Provence">Provence</option>
+                      <option value="Corse">Corse</option>
+                      <option value="Languedoc-Roussillon">
+                        Languedoc-Roussillon
+                      </option>
+                      <option value="Vallée du Rhône">Vallée du Rhône</option>
+                      <option value="Vallée de la Loire">
+                        Vallée de la Loire
+                      </option>
+                      <option value="Lorraine">Lorraine</option>
+                      <option value="Sud-Ouest">Sud-Ouest</option>
+                      <option value="Savoie-Bugey">Savoie-Bugey</option>
+                      <option value="Roussillon">Roussillon</option>
+                    </select>
+                  </div>
                   <input
                     type="text"
                     placeholder="Arôme du vin"
-                    onChange={(e) => setArome(e.target.value)}
+                    onChange={handleAromeChange}
                   />
                 </div>
               </div>
-            )} */}
-            {/* {advanced && vinsOrPlat === "VINS" && (
-              <div className="right-form">
-                <div className="input-icon flex">
-                  <input type="text" placeholder="Millésime" />
-                  <input type="text" placeholder="Nom de la cuvée" />
-                  <input type="text" placeholder="Appellation" />
-                </div>
-              </div>
-            )} */}
+            )}
           </div>
-          {/* 
-          {vinsOrPlat === "PLATS" && (
-            <div className="advanced-search">
+          {advanced && (
+            <div className="filter-price">
+              <div className="input-icon">
+                <input
+                  type="number"
+                  placeholder="Prix minimum en €"
+                  onChange={(e) => setMinPrice(e.target.value)}
+                />
+              </div>
+              <div className="input-icon">
+                <input
+                  type="number"
+                  placeholder="Prix maximum en €"
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+          {partenaireId && (
+            <div className="advanced-search accord">
               <Switch
                 {...label}
                 className="switch"
@@ -439,7 +282,7 @@ const GenerateWithPartenaire = () => {
               />
               <p>Recherche avancée</p>
             </div>
-          )} */}
+          )}
 
           <div className="login-btn">
             <Button
@@ -461,7 +304,7 @@ const GenerateWithPartenaire = () => {
       </div>
       <div className="right">
         <div className="right-content">
-          {isAuthenticate && (
+          {/* {isAuthenticate && (
             <Button
               variant="outlined"
               className="right-btn"
@@ -471,7 +314,7 @@ const GenerateWithPartenaire = () => {
             >
               Vos accords
             </Button>
-          )}
+          )} */}
 
           <div className="vins-response">
             <h3>
@@ -541,37 +384,22 @@ const GenerateWithPartenaire = () => {
             </h3>
             <hr />
             <div className="ia-response-plat">
-              <div className="head">
-                {vinByDomaine?.domaine && (
-                  <p className="title"> {vinByDomaine?.domaine} </p>
-                )}
-                {vinByDomaine?.appelation && (
-                  <p className="title"> {vinByDomaine?.appelation} </p>
-                )}
-                {vinByDomaine?.millesime && (
-                  <p className="title"> {vinByDomaine?.millesime} </p>
-                )}
-                {vinByDomaine?.cuve && (
-                  <p className="title"> {vinByDomaine?.cuve} </p>
-                )}
-                {vinByDomaine?.robeVin && <p> {vinByDomaine?.robeVin} </p>}
-
-                {platByName?.plat_name && (
-                  <p className="title"> {platByName?.plat_name} </p>
-                )}
-                {platByName?.robeVin && (
-                  <p className="title"> {platByName?.robeVin} </p>
-                )}
-                {platByName?.region && (
-                  <p className="title"> {platByName?.region} </p>
-                )}
-                {platByName?.arome && <p> {platByName?.arome} </p>}
-              </div>
+              <div className="head">{/* response */}</div>
               {userResponse ? (
-                <p
-                  className="bodyResponse"
-                  dangerouslySetInnerHTML={{ __html: userResponse }}
-                ></p>
+                userResponse?.map((userAccord) => (
+                  <div className="bodyResponse body-accord">
+                    <b>Domaine :</b> {userAccord?.domaine} <br />
+                    <b>Millésime :</b> {userAccord?.millesime} <br />
+                    <b>Appelation :</b> {userAccord?.appelation} <br />
+                    <b>Nom de la cuvée : </b> {userAccord?.cuve} <br />
+                    {userAccord?.robeVin && <b>Robe du vin :</b>}{" "}
+                    {userAccord?.robeVin} <br />
+                    {userAccord?.region && <b>Région du vin :</b>}{" "}
+                    {userAccord?.region} <br />
+                    <b>Prix : </b>
+                    {userAccord?.price} €
+                  </div>
+                ))
               ) : (
                 <p style={{ color: "#b1b1b1" }}>
                   Prêt pour une aventure gustative ? Tapez votre recherche dans
@@ -581,16 +409,16 @@ const GenerateWithPartenaire = () => {
               )}
             </div>
           </div>
-          <Button variant="contained" className="save-btn" onClick={saveAccord}>
-            {!saveLoading ? (
-              <span> Enregistrer </span>
-            ) : (
-              <LoadingButton
-                className="loadGenerateButton"
-                loading
-              ></LoadingButton>
-            )}
-          </Button>
+          <div className="pagination">
+            <TablePagination
+              component="div"
+              count={count}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </div>
         </div>
       </div>
     </div>

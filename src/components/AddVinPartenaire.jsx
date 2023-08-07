@@ -10,6 +10,7 @@ import { apiURL } from "services/apiUrl";
 import { showNavbar } from "features/snackbar.slice";
 import { useDispatch, useSelector } from "react-redux";
 import { MuiChipsInput } from "mui-chips-input";
+import MenuItem from "@mui/material/MenuItem";
 
 export const AddVinPartenaire = () => {
   const [domaine, setDomaine] = useState(null);
@@ -17,16 +18,21 @@ export const AddVinPartenaire = () => {
   const [cuve, setCuve] = useState(null);
   const [appelation, setAppellation] = useState(null);
   const [robeVin, setRobeVin] = useState(null);
-  const [acomp, setAcomp] = useState(null);
+  const [arome, setArome] = useState(null);
   const [price, setPrice] = useState(null);
   const [partenaireId, setPartenaireId] = useState(null);
   const [partenaires, setPartenaires] = useState([{}]);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.user.token);
-  const [chips, setChips] = React.useState([]);
+  const [recommandations, setRecommandations] = React.useState([]);
+  const [region, setRegion] = React.useState("");
 
-  const handleChange = (newChips) => {
-    setChips(newChips);
+  const handleChange = (event) => {
+    setRegion(event.target.value);
+  };
+
+  const handleChangeRecommandations = (newRecommandations) => {
+    setRecommandations(newRecommandations);
   };
 
   const getPartenaires = async () => {
@@ -64,9 +70,11 @@ export const AddVinPartenaire = () => {
         cuve,
         appelation,
         robeVin,
-        acomp,
+        region,
+        arome,
         partenaireId,
         price,
+        recommandations,
       },
     })
       .then(() => {
@@ -147,27 +155,56 @@ export const AddVinPartenaire = () => {
             </option>
           </Select>
         </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Région du vin</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={region}
+            label="Région du vin"
+            onChange={handleChange}
+          >
+            <MenuItem value={"Alsace"}>Alsace</MenuItem>
+            <MenuItem value={"Champagne"}>Champagne</MenuItem>
+            <MenuItem value={"Bordeaux"}>Bordeaux</MenuItem>
+            <MenuItem value={"Beaujolais"}>Beaujolais</MenuItem>
+            <MenuItem value={"Jura"}>Jura</MenuItem>
+            <MenuItem value={"Bourgogne"}>Bourgogne</MenuItem>
+            <MenuItem value={"Provence"}>Provence</MenuItem>
+            <MenuItem value={"Corse"}>Corse</MenuItem>
+            <MenuItem value={"Languedoc-Roussillon"}>
+              Languedoc-Roussillon
+            </MenuItem>
+            <MenuItem value={"Vallée du Rhône"}>Vallée du Rhône</MenuItem>
+            <MenuItem value={"Vallée de la Loire"}>Vallée de la Loire</MenuItem>
+            <MenuItem value={"Lorraine"}>Lorraine</MenuItem>
+            <MenuItem value={"Sud-Ouest"}>Sud-Ouest</MenuItem>
+            <MenuItem value={"Savoie-Bugey"}>Savoie-Bugey</MenuItem>
+            <MenuItem value={"Roussillon"}>Roussillon</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           id="outlined-basic"
-          label="Accompagnement"
+          label="Arôme du vin"
           variant="outlined"
           fullWidth
-          onChange={(e) => setAcomp(e.target.value)}
+          onChange={(e) => setArome(e.target.value)}
         />
         <TextField
           id="outlined-basic"
           label="Prix*"
           variant="outlined"
           fullWidth
+          type="number"
           onChange={(e) => setPrice(e.target.value)}
         />
         <MuiChipsInput
-          value={chips}
-          onChange={handleChange}
-          placeholder="Recommandations : type and press enter... "
+          value={recommandations}
+          onChange={handleChangeRecommandations}
+          placeholder="Recommandations* : type and press enter... "
         />
         <FormControl sx={{ m: 1, width: "100%" }}>
-          <InputLabel htmlFor="grouped-native-select">Partenaire</InputLabel>
+          <InputLabel htmlFor="grouped-native-select">Partenaire*</InputLabel>
           <Select
             native
             defaultValue=""
