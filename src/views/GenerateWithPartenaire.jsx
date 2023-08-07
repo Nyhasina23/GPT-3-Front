@@ -95,7 +95,9 @@ const GenerateWithPartenaire = () => {
       robeVin ? robeVin : ""
     }&region=${region ? region : ""}&arome=${
       arome ? arome : ""
-    }&page=${page}&limit=${rowsPerPage}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+    }&page=${page}&limit=${rowsPerPage}&minPrice=${
+      minPrice ? minPrice : ""
+    }&maxPrice=${maxPrice ? maxPrice : ""}`;
     await axios
       .get(`${apiURL}/vin/partenaire/suggest/?${url_query}`, {
         headers: {
