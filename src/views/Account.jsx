@@ -112,14 +112,14 @@ export default function Account() {
                 </ListItemButton>
               </NavLink>
             )} */}
-            {/* <NavLink to="/compte/user/biblio/accord">
+            <NavLink to="/compte/user/biblio/accord">
               <ListItemButton onClick={showMenu}>
                 <ListItemIcon>
                   <DiningIcon />
                 </ListItemIcon>
                 <ListItemText primary="Accords" />
               </ListItemButton>
-            </NavLink> */}
+            </NavLink>
           </List>
         </Box>
       </Grid>

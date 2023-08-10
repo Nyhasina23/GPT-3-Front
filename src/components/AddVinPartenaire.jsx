@@ -9,7 +9,6 @@ import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { showNavbar } from "features/snackbar.slice";
 import { useDispatch, useSelector } from "react-redux";
-import { MuiChipsInput } from "mui-chips-input";
 import MenuItem from "@mui/material/MenuItem";
 
 export const AddVinPartenaire = () => {
@@ -24,17 +23,11 @@ export const AddVinPartenaire = () => {
   const [partenaires, setPartenaires] = useState([{}]);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.user.token);
-  const [recommandations, setRecommandations] = React.useState([]);
   const [region, setRegion] = React.useState("");
 
   const handleChange = (event) => {
     setRegion(event.target.value);
   };
-
-  const handleChangeRecommandations = (newRecommandations) => {
-    setRecommandations(newRecommandations);
-  };
-
   const getPartenaires = async () => {
     await axios({
       method: "GET",
@@ -74,7 +67,6 @@ export const AddVinPartenaire = () => {
         arome,
         partenaireId,
         price,
-        recommandations,
       },
     })
       .then(() => {
@@ -197,11 +189,6 @@ export const AddVinPartenaire = () => {
           fullWidth
           type="number"
           onChange={(e) => setPrice(e.target.value)}
-        />
-        <MuiChipsInput
-          value={recommandations}
-          onChange={handleChangeRecommandations}
-          placeholder="Recommandations* : type and press enter... "
         />
         <FormControl sx={{ m: 1, width: "100%" }}>
           <InputLabel htmlFor="grouped-native-select">Partenaire*</InputLabel>

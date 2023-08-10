@@ -9,7 +9,6 @@ import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import { memo } from "react";
-import TablePagination from "@mui/material/TablePagination";
 
 const GenerateWithPartenaire = () => {
   const dispatch = useDispatch();
@@ -28,15 +27,9 @@ const GenerateWithPartenaire = () => {
   const [robeVin, setRobeVin] = useState(null);
   const [arome, setArome] = useState(null);
 
-  const [page, setPage] = React.useState(0);
-  const [count, setCount] = React.useState(0);
   const [minPrice, setMinPrice] = React.useState();
   const [maxPrice, setMaxPrice] = React.useState();
-  const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
   const regionChange = (event) => {
     setRegion(event.target.value);
   };
@@ -45,11 +38,6 @@ const GenerateWithPartenaire = () => {
   };
   const handleAromeChange = (event) => {
     setArome(event.target.value);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   const label = { inputProps: { "aria-label": "advanced search" } };
@@ -88,72 +76,190 @@ const GenerateWithPartenaire = () => {
       });
   };
 
-  const generate = async () => {
+  // step 1
+
+  const askToGPT = async () => {
     setLoading(true);
 
-    let url_query = `partenaireId=${partenaireId}&plat_name=${nomPlat}${
-      robeVin ? "&robeVin=" + robeVin : ""
-    }${region ? "&region=" + region : ""}${
-      arome ? "&arome=" + arome : ""
-    }&page=${page}&limit=${rowsPerPage}${
-      minPrice ? "&minPrice=" + minPrice : ""
-    }${maxPrice ? "&maxPrice=" + maxPrice : ""}`;
+    const prompt = `Tu agis en tant que caviste professionnel, 
+    quelle robe du vin et millésime irra parfaitement au ${nomPlat} ? 
+    Retouner juste une réponse au format JSON 
+    comme {"robeVin" : "robe du vin" , "millesime" : "millesime du vin "}
+    sans autre formulation de réponse et retourne juste entre Rouge, Blanc et  Rosé pour la robe du vin `;
+
+    await axios
+      .post(
+        `${apiURL}/gpt3/api/`,
+        {
+          prompt,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        setLoading(false);
+        console.log("response ask GPT ", response);
+
+        //format response GPT to JSON and parse string to JSON object
+        const dataToJSON = formatToJSON(response?.data.DATA);
+        const vin = JSON.parse(dataToJSON);
+
+        retriveWineToDB(vin.robeVin, vin.millesime);
+      })
+      .catch((err) => {
+        setLoading(false);
+        dispatch(
+          showNavbar({
+            message: err.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
+      });
+  };
+
+  function formatToJSON(inputString) {
+    try {
+      const formattedString = inputString.replace(/\n/g, "").trim();
+      const jsonObject = JSON.parse(formattedString);
+      const jsonString = JSON.stringify(jsonObject, null, 2);
+      return jsonString;
+    } catch (error) {
+      return "Erreur de format JSON : " + error.message;
+    }
+  }
+
+  // step 2
+
+  const retriveWineToDB = async (robe, millesm) => {
+    setLoading(true);
+
+    let url_query = `partenaireId=${partenaireId}${
+      robeVin ? "&robeVin=" + robeVin : "&robeVin=" + robe
+    }${region ? "&region=" + region : ""}${arome ? "&arome=" + arome : ""}${
+      millesm ? "&millesime=" + millesm : ""
+    }${minPrice ? "&minPrice=" + minPrice : ""}${
+      maxPrice ? "&maxPrice=" + maxPrice : ""
+    }
+    `;
+
+    console.log("url_query ", url_query);
     await axios
       .get(`${apiURL}/vin/partenaire/suggest/?${url_query}`)
       .then((response) => {
         setLoading(false);
-        console.log("response ", response);
-        dispatch(
-          showNavbar({
-            message: "Liste des accords génerés",
-            type: "SUCCESS",
-            open: true,
-          })
-        );
 
-        setUserResponse(response?.data?.DATA?.suggestResponse[0]?.results);
-        setCount(response?.data?.DATA?.suggestResponse[0]?.count[0].totalCount);
+        analyzeDataInGpt(response?.data.DATA);
       })
       .catch((err) => {
         setLoading(false);
-
-        if (err.response.status === 404) {
-          dispatch(
-            showNavbar({
-              message: "Suggestion non trouvée",
-              type: "FAIL",
-              open: true,
-            })
-          );
-        } else {
-          dispatch(
-            showNavbar({
-              message: err.response.data.MESSAGE,
-              type: "FAIL",
-              open: true,
-            })
-          );
-        }
-
-        setUserResponse("");
+        dispatch(
+          showNavbar({
+            message: "Oups! une erreur est survenue, veuillez réessayer.",
+            type: "FAIL",
+            open: true,
+          })
+        );
       });
   };
+
+  // step 3
+
+  const analyzeDataInGpt = async (dataToAnalyse) => {
+    setLoading(true);
+
+    const prompt = `voici des données en JSON 
+
+     ${JSON.stringify(dataToAnalyse)}
+    
+     Analysez ces données de manière optimale et éfficace à la façon d'un caviste professionnel pour avoir en premier une meilleure recommandation générale qui irra parfaitement avec du ${nomPlat} puis en second paragraphe en dessous un choix de 3 bouteilles différentes de 3 gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros  et plus (à base des données ci-dessus) pour accompagner ce ${nomPlat}. Répondez de manière concise, simple et créative (mais à base des données ci-dessus) et agis comme vous êtes un caviste professionnel qui suggère le vin à un client avec une technique de vente persuasif pas plus de 300 mots (ajoutez des interlignes) et mentionnez tous les caractéristiques du vin et le prix à la fin de votre réponse. Utilisez des emojis si possible et mettez une phrase sympa de WinePal qui remercie l'utilisateur de son utilisation et l'invite à passer un bon moment avec cet accord au final. (NB : N'ajouter aucune phrase comme voici la réponse,ni des remerciements (comme Merci d'utiliser WinePal) ni d'autres en tête de réponse, Débuter avec Pour accompagner ce ${nomPlat})`;
+
+    await axios
+      .post(
+        `${apiURL}/gpt3/api/`,
+        {
+          prompt,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then((response) => {
+        setLoading(false);
+
+        const textFormated = formatText(response?.data.DATA);
+        setUserResponse(textFormated.slice(8));
+      })
+      .catch((err) => {
+        setLoading(false);
+        dispatch(
+          showNavbar({
+            message: err.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
+      });
+  };
+
+  function formatText(text) {
+    text = text.replace(/\n/g, "<br>");
+    return text;
+  }
 
   const handleNomPlatChange = (event) => {
     setNomPlat(event?.target.value);
   };
 
-  useEffect(() => {
-    // if (token) {
-    getDepartements();
-    // }
-  }, []);
+  const saveAccord = async () => {
+    let IAResponse = userResponse.replace(/(\r\n|\n|\r)/gm, "");
+
+    setSaveLoading(true);
+
+    await axios
+      .post(
+        `${apiURL}/accord/create`,
+        {
+          partenaireId,
+          IAResponse,
+          plat_name: nomPlat,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      )
+      .then(() => {
+        dispatch(
+          showNavbar({
+            message: "Accord Enregisté",
+            type: "SUCCESS",
+            open: true,
+          })
+        );
+        setSaveLoading(false);
+      })
+      .catch((err) => {
+        dispatch(
+          showNavbar({
+            message: err.response.data.MESSAGE,
+            type: "FAIL",
+            open: true,
+          })
+        );
+        setSaveLoading(false);
+      });
+  };
 
   useEffect(() => {
-    if (partenaireId) {
-      generate();
-    }
-  }, [page, rowsPerPage]);
+    getDepartements();
+  }, []);
 
   return (
     <div className="main-plat-accord">
@@ -297,7 +403,7 @@ const GenerateWithPartenaire = () => {
             <Button
               variant="contained"
               className="connexion-btn"
-              onClick={generate}
+              onClick={askToGPT}
             >
               {!loading ? (
                 <span> Générez </span>
@@ -313,7 +419,7 @@ const GenerateWithPartenaire = () => {
       </div>
       <div className="right">
         <div className="right-content">
-          {/* {isAuthenticate && (
+          {isAuthenticate && (
             <Button
               variant="outlined"
               className="right-btn"
@@ -323,7 +429,7 @@ const GenerateWithPartenaire = () => {
             >
               Vos accords
             </Button>
-          )} */}
+          )}
 
           <div className="vins-response">
             <h3>
@@ -395,20 +501,10 @@ const GenerateWithPartenaire = () => {
             <div className="ia-response-plat">
               <div className="head">{/* response */}</div>
               {userResponse ? (
-                userResponse?.map((userAccord) => (
-                  <div className="bodyResponse body-accord">
-                    <b>Domaine :</b> {userAccord?.domaine} <br />
-                    <b>Millésime :</b> {userAccord?.millesime} <br />
-                    <b>Appelation :</b> {userAccord?.appelation} <br />
-                    <b>Nom de la cuvée : </b> {userAccord?.cuve} <br />
-                    {userAccord?.robeVin && <b>Robe du vin :</b>}{" "}
-                    {userAccord?.robeVin} <br />
-                    {userAccord?.region && <b>Région du vin :</b>}{" "}
-                    {userAccord?.region} <br />
-                    <b>Prix : </b>
-                    {userAccord?.price} €
-                  </div>
-                ))
+                <p
+                  className="bodyResponse"
+                  dangerouslySetInnerHTML={{ __html: userResponse }}
+                ></p>
               ) : (
                 <p style={{ color: "#b1b1b1" }}>
                   Prêt pour une aventure gustative ? Tapez votre recherche dans
@@ -418,16 +514,22 @@ const GenerateWithPartenaire = () => {
               )}
             </div>
           </div>
-          <div className="pagination">
-            <TablePagination
-              component="div"
-              count={count}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </div>
+          {isAuthenticate && (
+            <Button
+              variant="contained"
+              className="save-btn"
+              onClick={saveAccord}
+            >
+              {!saveLoading ? (
+                <span> Enregistrer </span>
+              ) : (
+                <LoadingButton
+                  className="loadGenerateButton"
+                  loading
+                ></LoadingButton>
+              )}
+            </Button>
+          )}
         </div>
       </div>
     </div>
