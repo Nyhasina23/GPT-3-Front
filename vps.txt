@@ -2,4 +2,4 @@ Vps Vincent Dubois Winepal
 IP : 51.254.39.222
 user : ubuntu
 Mdp : BczczVMhNCmH
-github : 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
+github : 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

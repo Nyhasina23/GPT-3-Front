@@ -9,6 +9,7 @@
 }
 
 .main-plat-accord .left-plat {
+  height: calc(100vh - 4rem);
   flex: 6;
   background-image: linear-gradient(
       0deg,
