@@ -16,6 +16,7 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import AddIcon from "@mui/icons-material/Add";
 import DiningIcon from "@mui/icons-material/Dining";
+import DescriptionIcon from "@mui/icons-material/Description";
 import { useSelector } from "react-redux";
 import jwtDecode from "jwt-decode";
 
@@ -98,7 +99,17 @@ export default function Account() {
                   <ListItemIcon>
                     <AddIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Add Vins" />
+                  <ListItemText primary="Ajouter Vins" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {role > 1 && (
+              <NavLink to="/compte/vins/add-file">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <DescriptionIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Ajouter Vins (Fichier)" />
                 </ListItemButton>
               </NavLink>
             )}

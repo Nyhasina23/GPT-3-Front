@@ -25,6 +25,7 @@ import { AccordList } from "components/AccordList";
 import BlogList from "views/BlogList";
 import ForgotPassword from "views/ForgotPassword";
 import ResetPassword from "views/ResetPassword";
+import AddVinByFile from "components/AddVinByFile";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
             <Route path="user/biblio/accord" element={<AccordList />} />
             <Route exact path="partenaire/add" element={<AddPartenaire />} />
             <Route exact path="vins/add" element={<AddVinPartenaire />} />
+            <Route exact path="vins/add-file" element={<AddVinByFile />} />
             <Route exact path="plats/add" element={<AddPlatPartenaire />} />
           </Route>
           <Route exact path="/blog/edit/:id" element={<BlogEdit />} />
