@@ -11,6 +11,7 @@ import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { showNavbar } from "features/snackbar.slice";
 import { useDispatch, useSelector } from "react-redux";
+import csvToJson from "csvtojson";
 
 export default function AddVinByFile() {
   const [filename, setFilename] = useState(
@@ -48,47 +49,28 @@ export default function AddVinByFile() {
       .substring(event.target.files[0].name.lastIndexOf("."))
       .toUpperCase();
     if (extension == ".CSV") {
-      //Here calling another method to read CSV file into json
       setFilename(event.target.files[0].name);
-      setFile(event.target.files[0]);
+
+      const reader = new FileReader();
+
+      reader.onload = async (event) => {
+        const csvData = event.target.result;
+        const json = await csvToJson().fromString(csvData);
+
+        const jsonString = JSON.stringify(json, null, 2);
+        setFile(jsonString);
+      };
+
+      reader.readAsText(event.target.files[0]);
     } else {
       alert("Please select a valid csv file.");
     }
   };
 
   const handleUploadFile = () => {
-    if (file && partenaireId) {
+    if (file) {
       try {
-        var reader = new FileReader();
-        reader.readAsBinaryString(file);
-        reader.onload = function (e) {
-          var jsonData = [];
-          var headers = [];
-          var rows = e.target.result.split("\r\n");
-          for (var i = 0; i < rows.length; i++) {
-            var cells = rows[i].split(",");
-            var rowData = {};
-            for (var j = 0; j < cells.length; j++) {
-              if (i == 0) {
-                var headerName = cells[j].trim();
-                headers.push(headerName);
-              } else {
-                var key = headers[j];
-                if (key) {
-                  rowData[key] = cells[j].trim();
-                }
-              }
-            }
-            //skip the first row (header) data
-            if (i != 0) {
-              jsonData.push(rowData);
-            }
-          }
-
-          //displaying the json result in string format
-          jsonData.pop();
-          addVinPartenaire(jsonData);
-        };
+        addVinPartenaire(file);
       } catch (e) {
         console.error(e);
       }
