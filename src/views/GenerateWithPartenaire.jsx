@@ -30,6 +30,10 @@ const GenerateWithPartenaire = () => {
   const [minPrice, setMinPrice] = React.useState();
   const [maxPrice, setMaxPrice] = React.useState();
 
+  let errorDetectedCounter = 0;
+
+  let responseGPTStores = [];
+
   const regionChange = (event) => {
     setRegion(event.target.value);
   };
@@ -81,13 +85,21 @@ const GenerateWithPartenaire = () => {
   const askToGPT = async () => {
     setLoading(true);
 
-    const prompt = `Tu agis comme un caviste professionnel, 
+    let prompt = `Tu agis comme un caviste professionnel, 
     quelle robe du vin se marie le mieux avec ${nomPlat} ? 
-    Ensuite, quelle région est adaptée au ${nomPlat}. 
-    Enfin, quels arômes se marient le mieux avec le ${nomPlat}.
+    Ensuite, quelle région est adaptée au ${nomPlat}.
     Retouner juste une réponse au format JSON
-    comme {"robeVin" : "robe du vin" , "region" : "région du vin " , "arome" : "arôme du vin" "}
-    sans autre formulation de réponse et retourne juste entre Rouge, Blanc et  Rosé pour la robe du vin `;
+    comme {"robeVin" : "robe du vin" , "region" : "région du vin " sans autre formulation de réponse et retourne juste entre Rouge, Blanc et  Rosé pour la robe du vin `;
+
+    if (errorDetectedCounter > 0) {
+      const oldRobe = responseGPTStores[responseGPTStores.length - 1].robeVin;
+      const oldRegion = responseGPTStores[responseGPTStores.length - 1].region;
+
+      prompt = `Tu agis comme un caviste professionnel, essayer de trouver une autre suggestion de  robe du vin se marie le mieux avec ${nomPlat} apart la robe ${oldRobe}
+    Ensuite, quelle région est adaptée au ${nomPlat} apart la région ${oldRegion}.
+    Retouner juste une réponse au format JSON
+    comme {"robeVin" : "robe du vin" , "region" : "région du vin " sans autre formulation de réponse et retourne juste entre Rouge, Blanc et  Rosé pour la robe du vin `;
+    }
 
     await axios
       .post(
@@ -103,13 +115,17 @@ const GenerateWithPartenaire = () => {
       )
       .then((response) => {
         setLoading(false);
-        console.log("response ask GPT ", response);
 
         //format response GPT to JSON and parse string to JSON object
-        const dataToJSON = formatToJSON(response?.data.DATA);
+        const dataToJSON = formatToJSON(response?.data.DATA.message.content);
         const vin = JSON.parse(dataToJSON);
 
-        retriveWineToDB(vin.robeVin, vin.region, vin.arome);
+        responseGPTStores.push({
+          robeVin: vin.robeVin,
+          region: vin.region,
+        });
+
+        retriveWineToDB(vin.robeVin, vin.region);
       })
       .catch((err) => {
         setLoading(false);
@@ -136,13 +152,13 @@ const GenerateWithPartenaire = () => {
 
   // step 2
 
-  const retriveWineToDB = async (robe, regionVin, aromeVin) => {
+  const retriveWineToDB = async (robe, regionVin) => {
     setLoading(true);
 
     let url_query = `partenaireId=${partenaireId}${
       robeVin ? "&robeVin=" + robeVin : "&robeVin=" + robe
     }${region ? "&region=" + region : "&region=" + regionVin}${
-      arome ? "&arome=" + arome : "&arome=" + aromeVin
+      arome ? "&arome=" + arome : ""
     }${minPrice ? "&minPrice=" + minPrice : ""}${
       maxPrice ? "&maxPrice=" + maxPrice : ""
     }
@@ -158,6 +174,9 @@ const GenerateWithPartenaire = () => {
       })
       .catch((err) => {
         // setLoading(false);
+
+        errorDetectedCounter++;
+
         askToGPT();
 
         console.log("Oups! une erreur est survenue, veuillez réessayer ");
@@ -178,34 +197,17 @@ const GenerateWithPartenaire = () => {
   const analyzeDataInGpt = async (dataToAnalyse) => {
     setLoading(true);
 
-    // const prompt = `voici des données en JSON
-    // "
-
-    // ${JSON.stringify(dataToAnalyse)}
-
-    // "
-    // Agis comme un un caviste professionnel pour analyser ces données de manière optimale et éfficace et trouver en premier une meilleure recommandation générale qui irra parfaitement avec ${nomPlat}, puis en second paragraphe en dessous un choix de 3 bouteilles différentes de 3 gammes de prix différentes à savoir 0 à 10 euros, 10 à 25 euros et 25 euros  et plus (Ne prends pas des données qui ne sont pas dans les données que vous analysez et triez le prix du vin par ordre croissante ). Répondez de manière concise, simple et créative et agis comme vous êtes un caviste professionnel qui suggère le vin à un client avec une technique de vente persuasif pas plus de 300 mots (ajoutez des interlignes) et mentionnez tous les caractéristiques du vin et le prix à la fin de votre réponse. Utilisez des emojis si possible et mettez une phrase sympa de WinePal qui remercie l'utilisateur de son utilisation et l'invite à passer un bon moment avec cet accord au final. (NB : N'ajouter aucune phrase comme voici la réponse,ni des remerciements (comme Merci d'utiliser WinePal) ni d'autres en tête de réponse, Débuter avec Pour accompagner ce ${nomPlat})`;
-
-    // console.log("prompt ", prompt);
-
-    // const prompt = `
-
-    // Tu es un sommelier et tu as les vins de la base de donnée suivante à disposition " ${JSON.stringify(
-    //   dataToAnalyse
-    // )} ".
-    // Avec tes connaissances et les informations de la base de données , génère une recommandation générale qui s’accordera parfaitement avec ${nomPlat}. Ensuite, dans un second paragraphe, donne un choix de trois bouteilles avec une bouteille entre 2,5€ et 10€, une entre 10,01€ et 25€ et une dernière à partir de 25,01€. Réponds de manière concise, avec des mots simples et agis comme un professionnel qui a l’habitude de suggérer des accords mets et vins. Tu ne dois pas excéder les 300 mots. Entre chaque paragraphe ajoute des interlignes pour faciliter la lisibilité. N’oublies pas de mentionner le prix du vin et ses caractéristiques. Si possible, utilise quelques emojis et ajoute une phrase sympathique en conclusion avec pour thème « Winepal vous remercie et vous souhaite de passer un bon moment.
-
-    // `;
-
     const prompt = `
+    Voici des données au format JSON : 
+    "
 
-    Tu es un sommelier et tu as les vins de la base de donnée suivante " ${JSON.stringify(
-      dataToAnalyse
-    )} " et uniquement les vins de la base de donnée à disposition. Avec tes connaissances et les informations de la base de donnée, génère une recommandation générale, sans citer un vin, qui s’accordera parfaitement avec ${nomPlat}. Ensuite, dans un second paragraphe, donne un choix de trois bouteilles avec une bouteille inférieure à 10€, une entre 10€ et 25€ et une dernière à partir de 25€. Réponds de manière concise, avec des mots simples et agis comme un professionnel qui a l’habitude de suggérer des accords mets et vins. Tu ne dois pas excéder les 300 mots. 
-    Entre chaque paragraphe ajoute des interlignes pour faciliter la lisibilité. N’oublies pas de mentionner le prix du vin et ses caractéristiques. Si possible, utilise quelques emojis et ajoute une phrase sympathique au sujet de WinePal qui remercie l’utilisateur et lui souhaite de passer un bon moment avec la suggestion. (NB : N'ajouter aucune phrase comme voici la réponse,ni des remerciements (comme Merci d'utiliser WinePal) ni d'autres en tête de réponse, Débuter avec Pour accompagner ce ${nomPlat})
+    ${JSON.stringify(dataToAnalyse)}
+
+    "
+
+    Agis comme un sommelier professionnel, analyse ces données de manière optimale et efficace pour trouver en premier une recommandation générale qui ira parfaitement avec ${nomPlat}. Puis dans un second paragraphe un choix de trois bouteilles différentes issues de trois gammes de prix différents à savoir 0 à 10 euros, 10 à 20 euros et pour finir un prix de 20 euros et plus. (Ne prends pas des vins qui ne sont pas dans la base de données que tu analyses et tries le vin par ordre de prix croissant). Réponds de manière concise, simple et créative sans utiliser plus de 300 mots (ajoutez des interlignes). Mentionne toutes les caractéristiques du vin et le prix à la fin de la réponse. Utilise des emojis si possible et met une phrase sympathique sur WinePal qui remercie l'utilisateur de son utilisation et l'invite à passer un bon moment avec cet accord au final. (NB : Débutes toujours ta réponse par : Pour accompagner ce ${nomPlat})
+    
     `;
-
-    console.log("prompt ", prompt);
 
     await axios
       .post(
@@ -222,8 +224,10 @@ const GenerateWithPartenaire = () => {
       .then((response) => {
         setLoading(false);
 
-        const textFormated = formatText(response?.data.DATA);
-        setUserResponse(textFormated.slice(8));
+        console.log("response ", response.data);
+
+        const textFormated = formatText(response?.data.DATA.message.content);
+        setUserResponse(textFormated);
       })
       .catch((err) => {
         setLoading(false);
