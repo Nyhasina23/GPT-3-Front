@@ -97,8 +97,8 @@ export default function Plats() {
               open: true,
             })
           );
-          const textFormated = formatText(response?.data.DATA);
-          setPlats(textFormated.slice(8));
+          const textFormated = formatText(response?.data.DATA.message.content);
+          setPlats(textFormated);
           setLoading(false);
         })
         .catch((err) => {

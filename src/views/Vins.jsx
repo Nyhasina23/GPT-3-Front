@@ -91,8 +91,8 @@ export default function Vins() {
               open: true,
             })
           );
-          const textFormated = formatText(response?.data.DATA);
-          setVins(textFormated.slice(8));
+          const textFormated = formatText(response?.data.DATA.message.content);
+          setVins(textFormated);
           setLoading(false);
         })
         .catch((err) => {

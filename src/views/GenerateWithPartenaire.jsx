@@ -209,6 +209,8 @@ const GenerateWithPartenaire = () => {
     
     `;
 
+    console.log(prompt);
+
     await axios
       .post(
         `${apiURL}/gpt3/api/`,
