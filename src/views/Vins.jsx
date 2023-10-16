@@ -8,6 +8,7 @@ import axios from "axios";
 import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
+import { REQUEST_TYPE } from "constants/request.constant";
 
 export default function Vins() {
   const dispatch = useDispatch();
@@ -76,6 +77,12 @@ export default function Vins() {
           `${apiURL}/gpt3/api/`,
           {
             prompt,
+            type: REQUEST_TYPE.VINS,
+            dataHistory: {
+              robeVin: robeVin ? robeVin : null,
+              region: region ? region : null,
+              nomPlat: nomPlat ? nomPlat : null,
+            },
           },
           {
             headers: {

@@ -9,6 +9,7 @@ import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import { memo } from "react";
+import { REQUEST_TYPE } from "constants/request.constant";
 
 const GenerateWithPartenaire = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const GenerateWithPartenaire = () => {
   const [vinsOrPlat, setVinOrPlat] = useState(null);
   const [departements, setDepartements] = useState([{}]);
   const [partenaireId, setPartenaireId] = useState(null);
+  const [partenaireName, setPartenaireName] = useState(null);
 
   const [userResponse, setUserResponse] = useState(null);
   const [nomPlat, setNomPlat] = useState(null);
@@ -55,6 +57,27 @@ const GenerateWithPartenaire = () => {
       setVinOrPlat("VINS");
     } else if (e.target.value === "PLATS") {
       setVinOrPlat("PLATS");
+    }
+  };
+
+  const handlePartenaireName = async () => {
+    if (partenaireId) {
+      await axios({
+        method: "GET",
+        url: `${apiURL}/partenaire/${partenaireId}`,
+      })
+        .then((response) => {
+          setPartenaireName(response?.data?.DATA?.name);
+        })
+        .catch((error) => {
+          dispatch(
+            showNavbar({
+              message: error.response.data.MESSAGE,
+              type: "FAIL",
+              open: true,
+            })
+          );
+        });
     }
   };
 
@@ -164,13 +187,19 @@ const GenerateWithPartenaire = () => {
     }
     `;
 
-    console.log("url_query ", url_query);
     await axios
       .get(`${apiURL}/vin/partenaire/suggest/?${url_query}`)
       .then((response) => {
         setLoading(false);
 
-        analyzeDataInGpt(response?.data.DATA);
+        analyzeDataInGpt(
+          response?.data.DATA,
+          robeVin,
+          region,
+          arome,
+          minPrice,
+          maxPrice
+        );
       })
       .catch((err) => {
         // setLoading(false);
@@ -194,7 +223,14 @@ const GenerateWithPartenaire = () => {
 
   // step 3
 
-  const analyzeDataInGpt = async (dataToAnalyse) => {
+  const analyzeDataInGpt = async (
+    dataToAnalyse,
+    robeVin,
+    region,
+    arome,
+    minPrice,
+    maxPrice
+  ) => {
     setLoading(true);
 
     const prompt = `
@@ -209,13 +245,21 @@ const GenerateWithPartenaire = () => {
     
     `;
 
-    console.log(prompt);
-
     await axios
       .post(
         `${apiURL}/gpt3/api/`,
         {
           prompt,
+          type: REQUEST_TYPE.ACCORD,
+          dataHistory: {
+            nomPlat: nomPlat ? nomPlat : null,
+            robeVin: robeVin ? robeVin : null,
+            region: region ? region : null,
+            arome: arome ? arome : null,
+            minPrice: minPrice ? minPrice : null,
+            maxPrice: maxPrice ? maxPrice : null,
+            partenaire: partenaireName ? partenaireName : null,
+          },
         },
         {
           headers: {
@@ -314,6 +358,7 @@ const GenerateWithPartenaire = () => {
                   id=""
                   className="select"
                   onChange={(e) => setPartenaireId(e.target.value)}
+                  onClick={handlePartenaireName}
                 >
                   <option value="">Sélectionner Supermarché</option>
                   {departements?.map((departement) => (

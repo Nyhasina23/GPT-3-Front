@@ -9,6 +9,7 @@ import { apiURL } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import InformationCard from "components/InformationCard";
+import { REQUEST_TYPE } from "constants/request.constant";
 
 export default function Plats() {
   const dispatch = useDispatch();
@@ -82,6 +83,15 @@ export default function Plats() {
                   recom
                 : ""
             }`,
+            type: REQUEST_TYPE.PLATS,
+            dataHistory: {
+              domaine: domaine ? domaine : null,
+              millesime: millesime ? millesime : null,
+              appelation: appelation ? appelation : null,
+              cuve: cuve ? cuve : null,
+              robeVin: robeVin ? robeVin : null,
+              recom: recom ? recom : null,
+            },
           },
           {
             headers: {
