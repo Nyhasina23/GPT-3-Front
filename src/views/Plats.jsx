@@ -72,31 +72,12 @@ export default function Plats() {
       setLoading(false);
     } else {
       await axios
-        .post(`${fileServerAPI}/history/write`, {
-          type: REQUEST_TYPE.PLATS,
-          dataHistory: {
-            domaine: domaine ? domaine : null,
-            millesime: millesime ? millesime : null,
-            appelation: appelation ? appelation : null,
-            cuve: cuve ? cuve : null,
-            robeVin: robeVin ? robeVin : null,
-            recom: recom ? recom : null,
-          },
-        })
-        .then((response) => {
-          console.log("write file history done...", response);
-        })
-        .catch(() => {
-          console.log("error while writing file history...");
-        });
-
-      await axios
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt: `A la façon d'un sommelier, recommande moi une recette avec ses préparation et les détails  qui irait parfaitement avec ce vin : domaine ${domaine} millésime ${millesime} appellation ${appelation} ${
-              cuve ? "cuvée " + cuve : ""
-            } ${robeVin ? ", la robe est " + robeVin : ""} ${
+            prompt: `A la façon d'un sommelier, recommande moi une recette avec ses préparation et les détails  qui irait parfaitement avec ce vin : domaine ${domaine} , millésime ${millesime} , appellation ${appelation} ${
+              cuve ? " , cuvée " + cuve : ""
+            } ${robeVin ? " , la robe est " + robeVin : ""} ${
               recom
                 ? " et à savoir que j'ai déjà prévu un accompagnement qui est " +
                   recom
@@ -110,6 +91,8 @@ export default function Plats() {
           }
         )
         .then(async (response) => {
+          console.log("response plats ", response);
+
           dispatch(
             showNavbar({
               message: "Accord généré avec succès",
@@ -117,11 +100,34 @@ export default function Plats() {
               open: true,
             })
           );
+
+          await axios
+            .post(`${fileServerAPI}/history/write`, {
+              type: REQUEST_TYPE.PLATS,
+              dataHistory: {
+                domaine: domaine ? domaine : null,
+                millesime: millesime ? millesime : null,
+                appelation: appelation ? appelation : null,
+                cuve: cuve ? cuve : null,
+                robeVin: robeVin ? robeVin : null,
+                recom: recom ? recom : null,
+              },
+            })
+            .then((response) => {
+              console.log("write file history done...", response);
+            })
+            .catch(() => {
+              console.log("error while writing file history...");
+            });
+
+            
           const textFormated = formatText(response?.data.DATA.message.content);
           setPlats(textFormated);
           setLoading(false);
         })
         .catch((err) => {
+          console.log("error response plats ", err);
+
           dispatch(
             showNavbar({
               message: err.response.data.MESSAGE,

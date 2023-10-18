@@ -250,16 +250,6 @@ const GenerateWithPartenaire = () => {
         `${apiURL}/gpt3/api/`,
         {
           prompt,
-          type: REQUEST_TYPE.ACCORD,
-          dataHistory: {
-            nomPlat: nomPlat ? nomPlat : null,
-            robeVin: robeVin ? robeVin : null,
-            region: region ? region : null,
-            arome: arome ? arome : null,
-            minPrice: minPrice ? minPrice : null,
-            maxPrice: maxPrice ? maxPrice : null,
-            partenaire: partenaireName ? partenaireName : null,
-          },
         },
         {
           headers: {

@@ -77,12 +77,6 @@ export default function Vins() {
           `${apiURL}/gpt3/api/`,
           {
             prompt,
-            type: REQUEST_TYPE.VINS,
-            dataHistory: {
-              robeVin: robeVin ? robeVin : null,
-              region: region ? region : null,
-              nomPlat: nomPlat ? nomPlat : null,
-            },
           },
           {
             headers: {
