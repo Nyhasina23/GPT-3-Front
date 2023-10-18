@@ -71,14 +71,7 @@ export default function Plats() {
       );
       setLoading(false);
     } else {
-      let prompt = `A la façon d'un sommelier, recommande moi une recette avec ses préparation et les détails  qui irait parfaitement avec ce vin : domaine ${domaine} , millésime ${millesime} , appellation ${appelation} ${
-        cuve ? " , cuvée " + cuve : ""
-      } ${robeVin ? " , la robe est " + robeVin : ""} ${
-        recom
-          ? " et à savoir que j'ai déjà prévu un accompagnement qui est " +
-            recom
-          : ""
-      }`;
+      let prompt = `Ecrit une chanson romantique`;
       await axios
         .post(
           `${apiURL}/gpt3/api/`,
@@ -86,7 +79,6 @@ export default function Plats() {
             prompt,
           },
           {
-            timeout: 200000,
             headers: {
               Authorization: token,
             },
