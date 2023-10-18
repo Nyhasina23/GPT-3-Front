@@ -5,7 +5,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { showNavbar } from "features/snackbar.slice";
 import axios from "axios";
-import { apiURL } from "services/apiUrl";
+import { apiURL, fileServerAPI } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import InformationCard from "components/InformationCard";
@@ -83,15 +83,6 @@ export default function Plats() {
                   recom
                 : ""
             }`,
-            type: REQUEST_TYPE.PLATS,
-            dataHistory: {
-              domaine: domaine ? domaine : null,
-              millesime: millesime ? millesime : null,
-              appelation: appelation ? appelation : null,
-              cuve: cuve ? cuve : null,
-              robeVin: robeVin ? robeVin : null,
-              recom: recom ? recom : null,
-            },
           },
           {
             headers: {
@@ -99,7 +90,26 @@ export default function Plats() {
             },
           }
         )
-        .then((response) => {
+        .then(async (response) => {
+          await axios
+            .post(`${fileServerAPI}/history/write`, {
+              type: REQUEST_TYPE.PLATS,
+              dataHistory: {
+                domaine: domaine ? domaine : null,
+                millesime: millesime ? millesime : null,
+                appelation: appelation ? appelation : null,
+                cuve: cuve ? cuve : null,
+                robeVin: robeVin ? robeVin : null,
+                recom: recom ? recom : null,
+              },
+            })
+            .then(() => {
+              console.log("write file history done...");
+            })
+            .catch(() => {
+              console.log("error while writing file history...");
+            });
+
           dispatch(
             showNavbar({
               message: "Accord généré avec succès",

@@ -5,7 +5,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { showNavbar } from "features/snackbar.slice";
 import axios from "axios";
-import { apiURL } from "services/apiUrl";
+import { apiURL, fileServerAPI } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import { REQUEST_TYPE } from "constants/request.constant";
@@ -90,7 +90,22 @@ export default function Vins() {
             },
           }
         )
-        .then((response) => {
+        .then(async (response) => {
+          await axios
+            .post(`${fileServerAPI}/history/write`, {
+              type: REQUEST_TYPE.VINS,
+              dataHistory: {
+                robeVin: robeVin ? robeVin : null,
+                region: region ? region : null,
+                nomPlat: nomPlat ? nomPlat : null,
+              },
+            })
+            .then(() => {
+              console.log("write file history done...");
+            })
+            .catch(() => {
+              console.log("error while writing file history...");
+            });
           dispatch(
             showNavbar({
               message: "Accord généré avec succès",

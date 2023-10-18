@@ -5,7 +5,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useDispatch, useSelector } from "react-redux";
 import { showNavbar } from "features/snackbar.slice";
 import axios from "axios";
-import { apiURL } from "services/apiUrl";
+import { apiURL, fileServerAPI } from "services/apiUrl";
 import { useNavigate } from "react-router-dom/dist";
 import Switch from "@mui/material/Switch";
 import { memo } from "react";
@@ -267,8 +267,27 @@ const GenerateWithPartenaire = () => {
           },
         }
       )
-      .then((response) => {
+      .then(async (response) => {
         setLoading(false);
+        await axios
+          .post(`${fileServerAPI}/history/write`, {
+            type: REQUEST_TYPE.ACCORD,
+            dataHistory: {
+              nomPlat: nomPlat ? nomPlat : null,
+              robeVin: robeVin ? robeVin : null,
+              region: region ? region : null,
+              arome: arome ? arome : null,
+              minPrice: minPrice ? minPrice : null,
+              maxPrice: maxPrice ? maxPrice : null,
+              partenaire: partenaireName ? partenaireName : null,
+            },
+          })
+          .then(() => {
+            console.log("write file history done...");
+          })
+          .catch(() => {
+            console.log("error while writing file history...");
+          });
 
         console.log("response ", response.data);
 
