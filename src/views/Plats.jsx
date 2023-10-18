@@ -71,18 +71,19 @@ export default function Plats() {
       );
       setLoading(false);
     } else {
+      let prompt = `A la façon d'un sommelier, recommande moi une recette avec ses préparation et les détails  qui irait parfaitement avec ce vin : domaine ${domaine} , millésime ${millesime} , appellation ${appelation} ${
+        cuve ? " , cuvée " + cuve : ""
+      } ${robeVin ? " , la robe est " + robeVin : ""} ${
+        recom
+          ? " et à savoir que j'ai déjà prévu un accompagnement qui est " +
+            recom
+          : ""
+      }`;
       await axios
         .post(
           `${apiURL}/gpt3/api/`,
           {
-            prompt: `A la façon d'un sommelier, recommande moi une recette avec ses préparation et les détails  qui irait parfaitement avec ce vin : domaine ${domaine} , millésime ${millesime} , appellation ${appelation} ${
-              cuve ? " , cuvée " + cuve : ""
-            } ${robeVin ? " , la robe est " + robeVin : ""} ${
-              recom
-                ? " et à savoir que j'ai déjà prévu un accompagnement qui est " +
-                  recom
-                : ""
-            }`,
+            prompt,
           },
           {
             headers: {
@@ -120,7 +121,6 @@ export default function Plats() {
               console.log("error while writing file history...");
             });
 
-            
           const textFormated = formatText(response?.data.DATA.message.content);
           setPlats(textFormated);
           setLoading(false);
