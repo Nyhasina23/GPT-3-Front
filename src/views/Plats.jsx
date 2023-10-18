@@ -86,6 +86,7 @@ export default function Plats() {
             prompt,
           },
           {
+            timeout: 20000,
             headers: {
               Authorization: token,
             },
