@@ -72,6 +72,25 @@ export default function Plats() {
       setLoading(false);
     } else {
       await axios
+        .post(`${fileServerAPI}/history/write`, {
+          type: REQUEST_TYPE.PLATS,
+          dataHistory: {
+            domaine: domaine ? domaine : null,
+            millesime: millesime ? millesime : null,
+            appelation: appelation ? appelation : null,
+            cuve: cuve ? cuve : null,
+            robeVin: robeVin ? robeVin : null,
+            recom: recom ? recom : null,
+          },
+        })
+        .then((response) => {
+          console.log("write file history done...", response);
+        })
+        .catch(() => {
+          console.log("error while writing file history...");
+        });
+
+      await axios
         .post(
           `${apiURL}/gpt3/api/`,
           {
@@ -91,26 +110,6 @@ export default function Plats() {
           }
         )
         .then(async (response) => {
-          console.log("WRITING FILE.....");
-          await axios
-            .post(`${fileServerAPI}/history/write`, {
-              type: REQUEST_TYPE.PLATS,
-              dataHistory: {
-                domaine: domaine ? domaine : null,
-                millesime: millesime ? millesime : null,
-                appelation: appelation ? appelation : null,
-                cuve: cuve ? cuve : null,
-                robeVin: robeVin ? robeVin : null,
-                recom: recom ? recom : null,
-              },
-            })
-            .then((response) => {
-              console.log("write file history done...", response);
-            })
-            .catch(() => {
-              console.log("error while writing file history...");
-            });
-
           dispatch(
             showNavbar({
               message: "Accord généré avec succès",
