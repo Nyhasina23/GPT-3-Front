@@ -91,6 +91,7 @@ export default function Plats() {
           }
         )
         .then(async (response) => {
+          console.log("WRITING FILE.....");
           await axios
             .post(`${fileServerAPI}/history/write`, {
               type: REQUEST_TYPE.PLATS,
@@ -103,8 +104,8 @@ export default function Plats() {
                 recom: recom ? recom : null,
               },
             })
-            .then(() => {
-              console.log("write file history done...");
+            .then((response) => {
+              console.log("write file history done...", response);
             })
             .catch(() => {
               console.log("error while writing file history...");
