@@ -19,6 +19,9 @@ import DiningIcon from "@mui/icons-material/Dining";
 import DescriptionIcon from "@mui/icons-material/Description";
 import { useSelector } from "react-redux";
 import jwtDecode from "jwt-decode";
+import LinkIcon from "@mui/icons-material/Link";
+import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 export default function Account() {
   const token = useSelector((state) => state.user.token);
@@ -40,7 +43,7 @@ export default function Account() {
             zIndex: 0,
           }}
         >
-          <List component="nav" aria-label="main mailbox folders">
+          <List component="nav">
             <NavLink to="/compte/user/info">
               <ListItemButton onClick={showMenu}>
                 <ListItemIcon>
@@ -57,7 +60,7 @@ export default function Account() {
                 <ListItemText primary="Mot de passe" />
               </ListItemButton>
             </NavLink>
-            {role > 1 && (
+            {role === 3 && (
               <NavLink to="/compte/blog/add">
                 <ListItemButton onClick={showMenu}>
                   <ListItemIcon>
@@ -83,7 +86,7 @@ export default function Account() {
                 <ListItemText primary="Plats" />
               </ListItemButton>
             </NavLink>
-            {role > 1 && (
+            {role === 3 && (
               <NavLink to="/compte/partenaire/add">
                 <ListItemButton onClick={showMenu}>
                   <ListItemIcon>
@@ -93,7 +96,7 @@ export default function Account() {
                 </ListItemButton>
               </NavLink>
             )}
-            {role > 1 && (
+            {role === 3 && (
               <NavLink to="/compte/vins/add">
                 <ListItemButton onClick={showMenu}>
                   <ListItemIcon>
@@ -103,7 +106,7 @@ export default function Account() {
                 </ListItemButton>
               </NavLink>
             )}
-            {role > 1 && (
+            {role === 3 && (
               <NavLink to="/compte/vins/add-file">
                 <ListItemButton onClick={showMenu}>
                   <ListItemIcon>
@@ -113,7 +116,57 @@ export default function Account() {
                 </ListItemButton>
               </NavLink>
             )}
-            {/* {role > 1 && (
+            {role === 3 && (
+              <NavLink to="/compte/pro/link">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <LinkIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Lié Compte Pro" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {role === 3 && (
+              <NavLink to="/compte/pro/register">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <HowToRegIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Ajouter un Compte Pro" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {role === 2 && (
+              <NavLink to="/compte/pro/vins/add">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Ajouter Vins" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {role === 2 && (
+              <NavLink to="/compte/pro/vins/add-file">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <DescriptionIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Ajouter Vins (Fichier)" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {role === 2 && (
+              <NavLink to="/compte/pro/vins/manage">
+                <ListItemButton onClick={showMenu}>
+                  <ListItemIcon>
+                    <RoomPreferencesIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Gérer Vins" />
+                </ListItemButton>
+              </NavLink>
+            )}
+            {/* {role === 3 && (
               <NavLink to="/compte/plats/add">
                 <ListItemButton onClick={showMenu}>
                   <ListItemIcon>

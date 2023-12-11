@@ -26,6 +26,11 @@ import BlogList from "views/BlogList";
 import ForgotPassword from "views/ForgotPassword";
 import ResetPassword from "views/ResetPassword";
 import AddVinByFile from "components/AddVinByFile";
+import RegisterProAccount from "views/RegisterProAccount";
+import { AddVinPro } from "components/AddVinPro";
+import AddVinProByFile from "components/AddVinProByFile";
+import ManageVinPro from "components/ManageVinPro";
+import LinkAccountPartenaire from "components/LinkAccountPartenaire";
 
 function App() {
   return (
@@ -37,6 +42,11 @@ function App() {
           <Route exact path="/" element={<Home />}></Route>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
+          <Route
+            exact
+            path="/compte/pro/register"
+            element={<RegisterProAccount />}
+          />
           <Route exact path="/wine" element={<Vins />} />
           <Route exact path="/pal" element={<Plats />} />
           <Route exact path="/all-wines" element={<AllVins />} />
@@ -49,6 +59,14 @@ function App() {
             <Route path="user/biblio/accord" element={<AccordList />} />
             <Route exact path="partenaire/add" element={<AddPartenaire />} />
             <Route exact path="vins/add" element={<AddVinPartenaire />} />
+            <Route exact path="pro/vins/manage" element={<ManageVinPro />} />
+            <Route exact path="pro/vins/add" element={<AddVinPro />} />
+            <Route exact path="pro/link" element={<LinkAccountPartenaire />} />
+            <Route
+              exact
+              path="pro/vins/add-file"
+              element={<AddVinProByFile />}
+            />
             <Route exact path="vins/add-file" element={<AddVinByFile />} />
             <Route exact path="plats/add" element={<AddPlatPartenaire />} />
           </Route>

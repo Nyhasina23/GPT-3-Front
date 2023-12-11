@@ -3,9 +3,12 @@ import { Button, Typography } from "@mui/material";
 import "styles/button.css";
 import "styles/welcome.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Welcome() {
   const navigate = useNavigate();
+
+  const isAuthenticate = useSelector((state) => state.user.isAuthenticate);
 
   return (
     <div className="main-welcome">
@@ -21,13 +24,15 @@ export default function Welcome() {
         désormais possible de trouver le parfait accord-mets vins en un rien de
         temps.{" "}
       </p>
-      <Button
-        variant="contained"
-        className="primary white welcome-button"
-        onClick={() => navigate("/register")}
-      >
-        CREER VOTRE COMPTE
-      </Button>
+      {!isAuthenticate && (
+        <Button
+          variant="contained"
+          className="primary white welcome-button"
+          onClick={() => navigate("/register")}
+        >
+          CREER VOTRE COMPTE
+        </Button>
+      )}
     </div>
   );
 }
