@@ -70,22 +70,28 @@ export default function Account() {
                 </ListItemButton>
               </NavLink>
             )}
-            <NavLink to="/compte/user/biblio/wine">
-              <ListItemButton onClick={showMenu}>
-                <ListItemIcon>
-                  <WineBarIcon />
-                </ListItemIcon>
-                <ListItemText primary="Vins" />
-              </ListItemButton>
-            </NavLink>
-            <NavLink to="/compte/user/biblio/pal">
-              <ListItemButton onClick={showMenu}>
-                <ListItemIcon>
-                  <RestaurantIcon />
-                </ListItemIcon>
-                <ListItemText primary="Plats" />
-              </ListItemButton>
-            </NavLink>
+            {role === 1 ||
+              (role === 3 && (
+                <NavLink to="/compte/user/biblio/wine">
+                  <ListItemButton onClick={showMenu}>
+                    <ListItemIcon>
+                      <WineBarIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Vins" />
+                  </ListItemButton>
+                </NavLink>
+              ))}
+            {role === 1 ||
+              (role === 3 && (
+                <NavLink to="/compte/user/biblio/pal">
+                  <ListItemButton onClick={showMenu}>
+                    <ListItemIcon>
+                      <RestaurantIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Plats" />
+                  </ListItemButton>
+                </NavLink>
+              ))}
             {role === 3 && (
               <NavLink to="/compte/partenaire/add">
                 <ListItemButton onClick={showMenu}>
@@ -176,14 +182,17 @@ export default function Account() {
                 </ListItemButton>
               </NavLink>
             )} */}
-            <NavLink to="/compte/user/biblio/accord">
-              <ListItemButton onClick={showMenu}>
-                <ListItemIcon>
-                  <DiningIcon />
-                </ListItemIcon>
-                <ListItemText primary="Accords" />
-              </ListItemButton>
-            </NavLink>
+            {role === 1 ||
+              (role === 3 && (
+                <NavLink to="/compte/user/biblio/accord">
+                  <ListItemButton onClick={showMenu}>
+                    <ListItemIcon>
+                      <DiningIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Accords" />
+                  </ListItemButton>
+                </NavLink>
+              ))}
           </List>
         </Box>
       </Grid>
