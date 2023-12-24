@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import "styles/uploadCsvFile.css";
 import axios from "axios";
@@ -16,6 +16,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { showNavbar } from "features/snackbar.slice";
+import SearchAppBar from "./SearchBar";
+import Box from "@mui/material/Box";
+import DropDownFilter from "./dropDownMenuFilter";
 
 const columns = [
   { id: "domaine", label: "Domaine", minWidth: 170 },
@@ -49,6 +52,10 @@ export default function ManageVinPro() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [allVinsPro, setAllVinPro] = useState();
   const [count, setCount] = React.useState();
+  const [isFilterPrice, setIsFilterPrice] = React.useState(false);
+  const [isFilterSearch, setIsFilterSearch] = React.useState(false);
+  const [filterData, setFilterData] = React.useState();
+  const [filterText, setFilterText] = React.useState();
   const dispatch = useDispatch();
 
   const getAllProAccountVin = async () => {
@@ -108,14 +115,79 @@ export default function ManageVinPro() {
     }
   };
 
+  const searchVin = useCallback(
+    async (query) => {
+      await axios({
+        method: "POST",
+        url: `${apiURL}/vin/pro/find`,
+        data: {
+          query,
+          page,
+          limit: rowsPerPage,
+        },
+        headers: {
+          authorization: token,
+        },
+      })
+        .then((response) => {
+          setIsFilterPrice(false);
+          setIsFilterSearch(true);
+          setAllVinPro(response?.data?.DATA?.vins[0]?.data);
+          setCount(response?.data?.DATA?.vins[0]?.count[0]?.totalCount);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    [page, rowsPerPage]
+  );
+
+  const filterByPrice = useCallback(
+    async (filter) => {
+      await axios({
+        method: "POST",
+        url: `${apiURL}/vin/pro/filter`,
+        data: {
+          filter,
+          page,
+          limit: rowsPerPage,
+        },
+        headers: {
+          authorization: token,
+        },
+      })
+        .then((response) => {
+          setAllVinPro(response?.data?.DATA?.vins[0]?.data);
+          setCount(response?.data?.DATA?.vins[0]?.count[0]?.totalCount);
+          setIsFilterPrice(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    [page, rowsPerPage]
+  );
+
   useEffect(() => {
-    getAllProAccountVin();
+    if (isFilterPrice) {
+      filterByPrice(filterData);
+    } else if (isFilterSearch) {
+      searchVin(filterText);
+    } else {
+      getAllProAccountVin();
+    }
   }, [page, rowsPerPage]);
 
   return (
     <div className="main-upload">
-      {" "}
-      <Typography variant="h5">Gérer vos vins</Typography>
+      <Box
+        sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}
+      >
+        <Typography variant="h5" sx={{ marginRight: "1rem" }}>
+          Gérer vos vins
+        </Typography>
+        <SearchAppBar onChange={(e) => searchVin(e)} />
+      </Box>
       <br />
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 730 }}>
@@ -126,9 +198,27 @@ export default function ManageVinPro() {
                   <TableCell
                     key={column.id}
                     align={column.align}
-                    style={{ minWidth: column.minWidth }}
+                    style={{
+                      minWidth: column.minWidth,
+                    }}
                   >
-                    {column.label}
+                    <p className={`filter-flex ${column.id}`}>
+                      {(column.label === "Robe" ||
+                        column.label === "Prix (€)") && (
+                        <DropDownFilter
+                          type={column.id}
+                          handleChooseRobe={(query) => {
+                            searchVin(query);
+                            setFilterText(query);
+                          }}
+                          handleFilterPrice={(filter) => {
+                            filterByPrice(filter);
+                            setFilterData(filter);
+                          }}
+                        />
+                      )}
+                      {column.label}{" "}
+                    </p>
                   </TableCell>
                 ))}
               </TableRow>
@@ -145,7 +235,6 @@ export default function ManageVinPro() {
                       >
                         {columns?.map((column) => {
                           const value = row[column.id];
-                          console.log(value);
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {value}
